@@ -1,0 +1,35 @@
+{
+  "extends": "stylelint-config-standard",
+  "plugins": [
+    "stylelint-declaration-use-variable"
+  ],
+  "rules": {
+    "indentation": 2,
+    "string-quotes": "single",
+    "selector-combinator-space-after": "always",
+    "declaration-block-trailing-semicolon": "always",
+    "declaration-colon-space-before": "never",
+    "declaration-colon-space-after": "always",
+    "number-leading-zero": "never",
+    "rule-empty-line-before": [
+      "always-multi-line",
+      {
+        "ignore": "first-nested"
+      }
+    ],
+    "property-no-unknown": null,
+    "sh-waqar/declaration-use-variable": [[
+      "color",
+      "background",
+      "background-color",
+      "border-color",
+      {"ignoreValues": ["transparent", "inherit"]}
+    ]],
+    "at-rule-no-unknown": null,
+    "font-family-name-quotes": "always-unless-keyword",
+    "function-url-quotes": "always",
+    "declaration-block-no-duplicate-properties": true,
+    "selector-pseudo-element-colon-notation": "single",
+    "no-descending-specificity": null
+  }
+}
