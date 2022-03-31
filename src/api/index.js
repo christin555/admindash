@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-const API_URL = `http://localhost:8800/api/`;
+const API_URL = `http://localhost:8800/admin/`;
 const baseQuery = axios.create({
   baseURL: API_URL,
   responseType: 'json',
  // withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
-    Accept: 'application/json'
+    Accept: 'application/json',
+    authorization: `Bearer ${localStorage.token}`
   }
 });
 

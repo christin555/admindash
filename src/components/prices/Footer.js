@@ -33,7 +33,7 @@ class PriceView extends React.Component {
                             variant={'contained'}
                             onClick={toggleModalDeleteShow}
                             color={'secondary'}
-                        > Удалить
+                        > Удалить товары
                         </Button>
                         {
                             <Button
@@ -45,6 +45,7 @@ class PriceView extends React.Component {
 
                         <Box> Выбрано {selected?.length} строки </Box>
                     </AppBar>
+                    || null
                 }
                 <Modal/>
                 <ModalDelete/>

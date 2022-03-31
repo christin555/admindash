@@ -1,33 +1,51 @@
 import {observable, get, action, makeObservable, computed} from 'mobx';
+import jwt_decode from "jwt-decode";
 
 class RouterStore {
-  @observable location = {};
-  @observable match = {};
-  @observable history = {};
+    @observable location = {};
+    @observable match = {};
+    @observable history = {};
+    isAuthenticated = false;
 
-  constructor() {
-    makeObservable(this);
-  }
+    constructor() {
+        makeObservable(this);
 
-  @computed get pathname() {
-    return this.location.pathname;
-  }
+        this.isAuthenticated = this.checkIsAuthenticated();
+    }
 
-  @computed get params() {
-    return get(this.location, 'search') || null;
-  }
+    @computed get pathname() {
+        return this.location.pathname;
+    }
 
-  @action setRoute(location, match, history) {
-    this.location = location;
-    this.match = match;
-    this.history = history;
-  }
+    @computed get params() {
+        return get(this.location, 'search') || null;
+    }
 
-  @action getParam = (param) => {
-    const urlAddress = new URLSearchParams(this.params || '');
+    @action setRoute(location, match, history) {
+        this.location = location;
+        this.match = match;
+        this.history = history;
+    }
 
-    return urlAddress.get(param);
-  };
+    @action getParam = (param) => {
+        const urlAddress = new URLSearchParams(this.params || '');
+
+        return urlAddress.get(param);
+    };
+
+    checkIsAuthenticated = () => {
+        console.log('RouterStore');
+
+        const token = localStorage.getItem('token');
+        try {
+            const exp = jwt_decode(localStorage.token).exp;
+            console.log('exp', exp);
+            return !exp < (new Date() / 1000);
+        }
+         catch (err) {
+            return false;
+        }
+    }
 }
 
 // Global store

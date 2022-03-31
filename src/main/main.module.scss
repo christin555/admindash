@@ -1,10 +1,12 @@
 @import '../shared/style';
-@import url('https://fonts.googleapis.com/css2?family=MuseoModerno:wght@100;200;300;400&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300&family=Roboto:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+
+a {
+  color: black !important;
+}
 
 a:visited {
-  color: inherit;
+  color: black !important;
 }
 
 li, p {
@@ -12,7 +14,6 @@ li, p {
 }
 
 h2 {
-  font-family: Montserrat, sans-serif;
   margin: 8px 0;
   line-height: 1.4em;
 }
@@ -23,7 +24,6 @@ h1 {
 }
 
 h4 {
-  font-family: Montserrat, sans-serif;
   text-transform: uppercase;
   margin: 5px 0;
 }
@@ -60,7 +60,7 @@ body {
   align-items: center;
 }
 
-.background{
+.background {
   background-image: url('../shared/wapper.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
