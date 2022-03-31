@@ -1,12 +1,12 @@
 .bar {
-  display: flex;
-  flex-direction: row;
-  bottom: 0;
-  top: auto;
+  display: flex !important;
+  flex-direction: row !important;
+  bottom: 0 !important;
+  top: auto !important;
   padding: 10px 40px;
-  background: #363333;
-  align-items: center;
-  gap: 20px
+  background: #363333 !important;
+  align-items: center !important;
+  gap: 20px !important
 }
 .modal{
   background: white;
