@@ -61,7 +61,8 @@ class PriceStore {
     };
 
     @action setLimit = (limit) => {
-        if(limit){
+        console.log('setLimit', limit)
+        if (limit) {
             this.limit = limit;
         }
     };
@@ -129,10 +130,10 @@ class PriceStore {
         const {products, initProducts} = this;
 
         const updated = [];
-        initProducts.forEach(({id, price}) =>{
+        initProducts.forEach(({id, price}) => {
             const item = products.find(({id: _id}) => id === _id);
 
-            if(item && item.price !== price){
+            if (item && item.price !== price) {
                 updated.push({id, oldPrice: price, newPrice: item.price})
             }
         })
@@ -141,9 +142,9 @@ class PriceStore {
         this.deleted.length && this.deleteQuery();
     };
 
-    deleteQuery = async() => {
+    deleteQuery = async () => {
         try {
-            await api.post('admin/deleteProducts', {ids: this.deleted});
+            await api.post('deleteProducts', {ids: this.deleted});
             this.toggleEdit();
             this.initProducts = toJS(this.products);
             this.deleted = []
@@ -153,9 +154,9 @@ class PriceStore {
         }
     }
 
-    updatePricesQuery = async(updated) => {
+    updatePricesQuery = async (updated) => {
         try {
-            await api.post('admin/updatePrices', {products: updated});
+            await api.post('updatePrices', {products: updated});
             this.toggleEdit();
             this.initProducts = toJS(this.products);
             alert('Успешно');
@@ -182,11 +183,9 @@ class PriceStore {
         try {
             const body = {
                 fastfilter,
-                categoryId: category,
-                limit: 10,
-                offset: 0,
+                categoryId: category
             };
-            const products = await api.post('admin/getPricesProducts', body);
+            const products = await api.post('getPricesProducts', body);
             this.setProducts(products);
             this.setInitProducts(products);
             this.setStatus(statusEnum.SUCCESS);

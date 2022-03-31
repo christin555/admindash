@@ -1,7 +1,7 @@
 import React from 'react';
 import {inject, Provider} from 'mobx-react';
-import {PriceStore} from '../../stores/PricesStore';
-import PriceView from './PriceView';
+import ProductStore from '../../stores/ProductStore';
+import ProductView from './ProductView';
 
 @inject('RouterStore')
 class FilterViewHOC extends React.Component {
@@ -10,18 +10,17 @@ class FilterViewHOC extends React.Component {
 
         const {RouterStore} = this.props;
 
-        this.PriceStore = new PriceStore(RouterStore);
-
+        this.ProductStore = new ProductStore(RouterStore);
     }
 
     componentWillUnmount() {
-        this.PriceStore.closeStore()
+        this.ProductStore.closeStore()
     }
 
     render() {
         return (
-            <Provider PriceStore={this.PriceStore}>
-                <PriceView/>
+            <Provider ProductStore={this.ProductStore}>
+                <ProductView/>
             </Provider>
         );
     }

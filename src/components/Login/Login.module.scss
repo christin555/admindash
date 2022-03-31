@@ -1,0 +1,23 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  width: max-content;
+  margin: 10% auto;
+}
+
+.field {
+  display: grid;
+  line-height: 3;
+  grid-template-columns: 1fr 2fr;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+
+  & > * {
+    margin-left: 20px !important;
+  }
+}

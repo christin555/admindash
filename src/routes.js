@@ -20,8 +20,18 @@ export default () => (
                     />
                     <Route
                         exact={true}
+                        path='/login'
+                        render={wrap('login')}
+                    />
+                    <Route
+                        exact={true}
                         path='/prices'
                         render={wrap('prices')}
+                    />
+                    <Route
+                        exact={true}
+                        path='/addproduct'
+                        render={wrap('addproduct')}
                     />
                     <Route
                         render={wrap('notFound')}

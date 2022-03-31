@@ -1,15 +1,26 @@
 import React from 'react';
 import {inject} from 'mobx-react';
-import {DataGrid, ruRU} from '@mui/x-data-grid';
+import {
+    DataGrid,
+    GridToolbarColumnsButton,
+    GridToolbarContainer, GridToolbarDensitySelector,
+    GridToolbarExport, GridToolbarFilterButton,
+    ruRU
+} from '@mui/x-data-grid';
 import {toJS} from "mobx";
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import s from './style.module.scss';
-import Box from '@mui/material/Box';
-import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
 import {status as statusEnum} from '../../enums';
-import {AppBar, Modal, Typography} from "@material-ui/core";
+
+function CustomToolbar() {
+    return (
+        <GridToolbarContainer style={{margin: '10px', gap: '10px'}}>
+            <GridToolbarColumnsButton/>
+            <GridToolbarFilterButton/>
+            <GridToolbarDensitySelector/>
+            <GridToolbarExport csvOptions={{fileName: 'Экспорт', utf8WithBom: true}}/>
+        </GridToolbarContainer>
+    );
+}
 
 @inject(({PriceStore}) => {
     return {
@@ -19,10 +30,16 @@ import {AppBar, Modal, Typography} from "@material-ui/core";
         setPrice: PriceStore.setPrice,
         setSelected: PriceStore.setSelected,
         setLimit: PriceStore.setLimit,
-        limit: PriceStore.limit
+        limit: PriceStore.limit,
+        category: PriceStore.category,
+        categories: PriceStore.categories
     };
 })
 class PriceView extends React.Component {
+    get kerama() {
+        return this.props.categories?.find(({name}) => name.toLowerCase() === 'керамогранит')?.value
+    }
+
     columns = [
         {
             field: 'name', headerName: 'Название', width: 350,
@@ -31,8 +48,9 @@ class PriceView extends React.Component {
         },
         {field: 'collection', headerName: 'Коллекция', width: 290},
         {field: 'brand', headerName: 'Бренд', width: 290},
+        {field: 'size', headerName: 'Размеры', width: 150, hide: true},
         {
-            field: 'price', headerName: 'Цена', width: 290,
+            field: 'price', headerName: 'Цена, руб', width: 290,
             renderCell: (cellValues) => {
                 if (!this.props.isEdit) {
                     return cellValues.value
@@ -58,20 +76,24 @@ class PriceView extends React.Component {
         } = this.props;
 
         return (
-                <DataGrid
-                    loading={status === statusEnum.LOADING}
-                    localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
-                    autoHeight
-                    autoPageSize
-                    rows={products}
-                    columns={this.columns}
-                    pageSize={limit}
-                    rowsPerPageOptions={[20, 50, 100]}
-                    onPageSizeChange={setLimit}
-                    checkboxSelection={isEdit}
-                    disableSelectionOnClick
-                    onSelectionModelChange={setSelected}
-                />
+            <DataGrid
+                loading={status === statusEnum.LOADING}
+                localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
+                autoHeight
+                rows={products}
+                columns={this.columns}
+                pageSize={limit}
+                rowsPerPageOptions={[20, 50, 100]}
+                onPageSizeChange={setLimit}
+                checkboxSelection={isEdit}
+                disableSelectionOnClick
+                onSelectionModelChange={setSelected}
+                components={{
+                    Toolbar: CustomToolbar,
+                }}
+                disableColumnMenu={true}
+                //   autoPageSize
+            />
         );
     }
 }
