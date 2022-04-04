@@ -45,7 +45,6 @@ class ProductStore {
             ))
         } catch (err) {
             console.log(err)
-
         }
     };
 

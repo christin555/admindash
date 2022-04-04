@@ -92,7 +92,6 @@ class ProductsStore {
     };
 
     @action setLimit = (limit) => {
-        console.log('setLimit', limit)
         if (limit) {
             this.limit = limit;
         }

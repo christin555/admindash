@@ -34,12 +34,9 @@ class RouterStore {
     };
 
     checkIsAuthenticated = () => {
-        console.log('RouterStore');
-
         const token = localStorage.getItem('token');
         try {
             const exp = jwt_decode(localStorage.token).exp;
-            console.log('exp', exp);
             return !exp < (new Date() / 1000);
         }
          catch (err) {

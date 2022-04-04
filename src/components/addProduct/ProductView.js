@@ -53,7 +53,7 @@ class PriceView extends React.Component {
                             />
                         </Box>
 
-                        {fields.map((field) => <Field {...field} setValue={setValue} product={product}/>)}
+                        {fields.map((field) => <Field {...field} key={field.name} setValue={setValue} product={product}/>)}
                     </div>
 
                     {/*<Box margin={'20px 0 '}>*/}
