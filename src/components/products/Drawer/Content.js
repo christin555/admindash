@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import Select from "../../../shared/Select";
 import Field from "../../addProduct/Field";
 import {toJS} from "mobx";
+import ImgsBlock from "./ImgsBlock";
 
 @inject(({DrawerStore}) => {
     return {
@@ -14,7 +15,8 @@ import {toJS} from "mobx";
         fields: DrawerStore.fields || [],
         categories: DrawerStore.categories,
         category: DrawerStore.category,
-        setCategory: DrawerStore.setCategory
+        setCategory: DrawerStore.setCategory,
+        loadFiled: DrawerStore.loadFiled
     };
 })
 class DrawerStore extends React.Component {
@@ -27,36 +29,50 @@ class DrawerStore extends React.Component {
             setCategory,
             category,
             product,
-            setValue,
+            setValue
         } = this.props;
 
         return (
             <div className={s.fields}>
-                <Box
-                    display={'flex'}
-                    flexDirection={'column'}
-                >
-                    <Typography
-                        variant={'button'}
-                        style={{marginBottom: '10px', color: '#454545', fontWeight: '400', display: 'flex'}}>
-                        Категория
-                        <Box marginLeft={'10px'} color={'red'}> * </Box>
-                    </Typography>
-                    <Select
-                        options={categories}
-                        value={category}
-                        onChange={setCategory}
-                    />
-                </Box>
+                <div>
+                    <Box
+                        display={'flex'}
+                        flexDirection={'column'}
+                    >
+                        <Typography
+                            variant={'button'}
+                            style={{marginBottom: '10px', color: '#454545', fontWeight: '400', display: 'flex'}}>
+                            Категория
+                            <Box marginLeft={'10px'} color={'red'}> * </Box>
+                        </Typography>
+                        <Select
+                            options={categories}
+                            value={category}
+                            onChange={setCategory}
+                        />
+                    </Box>
+                    <ImgsBlock/>
 
-                {
-                    fields.map((field) =>
+                    {fields.slice(0, fields.length/2).map((field) =>
                         <Field
                             {...field}
                             key={field.name}
                             setValue={setValue}
                             product={product}
                         />)}
+                </div>
+
+                <div>
+                    {
+                        fields.slice(fields.length/2).map((field) =>
+                            <Field
+                                {...field}
+                                key={field.name}
+                                setValue={setValue}
+                                product={product}
+                            />)}
+                </div>
+
             </div>
 
         );
