@@ -20,7 +20,7 @@ class ProductStore {
     }
 
     @action setValue = (name, value) => {
-         set(this.product, {[name]: value});
+        set(this.product, {[name]: value});
     };
 
     @action setFields = (fields) => {
@@ -45,7 +45,6 @@ class ProductStore {
             ))
         } catch (err) {
             console.log(err)
-
         }
     };
 
@@ -54,7 +53,15 @@ class ProductStore {
 
         try {
             const fields = await api.post('getFields', {category: category?.value});
-            this.setFields(fields);
+            this.setFields(fields.sort((a, b) => {
+                if (!!a.isRequired === !!b.isRequired) {
+                    const textA = a.title?.toUpperCase();
+                    const textB = b.title?.toUpperCase();
+                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                } else {
+                    return (!!a.isRequired < !!b.isRequired) ? 1 : (!!a.isRequired > !!b.isRequired) ? -1 : 0;
+                }
+            }));
         } catch (err) {
         }
     };

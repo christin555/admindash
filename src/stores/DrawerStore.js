@@ -1,9 +1,9 @@
-import {observable, action, autorun, computed, makeObservable, reaction, toJS} from 'mobx';
+import {observable, action, autorun, computed, set, reaction, toJS} from 'mobx';
 import ProductStore from './ProductStore';
 import api from "../api";
 import {alert} from "./Notifications";
 
-class AddStore extends ProductStore {
+class DrawerStore extends ProductStore {
     @observable mode;
 
     constructor(ProductsStore) {
@@ -33,16 +33,24 @@ class AddStore extends ProductStore {
         this.mode = this.ProductsStore.actionsData.mode;
 
         if (this.mode === 'show' || this.mode === 'edit') {
-            this.product = {...this.ProductsStore.actionsData.values};
+            this.product = toJS(this.ProductsStore.actionsData.values);
             this.category = this.product.categoryId;
         }
 
         if (this.mode === 'copy') {
-            this.product = {...this.ProductsStore.actionsData.values};
+            this.product = toJS(this.ProductsStore.actionsData.values);
             delete this.product.id;
             delete this.product.name;
+            delete this.product.imgs;
             this.category = this.product.categoryId;
         }
+    }
+
+    @action reset = () => {
+        this.product = {};
+        this.mode = null;
+        this.ProductsStore.actionsData = {};
+        this.ProductsStore.setDrawerShow(false);
     }
 
     @action apply = () => {
@@ -59,6 +67,22 @@ class AddStore extends ProductStore {
         }
 
         this.reset();
+    }
+
+    @action setMainPhoto = (src) => {
+        this.setValue('imgs', toJS(this.product.imgs).map((item) => {
+            if (src === item.src) {
+                item.isMain = true;
+            } else {
+                item.isMain = false;
+            }
+
+            return item
+        }))
+    }
+
+    @action deletePhoto = (src) => {
+        this.setValue('imgs', toJS(this.product.imgs).filter((item) => src !== item.src))
     }
 
     get preparedNewObject() {
@@ -94,12 +118,22 @@ class AddStore extends ProductStore {
         }
     }
 
-    @action reset = () => {
-        this.product = {};
-        this.mode = null;
-        this.ProductsStore.actionsData = {};
-        this.ProductsStore.setDrawerShow(false);
+    loadFiled = async (files) => {
+        const data = new FormData();
+        data.append('file', files[0]);
+        data.append('name', this.product.alias);
+
+        try {
+            const file = await api.post('upload', data);
+
+            if (!this.product.imgs) {
+                this.product.imgs = [{src: file}];
+            } else this.product.imgs.push({src: file});
+
+        } catch (e) {
+            console.log(e);
+        }
     }
 }
 
-export default AddStore;
+export default DrawerStore;

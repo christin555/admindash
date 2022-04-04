@@ -57,7 +57,7 @@ const Field = ({name, type, title, values, product, setValue, isRequired}) => {
     >
         <Typography
             variant={'button'}
-            style={{marginBottom: '10px', color: '#454545', fontWeight: '400', display: 'flex'}}>
+            style={{marginBottom: '4px', color: '#6f6e6e', fontWeight: '400', display: 'flex'}}>
             {title || name} {isRequired && <Box marginLeft={'10px'} color={'red'}> * </Box> || null}
         </Typography>
         {block}
