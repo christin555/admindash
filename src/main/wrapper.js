@@ -10,8 +10,8 @@ const Page = loadable(
             case 'home': {
                 return import('../components/home');
             }
-            case 'prices': {
-                return import('../components/prices');
+            case 'products': {
+                return import('../components/products');
             }
             case 'notFound': {
                 return import('../shared/InformBlocks/PageNotFound');

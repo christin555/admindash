@@ -1,0 +1,28 @@
+.container {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+}
+
+.drawer {
+  max-width: 50%;
+}
+
+.fields {
+  padding: 20px 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px 50px;
+  overflow-y: scroll;
+}
+
+.header {
+  background: rgb(47, 140, 203);
+  color: white !important;
+  padding: 6px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

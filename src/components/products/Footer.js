@@ -8,15 +8,18 @@ import Modal from "./Modal";
 import {toJS} from "mobx";
 import ModalDelete from "./ModalDelete";
 
-@inject(({PriceStore}) => {
+@inject(({ProductsStore}) => {
     return {
-        selected: toJS(PriceStore.selected),
-        showModal: PriceStore.showModal,
-        isEdit: PriceStore.isEdit,
-        toggleModalDeleteShow: PriceStore.toggleModalDeleteShow
+        selected: toJS(ProductsStore.selected),
+        showModal: ProductsStore.showModal,
+        isEdit: ProductsStore.isEdit,
+        openDrawerWithMode: ProductsStore.openDrawerWithMode,
+        toggleModalDeleteShow: ProductsStore.toggleModalDeleteShow
     };
 })
 class PriceView extends React.Component {
+    openDrawer = () => this.props.openDrawerWithMode('massedit', this.props.selected)
+
     render() {
         const {
             selected,
@@ -40,6 +43,13 @@ class PriceView extends React.Component {
                                 variant={'contained'}
                                 onClick={showModal}
                             > Изменить цену
+                            </Button>
+                        }
+                        {
+                            <Button
+                                variant={'contained'}
+                                onClick={this.openDrawer}
+                            > Массовое редактирование
                             </Button>
                         }
 

@@ -28,18 +28,25 @@ class Login extends React.Component {
         if (loginSuccess) return (<Redirect to="/"/>);
 
         const fields = [
-            {label: 'Логин', onchange: event => setField('email', event.target.value), value: email},
+            {
+                label: 'Логин',
+                name: "login",
+                onchange: event => setField('email', event.target.value),
+                value: email
+            },
             {
                 label: 'Пароль',
+                name: "password",
                 type: 'password',
                 onchange: event => setField('password', event.target.value),
                 value: password
             }
         ].map((el) => (
-            <div className={styles.field}>
+            <div className={styles.field} key={el.name}>
                 <div>{el.label}</div>
                 <div>
                     <TextField
+                        name={el.name}
                         value={el.value}
                         onChange={el.onchange}
                         type={el.type}
