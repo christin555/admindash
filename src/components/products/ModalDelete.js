@@ -7,56 +7,44 @@ import {TextField} from "@mui/material";
 
 import {Modal, Typography} from "@material-ui/core";
 
-@inject(({PriceStore}) => {
+@inject(({ProductsStore}) => {
     return {
-        isModalShow: PriceStore.isModalShow,
-        closeModal: PriceStore.closeModal,
-        setPriceChecked: PriceStore.setPriceChecked,
-        checkedPrice: PriceStore.checkedPrice,
-        updatePrices: PriceStore.updatePrices,
+        isModalDeleteShow: ProductsStore.isModalDeleteShow,
+        toggleModalDeleteShow: ProductsStore.toggleModalDeleteShow,
+        selected: ProductsStore.selected,
+        setDeleteIds: ProductsStore.setDeleteIds
     };
 })
 class PriceView extends React.Component {
     render() {
         const {
-            isModalShow,
-            closeModal,
-            setPriceChecked,
-            checkedPrice,
-            updatePrices
+            isModalDeleteShow,
+            toggleModalDeleteShow,
+            setDeleteIds,
+            selected
         } = this.props;
 
         return (
                 <Modal
-                    open={isModalShow}
-                    onClose={closeModal}
+                    open={isModalDeleteShow}
+                    onClose={toggleModalDeleteShow}
                 >
                     <Box className={s.modal}>
                         <Box>
                             <Typography id="modal-modal-title" variant="h6" component="h2">
-                                Новая цена
+                                Вы уверены, что хотите удалить {selected?.length} товар(а)?
                             </Typography>
-                            <TextField
-                                onChange={({target: {value}}) => setPriceChecked(value)}
-                                value={checkedPrice || ''}
-                                variant="standard"
-                                size={'small'}
-                            />
-
                         </Box>
                         <Box display={'flex'} margin={'20px'} gap={'20px'}>
                             <Button
                                 variant={'contained'}
-                                onClick={updatePrices}
+                                onClick={setDeleteIds}
                                 color={'secondary'}
-                            > Ок
+                            > Да
                             </Button>
                             <Button
                                 variant={'contained'}
-                                onClick={() => {
-                                    setPriceChecked('');
-                                    closeModal()
-                                }}
+                                onClick={toggleModalDeleteShow}
                             > Отмена
                             </Button>
                         </Box>

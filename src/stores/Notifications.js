@@ -1,4 +1,4 @@
-import {store} from 'react-notifications-component';
+import {Store} from 'react-notifications-component';
 
 const alertQueue = {};
 const DELAY = 3000;
@@ -23,15 +23,15 @@ export const alert = ({type, title = ' ', message = ' '}) => {
 
   switch (type) {
     case 'info':
-      store.addNotification({title, message, type, ...opt});
+      Store.addNotification({title, message, type, ...opt});
       break;
     case 'success':
-      store.addNotification({title, message, type, ...opt});
+      Store.addNotification({title, message, type, ...opt});
       break;
     case 'warning':
-      store.addNotification({title, message, type, ...opt});
+      Store.addNotification({title, message, type, ...opt});
       break;
     case 'error':
-      store.addNotification({title, message, type: 'danger', ...opt});
+      Store.addNotification({title, message, type: 'danger', ...opt});
   }
 };

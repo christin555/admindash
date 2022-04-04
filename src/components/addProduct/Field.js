@@ -4,10 +4,9 @@ import {TextField} from "@mui/material";
 import Box from "@mui/material/Box";
 import Select from "../../shared/Select";
 
-
 const Field = ({name, type, title, values, product, setValue, isRequired}) => {
     const setValueHandler = (value) => setValue(name, value);
-    const changeValueHandler= ({target :{value}}) => setValue(name, value);
+    const changeValueHandler = ({target: {value}}) => setValue(name, value);
 
     let block;
 
@@ -16,7 +15,7 @@ const Field = ({name, type, title, values, product, setValue, isRequired}) => {
             block = <TextField
                 variant="standard"
                 maxLength={255}
-                value={product[name]}
+                value={product[name] || ''}
                 onChange={changeValueHandler}
             />
             break;
@@ -24,7 +23,7 @@ const Field = ({name, type, title, values, product, setValue, isRequired}) => {
             block = <TextField
                 minRows={2}
                 multiline={true}
-                value={product[name]}
+                value={product[name] || ''}
                 onChange={changeValueHandler}
             />;
             break;
@@ -36,16 +35,16 @@ const Field = ({name, type, title, values, product, setValue, isRequired}) => {
             />;
             break;
         case 'integer':
-            block =  <TextField
+            block = <TextField
                 type="number"
                 variant="standard"
-                value={product[name]}
+                value={product[name] || ''}
                 onChange={changeValueHandler}
             />
             break;
         case 'boolean':
             block = <FormControl>
-                <RadioGroup row={true} value={product[name]} onChange={changeValueHandler}>
+                <RadioGroup row={true} value={product[name] || ''} onChange={changeValueHandler}>
                     <FormControlLabel value={"true"} control={<Radio/>} label="Да"/>
                     <FormControlLabel value={"false"} control={<Radio/>} label="Нет"/>
                 </RadioGroup>
@@ -58,7 +57,7 @@ const Field = ({name, type, title, values, product, setValue, isRequired}) => {
     >
         <Typography
             variant={'button'}
-                    style={{marginBottom: '10px', color: '#454545', fontWeight: '400', display:'flex'}}>
+            style={{marginBottom: '10px', color: '#454545', fontWeight: '400', display: 'flex'}}>
             {title || name} {isRequired && <Box marginLeft={'10px'} color={'red'}> * </Box> || null}
         </Typography>
         {block}

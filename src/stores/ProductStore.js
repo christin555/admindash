@@ -1,4 +1,4 @@
-import {observable, action, autorun, computed, makeObservable, reaction, toJS} from 'mobx';
+import {observable, action, autorun, set, makeObservable, reaction, toJS} from 'mobx';
 import {status as statusEnum} from '../enums';
 import api from 'api';
 
@@ -10,7 +10,9 @@ class ProductStore {
     @observable product = {};
     @observable fields;
 
-    constructor(RouterStore) {
+    constructor(RouterStore, category) {
+        this.category = category;
+        this.RouterStore = RouterStore;
         makeObservable(this);
         this.getCategories();
 
@@ -18,7 +20,7 @@ class ProductStore {
     }
 
     @action setValue = (name, value) => {
-        this.product[name] = value;
+         set(this.product, {[name]: value});
     };
 
     @action setFields = (fields) => {
@@ -26,7 +28,6 @@ class ProductStore {
     };
 
     @action setCategory = (category) => {
-        console.log('setCategory');
         this.category = category;
         this.product['categoryId'] = category;
     };
@@ -58,29 +59,6 @@ class ProductStore {
         }
     };
 
-    get preparedObject() {
-        const res = Object.entries(this.product).reduce((res, [key, val]) => {
-                res[key] = val?.value || val;
-                return res;
-            }, {}
-        )
-
-        res._collection = this.product.collectionId.label;
-        res._category = this.product.categoryId.label;
-
-        return res;
-    }
-
-
-    save = async () => {
-        const {preparedObject: product} = this;
-
-        try {
-            console.log(product)
-            const fields = await api.post('addObject', {product});
-        } catch (err) {
-        }
-    };
 
     closeStore() {
         this.getFieldsDisposer();

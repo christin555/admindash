@@ -7,18 +7,18 @@ import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
 
-@inject(({PriceStore}) => {
+@inject(({ProductsStore}) => {
     return {
-        categories: toJS(PriceStore.categories) || [],
-        setCategory: PriceStore.setCategory,
-        category: PriceStore.category,
-        toggleEdit: PriceStore.toggleEdit,
-        isEdit: PriceStore.isEdit,
-        reset: PriceStore.reset,
-        save: PriceStore.save,
-        fastFilterInput: PriceStore.fastFilterInput,
-        setFastFilter: PriceStore.setFastFilter,
-        setFastFilterInput: PriceStore.setFastFilterInput
+        categories: toJS(ProductsStore.categories) || [],
+        setCategory: ProductsStore.setCategory,
+        category: ProductsStore.category,
+        toggleEdit: ProductsStore.toggleEdit,
+        isEdit: ProductsStore.isEdit,
+        reset: ProductsStore.reset,
+        save: ProductsStore.save,
+        fastFilterInput: ProductsStore.fastFilterInput,
+        setFastFilter: ProductsStore.setFastFilter,
+        setFastFilterInput: ProductsStore.setFastFilterInput
     };
 })
 class PriceView extends React.Component {

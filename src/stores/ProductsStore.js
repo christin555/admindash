@@ -1,12 +1,15 @@
 import {observable, action, autorun, computed, makeObservable, reaction, toJS} from 'mobx';
 import {status as statusEnum} from '../enums';
 import api from 'api';
+import {alert} from './Notifications';
 
-class PriceStore {
+class ProductsStore {
 
     @observable status = statusEnum.LOADING;
     @observable categories;
     @observable products = [];
+    @observable columns = [];
+
     @observable initProducts = [];
     @observable limit = 20;
 
@@ -24,21 +27,49 @@ class PriceStore {
 
     @observable selected;
     @observable deleted = [];
+    @observable edited = [];
+    @observable actionsData = {};
+
     @observable ActiveFilterStore = {};
     @observable isModalDeleteShow = false;
+
+    @observable isDrawerShow = false;
 
     body = {};
 
     constructor(RouterStore) {
         makeObservable(this);
         this.getCategories();
+        this.getColumns();
         this.getCatalogDisposer = autorun(this.getCatalog);
     }
 
+    @computed get updatedPrice() {
+        const {initProducts, products} = this;
+        const updated = [];
 
-    @action toggleModalDeleteShow = () => {
-        this.isModalDeleteShow = !this.isModalDeleteShow;
-    };
+        initProducts.forEach(({id, price}) => {
+            const item = products.find(({id: _id}) => id === _id);
+
+            if (item && item.price !== price) {
+                updated.push({id, oldPrice: price, newPrice: item.price})
+            }
+        })
+
+        return updated;
+    }
+
+    @action openDrawerWithMode = (mode, values) => {
+        this.actionsData = {mode, values};
+        this.isDrawerShow = true;
+    }
+
+    @action setDrawerShow = status => this.isDrawerShow = status;
+
+    @action setColumns = columns => this.columns = columns;
+
+    @action toggleModalDeleteShow = () => this.isModalDeleteShow = !this.isModalDeleteShow;
+
 
     @action setDeleteIds = () => {
         this.deleted.push(...(this.selected || []));
@@ -70,6 +101,8 @@ class PriceStore {
     @action toggleEdit = () => {
         this.setSelected([]);
         this.updated = [];
+        this.deleted = [];
+        this.edited = [];
         this.isEdit = !this.isEdit;
     };
 
@@ -104,14 +137,16 @@ class PriceStore {
     };
 
     @action updatePrices = () => {
-        this.products.forEach((product) => {
-            if (this.selected.includes(product.id)) {
-                product.price = this.checkedPrice
-            }
-        })
+        const updated = this.initProducts
+            .filter(({id}) => this.selected.includes(id))
+            .map(({id, price}) => {
+                    return {
+                        id, oldPrice: price, newPrice: this.checkedPrice
+                    }
+                }
+            )
 
-        this.closeModal();
-        this.setPriceChecked('')
+        this.updatePricesQuery(updated);
     }
 
     @action setProducts = (products) => {
@@ -127,43 +162,58 @@ class PriceStore {
     };
 
     @action save = () => {
-        const {products, initProducts} = this;
+        const {deleted, updatedPrice} = this;
+        deleted.length && this.deleteQuery();
 
-        const updated = [];
-        initProducts.forEach(({id, price}) => {
-            const item = products.find(({id: _id}) => id === _id);
-
-            if (item && item.price !== price) {
-                updated.push({id, oldPrice: price, newPrice: item.price})
-            }
-        })
-
-        updated.length && this.updatePricesQuery(updated);
-        this.deleted.length && this.deleteQuery();
+        updatedPrice.length && this.updatePricesQuery(updatedPrice);
+        this.toggleEdit();
     };
+
 
     deleteQuery = async () => {
         try {
             await api.post('deleteProducts', {ids: this.deleted});
-            this.toggleEdit();
-            this.initProducts = toJS(this.products);
-            this.deleted = []
-            alert('Успешно');
+            this.afterRequestSuccess();
         } catch (err) {
-            alert('Ошибка');
+            alert({type: 'error', title: 'Ошибка'});
         }
+    }
+
+    afterRequestSuccess = async () => {
+        await this.getCatalog();
+        this.initProducts = toJS(this.products);
+        alert({type: 'success', title: 'Успешно обновлено'});
+        this.setSelected([]);
     }
 
     updatePricesQuery = async (updated) => {
         try {
             await api.post('updatePrices', {products: updated});
-            this.toggleEdit();
             this.initProducts = toJS(this.products);
-            alert('Успешно');
+
+            this.closeModal();
+            this.setPriceChecked('');
+            this.afterRequestSuccess();
         } catch (err) {
-            alert('Ошибка');
+            alert({type: 'error', title: 'Ошибка'});
         }
     }
+
+    getColumns = async () => {
+        try {
+            const columns = await api.get('getColumns');
+            this.setColumns(columns.map(({name, title}) => {
+                return {
+                    field: name,
+                    headerName: title,
+                    hide: true,
+                    flex: 1,
+                    minWidth: 250
+                }
+            }))
+        } catch (err) {
+        }
+    };
 
     getCategories = async () => {
         try {
@@ -199,4 +249,4 @@ class PriceStore {
     }
 }
 
-export {PriceStore};
+export {ProductsStore};
