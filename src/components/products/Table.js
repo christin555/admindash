@@ -71,11 +71,11 @@ class PriceView extends React.Component {
         {
             field: 'img',
             headerName: 'Фото',
-            flex: 1,
-            minWidth: 150,
+            width: 100,
             renderCell: (cellValues) => {
-                const src = cellValues.row.imgs?.find(({isMain}) => isMain === true)?.src
-                return src && <img src={src}/> || null
+                const src = cellValues.row.imgs?.find(({isMain}) => isMain === true)?.src;
+                const _src = 'https://master-pola.com' + src;
+                return src && <img src={_src} height={'50px'}/> || null
             }
         },
         {
