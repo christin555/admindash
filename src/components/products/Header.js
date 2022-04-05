@@ -18,7 +18,8 @@ import {TextField} from "@mui/material";
         save: ProductsStore.save,
         fastFilterInput: ProductsStore.fastFilterInput,
         setFastFilter: ProductsStore.setFastFilter,
-        setFastFilterInput: ProductsStore.setFastFilterInput
+        setFastFilterInput: ProductsStore.setFastFilterInput,
+        openDrawerWithMode: ProductsStore.openDrawerWithMode
     };
 })
 class PriceView extends React.Component {
