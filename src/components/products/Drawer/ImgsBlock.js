@@ -19,13 +19,40 @@ import CloseIcon from "@material-ui/icons/Close";
 })
 class DrawerStore extends React.Component {
 
-    render() {
+    get blocks() {
         const {
             product,
-            loadFiled,
             setMainPhoto,
             deletePhoto
         } = this.props;
+
+        return product.imgs?.map(({src, isMain}) => {
+                const _src = `https://master-pola.com/${src}`;
+                return <div
+                    key={src}
+                    style={{position: 'relative'}}>
+                    <IconButton
+                        size={'small'}
+                        className={s.delBut}
+                        onClick={() => deletePhoto(src)}>
+                        <CloseIcon/>
+                    </IconButton>
+
+                    <img src={_src}/>
+                    <Box display={'flex'} flexDirection={'column'}>
+                        {
+                            isMain ? <span className={s.main}> Главная </span> :
+                                <Button size={'small'} onClick={() => setMainPhoto(src)}>
+                                    Сделать главной
+                                </Button>
+                        }
+                    </Box>
+                </div>
+            }
+        );
+    }
+
+    render() {
 
         return (
             <Box
@@ -39,32 +66,8 @@ class DrawerStore extends React.Component {
                     Фотографии
                 </Typography>
                 <div className={s.imgsContainer}>
-                    {
-                        product.imgs?.map(({src, isMain}) =>
-                            <div
-                                key={src}
-                                style={{position: 'relative'}}>
-                                <IconButton
-                                    size={'small'}
-                                    className={s.delBut}
-                                    onClick={() => deletePhoto(src)}>
-                                    <CloseIcon/>
-                                </IconButton>
-
-                                <img src={src}/>
-                                <Box display={'flex'} flexDirection={'column'}>
-                                    {
-                                        isMain ? <span className={s.main}> Главная </span> :
-                                            <Button size={'small'} onClick={() => setMainPhoto(src)}>
-                                                Сделать главной
-                                            </Button>
-                                    }
-                                </Box>
-                            </div>
-                        )
-                    }
+                    {this.blocks}
                 </div>
-
 
                 <Dropzone onDrop={loadFiled}>
                     {({getRootProps, getInputProps}) => (
