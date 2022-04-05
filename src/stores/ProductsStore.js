@@ -201,19 +201,19 @@ class ProductsStore {
     getColumns = async () => {
         try {
             const columns = await api.get('getColumns');
-            this.setColumns(columns.map(({name, title}) => {
-                if (name === 'name') {
-                    return {}
+            const _columns = [];
+            columns.forEach(({name, title}) => {
+                if (name !== 'name') {
+                    _columns.push({
+                        field: name,
+                        headerName: title,
+                        hide: true,
+                        flex: 1,
+                        minWidth: 250
+                    })
                 }
-                return {
-
-                    field: name,
-                    headerName: title,
-                    hide: true,
-                    flex: 1,
-                    minWidth: 250
-                }
-            }))
+            })
+            this.setColumns(_columns)
         } catch (err) {
         }
     };
