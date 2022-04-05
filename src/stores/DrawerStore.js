@@ -91,8 +91,8 @@ class DrawerStore extends ProductStore {
             }, {}
         )
 
-        res._collection = this.product.collectionId.label;
-        res._category = this.product.categoryId.label;
+        res._collection = this.product.collectionId?.label || this.product.collection;
+        res._category = this.product.categoryId?.label || this.product.category;
 
         return res;
     }

@@ -52,7 +52,7 @@ class ProductStore {
         const {category} = this;
 
         try {
-            const fields = await api.post('getFields', {category: category?.value});
+            const fields = await api.post('getFields', {category: category?.value || category});
             this.setFields(fields.sort((a, b) => {
                 if (!!a.isRequired === !!b.isRequired) {
                     const textA = a.title?.toUpperCase();
