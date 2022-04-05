@@ -74,7 +74,7 @@ class PriceView extends React.Component {
             flex: 1,
             minWidth: 250,
             renderCell: (cellValues) => {
-                return <img src={cellValues.imgs?.find(({isMain}) => isMain === true)}/>
+                return <img src={cellValues.row.imgs?.find(({isMain}) => isMain === true)}/>
             }
         },
         {
