@@ -69,6 +69,15 @@ const StyledDataGrid = withStyles({
 class PriceView extends React.Component {
     baseColumns = [
         {
+            field: 'img',
+            headerName: 'Фото',
+            flex: 1,
+            minWidth: 250,
+            renderCell: (cellValues) => {
+                return <img src={cellValues.imgs.find(({isMain}) => isMain === true)}/>
+            }
+        },
+        {
             field: 'name',
             headerName: 'Название',
             minWidth: 350,
