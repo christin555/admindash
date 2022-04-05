@@ -31,10 +31,10 @@ class DrawerStore extends ProductStore {
 
     @action setActions = () => {
         this.mode = this.ProductsStore.actionsData.mode;
+        this.category = this.ProductsStore.category;
 
         if (this.mode === 'show' || this.mode === 'edit') {
             this.product = toJS(this.ProductsStore.actionsData.values);
-            this.category = this.product.categoryId;
         }
 
         if (this.mode === 'copy') {
@@ -42,7 +42,6 @@ class DrawerStore extends ProductStore {
             delete this.product.id;
             delete this.product.name;
             delete this.product.imgs;
-            this.category = this.product.categoryId;
         }
     }
 
@@ -62,7 +61,7 @@ class DrawerStore extends ProductStore {
             this.edit({ids: this.selected, data: this.preparedObject});
         }
 
-        if (this.mode === 'copy') {
+        if (this.mode === 'copy' || this.mode === 'add') {
             this.create();
         }
 
