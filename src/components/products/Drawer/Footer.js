@@ -26,12 +26,12 @@ class DrawerStore extends React.Component {
                 <Button
                     variant={'contained'}
                     onClick={apply}
-                    color={'secondary'}
                 > Сохранить
                 </Button>
                 <Button
                     variant={'contained'}
                     onClick={reset}
+                    color={'secondary'}
                 > Отмена
                 </Button>
             </Box>

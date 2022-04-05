@@ -29,9 +29,8 @@ class Header extends React.Component {
                             }
                         </Typography>
                         <IconButton
-                            color={'secondary'}
                             onClick={reset}>
-                            <CloseIcon color={'secondary'} />
+                            <CloseIcon  />
                         </IconButton>
                     </div>
 
