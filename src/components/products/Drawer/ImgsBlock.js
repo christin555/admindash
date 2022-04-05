@@ -27,7 +27,7 @@ class DrawerStore extends React.Component {
         } = this.props;
 
         return product.imgs?.map(({src, isMain}) => {
-                const _src = `https://master-pola.com/${src}`;
+                const _src = 'https://master-pola.com/'+src;
                 return <div
                     key={src}
                     style={{position: 'relative'}}>
@@ -53,6 +53,7 @@ class DrawerStore extends React.Component {
     }
 
     render() {
+        const {loadFiled} = this.props;
 
         return (
             <Box
