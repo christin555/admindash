@@ -22,7 +22,7 @@ class Header extends React.Component {
                     <div className={s.header}>
                         <Typography variant={'button'} >
                             {
-                                mode === 'show' ? 'Просмотр' :
+                                mode === 'show' ? 'Просмотр' : mode === 'add' ? 'Создание' :
                                     mode === 'edit' ? `Редактирование` :
                                         mode === 'massedit' ? `Массовое редактирование` :
                                             mode === 'copy' ? `Копия` : null

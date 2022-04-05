@@ -59,7 +59,7 @@ class ProductsStore {
         return updated;
     }
 
-    @action openDrawerWithMode = (mode, values) => {
+    @action openDrawerWithMode = (mode, values = {}) => {
         this.actionsData = {mode, values};
         this.isDrawerShow = true;
     }
