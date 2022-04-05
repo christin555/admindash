@@ -21,6 +21,7 @@
     flex-direction: column;
 
     .imgBlock {
+      overflow: hidden;
       height: 120px;
       display: flex;
       justify-content: center;
