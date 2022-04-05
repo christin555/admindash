@@ -70,8 +70,8 @@ class PriceView extends React.Component {
                         {
                             !isEdit && <Button variant={'contained'} onClick={toggleEdit}> Редактировать </Button>
                             || <>
-                                <Button variant={'contained'} onClick={save} color={'secondary'}> Сохранить </Button>
-                                <Button variant={'contained'} onClick={reset}> Отмена </Button>
+                                <Button variant={'contained'} onClick={save} > Сохранить </Button>
+                                <Button variant={'contained'} onClick={reset} color={'secondary'}> Отмена </Button>
                             </>
                         }
                     </Box>

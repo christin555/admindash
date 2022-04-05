@@ -1,30 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {createMuiTheme, MuiThemeProvider} from '@material-ui/core/styles';
 import {defaultPalette} from './defaultPalette';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const DefaultStyle = (props) => {
   const {children} = props;
 
-  const defaultTheme = createMuiTheme({
+  const defaultTheme = createTheme({
     palette: defaultPalette,
     typography: {
       'fontFamily': `"Roboto", "Arial", sans-serif`,
-      'fontSize': 16,
+      'fontSize': 14,
       'fontWeightLight': 300,
       'fontWeightRegular': 400,
-      'fontWeightMedium': 500,
+      'fontWeightMedium': 400,
       'body1': {
-        'fontSize': 16,
-        fontWeight: 300
+        'fontSize': 14,
+        fontWeight: 400
       }
     }
   });
 
   return (
-    <MuiThemeProvider theme={defaultTheme}>
+    <ThemeProvider theme={defaultTheme}>
       {children}
-    </MuiThemeProvider>
+    </ThemeProvider>
   );
 };
 

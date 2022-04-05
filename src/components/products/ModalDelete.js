@@ -31,11 +31,11 @@ class PriceView extends React.Component {
                 >
                     <Box className={s.modal}>
                         <Box>
-                            <Typography id="modal-modal-title" variant="h6" component="h2">
+                            <Typography id="modal-modal-title" variant="body2" component="h2">
                                 Вы уверены, что хотите удалить {selected?.length} товар(а)?
                             </Typography>
                         </Box>
-                        <Box display={'flex'} margin={'20px'} gap={'20px'}>
+                        <Box display={'flex'}  margin={'30px 0 10px'} gap={'20px'}>
                             <Button
                                 variant={'contained'}
                                 onClick={setDeleteIds}

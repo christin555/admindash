@@ -33,18 +33,18 @@ class PriceView extends React.Component {
             >
                 <Box className={s.modal}>
                     <Box>
-                        <Typography id="modal-modal-title" variant="h6" component="h2">
+                        <Typography id="modal-modal-title" variant="subtitle1" component="h2">
                             Новая цена
                         </Typography>
                         <TextField
+                            style={{marginTop: '20px'}}
                             onChange={({target: {value}}) => setPriceChecked(value)}
                             value={checkedPrice || ''}
-                            variant="standard"
+                            variant="outlined"
                             size={'small'}
                         />
-
                     </Box>
-                    <Box display={'flex'} margin={'20px'} gap={'20px'}>
+                    <Box display={'flex'} margin={'30px 0 20px'} gap={'20px'}>
                         <Button
                             variant={'contained'}
                             onClick={updatePrices}

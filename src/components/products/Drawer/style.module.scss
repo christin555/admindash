@@ -11,13 +11,21 @@
 }
 
 .imgsContainer {
-  display: flex;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(4, 100px);
+  gap: 20px;
 
   & > * {
     font-size: 14px;
     display: flex;
     flex-direction: column;
+
+    .imgBlock {
+      height: 120px;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
 
     .delBut {
       position: absolute;
@@ -25,8 +33,12 @@
       color: #bb4a4a !important;
     }
 
+    .buttmain {
+      font-size: 14px !important;
+      padding: 2px 0 !important;
+    }
+
     .main {
-      font-size: 12px;
       backdrop-filter: blur(2px);
       background: rgba(199, 235, 241, 0.71);
       border-radius: 15px;
@@ -36,7 +48,7 @@
     }
 
     img {
-      height: 100px;
+      height: 100%;
     }
   }
 }

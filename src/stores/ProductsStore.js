@@ -202,7 +202,11 @@ class ProductsStore {
         try {
             const columns = await api.get('getColumns');
             this.setColumns(columns.map(({name, title}) => {
+                if (name === 'name') {
+                    return {}
+                }
                 return {
+
                     field: name,
                     headerName: title,
                     hide: true,

@@ -15,10 +15,14 @@ import CloseIcon from "@material-ui/icons/Close";
         loadFiled: DrawerStore.loadFiled,
         setMainPhoto: DrawerStore.setMainPhoto,
         deletePhoto: DrawerStore.deletePhoto,
+        mode: DrawerStore.mode,
     };
 })
 class DrawerStore extends React.Component {
 
+    get isShow() {
+        return this.props.mode !== 'show'
+    }
     get blocks() {
         const {
             product,
@@ -27,7 +31,7 @@ class DrawerStore extends React.Component {
         } = this.props;
 
         return product.imgs?.map(({src, isMain}) => {
-                const _src = `https://master-pola.com/${src}`;
+                const _src = 'https://master-pola.com/' + src;
                 return <div
                     key={src}
                     style={{position: 'relative'}}>
@@ -35,16 +39,19 @@ class DrawerStore extends React.Component {
                         size={'small'}
                         className={s.delBut}
                         onClick={() => deletePhoto(src)}>
-                        <CloseIcon/>
+                        {this.isShow ? <CloseIcon/> : null}
                     </IconButton>
 
-                    <img src={_src}/>
+                    <div className={s.imgBlock}>
+                        <img src={_src}/>
+                    </div>
                     <Box display={'flex'} flexDirection={'column'}>
                         {
                             isMain ? <span className={s.main}> Главная </span> :
-                                <Button size={'small'} onClick={() => setMainPhoto(src)}>
-                                    Сделать главной
-                                </Button>
+                               this.isShow ?
+                                    <Button className={s.buttmain} size={'small'} onClick={() => setMainPhoto(src)}>
+                                        Сделать главной
+                                    </Button> : null
                         }
                     </Box>
                 </div>
@@ -53,6 +60,7 @@ class DrawerStore extends React.Component {
     }
 
     render() {
+        const {loadFiled} = this.props;
 
         return (
             <Box
@@ -69,24 +77,27 @@ class DrawerStore extends React.Component {
                     {this.blocks}
                 </div>
 
-                <Dropzone onDrop={loadFiled}>
-                    {({getRootProps, getInputProps}) => (
-                        <React.Fragment>
-                            <Button
-                                color="primary"
-                                startIcon={<PublishIcon/>}
-                                variant="contained"
-                                className={s.upButton}
-                                {...getRootProps()}>
-                                Загрузить фотографию
-                                <input {...getInputProps()} />
-                            </Button>
-                        </React.Fragment>
-                    )}
-                </Dropzone>
+                {
+                    this.isShow ? <Dropzone onDrop={loadFiled}>
+                        {({getRootProps, getInputProps}) => (
+                            <React.Fragment>
+                                <Button
+                                    color="primary"
+                                    startIcon={<PublishIcon/>}
+                                    variant="contained"
+                                    className={s.upButton}
+                                    {...getRootProps()}>
+                                    Загрузить фотографию
+                                    <input {...getInputProps()} />
+                                </Button>
+                            </React.Fragment>
+                        )}
+                    </Dropzone> : null
+                }
             </Box>
         );
     }
+
 }
 
 export default DrawerStore;
