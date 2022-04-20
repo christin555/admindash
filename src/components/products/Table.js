@@ -16,10 +16,11 @@ import {IconButton} from "@material-ui/core";
 import EditIcon from '@mui/icons-material/Edit';
 import Box from "@mui/material/Box";
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import s from './style.module.scss';
 
 function CustomToolbar() {
     return (
-        <GridToolbarContainer style={{margin: '10px', gap: '10px'}}>
+        <GridToolbarContainer style={{margin: '10px', gap: '10px'}} className={s.toolbar}>
             <GridToolbarColumnsButton/>
             <GridToolbarFilterButton/>
             <GridToolbarDensitySelector/>
@@ -92,35 +93,6 @@ class PriceView extends React.Component {
                 </a>,
         },
         {
-            field: 'collection',
-            flex: 1,
-            headerName: 'Коллекция',
-            minWidth: 290
-        },
-        {
-            field: 'brand',
-            flex: 1,
-            headerName: 'Бренд',
-            minWidth: 290
-        },
-        {
-            field: 'price',
-            flex: 1,
-            headerName: 'Цена, руб',
-            minWidth: 150,
-            renderCell: (cellValues) => {
-                if (!this.props.isEdit) {
-                    return cellValues.value
-                }
-                return <TextField
-                    onChange={({target: {value}}) => this.props.setPrice(cellValues.row.id, value)}
-                    value={cellValues.value || ''}
-                    variant="standard"
-                    size={'small'}
-                />
-            }
-        },
-        {
             field: 'actions',
             flex: 1,
             headerName: '',
@@ -148,6 +120,35 @@ class PriceView extends React.Component {
                 </Box>
             }
         },
+        {
+            field: 'collection',
+            flex: 1,
+            headerName: 'Коллекция',
+            minWidth: 290
+        },
+        {
+            field: 'brand',
+            flex: 1,
+            headerName: 'Бренд',
+            minWidth: 290
+        },
+        {
+            field: 'price',
+            flex: 1,
+            headerName: 'Цена, руб',
+            minWidth: 150,
+            renderCell: (cellValues) => {
+                if (!this.props.isEdit) {
+                    return cellValues.value
+                }
+                return <TextField
+                    onChange={({target: {value}}) => this.props.setPrice(cellValues.row.id, value)}
+                    value={cellValues.value || ''}
+                    variant="standard"
+                    size={'small'}
+                />
+            }
+        }
     ];
 
     get columns() {

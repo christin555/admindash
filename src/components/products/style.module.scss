@@ -6,9 +6,10 @@
   padding: 10px 40px;
   background: #363333 !important;
   align-items: center !important;
-  gap: 20px !important
+  gap: 20px;
 }
-.modal{
+
+.modal {
   background: white;
   position: absolute;
   margin: auto auto;
@@ -16,4 +17,34 @@
   transform: translate(-50%);
   top: 25%;
   left: 50%;
+}
+
+
+@media only screen and (max-width: 930px) {
+
+  .bar {
+    flex-wrap: wrap;
+    gap: 10px !important;
+    padding: 10px !important;
+  }
+
+  .toolbar {
+    padding: 0 !important;
+    margin: 4px 6px !important;
+    gap: 6px !important;
+
+    & > * {
+      font-size: 12px !important;
+      text-transform: unset !important;
+      padding: 0 !important;
+    }
+  }
+  .search {
+    width: 90vw
+  }
+  .menu {
+    flex-direction: column;
+    width: min-content;
+    padding: 0 10px;
+  }
 }
