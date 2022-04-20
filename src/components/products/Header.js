@@ -6,6 +6,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
 import {TextField} from "@mui/material";
+import s from './style.module.scss';
 
 @inject(({ProductsStore}) => {
     return {
@@ -56,8 +57,8 @@ class PriceView extends React.Component {
                         }
                     </Tabs>
                 </Box>
-                <Box margin={'20px 0'} display={'flex'} gap={'20px'} justifyContent={'space-between'}>
-                    <Box width={'390px'}>
+                <Box className ={s.menu} margin={'20px 0'} display={'flex'} gap={'20px'} justifyContent={'space-between'}>
+                    <Box width={'390px'} className={s.search}>
                         <TextField
                             onChange={({target: {value}}) => setFastFilterInput(value)}
                             onBlur={setFastFilter}

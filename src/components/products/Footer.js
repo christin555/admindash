@@ -31,7 +31,7 @@ class PriceView extends React.Component {
         return (
             <React.Fragment>
                 {
-                    selected?.length && isEdit && <AppBar className={s.bar} position="fixed">
+                    selected?.length && isEdit && <AppBar className={s.bar} position="sticky">
                         <Button
                             variant={'contained'}
                             onClick={toggleModalDeleteShow}

@@ -118,20 +118,23 @@ class DrawerStore extends ProductStore {
     }
 
     loadFiled = async (files) => {
-        const data = new FormData();
-        data.append('file', files[0]);
-        data.append('name', this.product.alias);
+        files.map(async(file) => {
+            const data = new FormData();
+            data.append('file', file);
+            data.append('name', this.product.alias);
 
-        try {
-            const file = await api.post('upload', data);
+            try {
+                const file = await api.post('upload', data);
 
-            if (!this.product.imgs) {
-                this.product.imgs = [{src: file}];
-            } else this.product.imgs.push({src: file});
+                if (!this.product.imgs) {
+                    this.product.imgs = [{src: file}];
+                } else this.product.imgs.push({src: file});
 
-        } catch (e) {
-            console.log(e);
-        }
+            } catch (e) {
+                console.log(e);
+            }
+        })
+
     }
 }
 
