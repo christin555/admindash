@@ -1,3 +1,6 @@
+Админ панель для управления объектами сайта master-pola.com.
+Находится в разработке. Сейчас доступны все массовые и детальные операции для управления товарами и ценами. 
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
