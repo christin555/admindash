@@ -7,7 +7,7 @@ import MediaBlock from './MediaBlock';
 import ImgsBlock from "./ImgsBlock";
 
 const Field = ({name, type, title, values, product, setValue, isRequired, isMulti}) => {
-    const setValueHandler = (value) => setValue(name, value);
+    const setValueHandler = ({value}) => setValue(name, value);
     const changeValueHandler = ({target: {value}}) => setValue(name, value);
 
     let block;
