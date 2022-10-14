@@ -6,12 +6,12 @@ import Button from "@mui/material/Button";
 
 import {Modal, Typography} from "@material-ui/core";
 
-@inject(({ProductsStore}) => {
+@inject(({ListStore}) => {
     return {
-        isModalDeleteShow: ProductsStore.isModalDeleteShow,
-        toggleModalDeleteShow: ProductsStore.toggleModalDeleteShow,
-        selected: ProductsStore.selected,
-        setDeleteIds: ProductsStore.setDeleteIds
+        isModalDeleteShow: ListStore.isModalDeleteShow,
+        toggleModalDeleteShow: ListStore.toggleModalDeleteShow,
+        selected: ListStore.selected,
+        setDeleteIds: ListStore.setDeleteIds
     };
 })
 class PriceView extends React.Component {

@@ -19,6 +19,9 @@ const Page = loadable(
             case 'addproduct': {
                 return import('../components/addProduct');
             }
+            case 'posts': {
+                return import('../components/posts');
+            }
             case 'login': {
                 return import('../components/Login');
             }

@@ -6,9 +6,9 @@ import Footer from "./Footer";
 import Header from "./Header";
 import Content from "./Content";
 
-@inject(({DrawerStore, ProductsStore}) => {
+@inject(({DrawerStore, ListStore}) => {
     return {
-        isDrawerShow: ProductsStore.isDrawerShow,
+        isDrawerShow: ListStore.isDrawerShow,
         reset: DrawerStore.reset
     };
 })
@@ -28,7 +28,7 @@ class DrawerStore extends React.Component {
             >
                 <div className={s.container}>
                     <Header/>
-                    <Content/>
+                   <Content/>
                     <Footer/>
                 </div>
 

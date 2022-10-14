@@ -17,6 +17,10 @@ class RouterStore {
         return this.location.pathname;
     }
 
+    getKey(key) {
+        return get(get(this.match, 'params'), key) || null;
+    }
+
     @computed get params() {
         return get(this.location, 'search') || null;
     }

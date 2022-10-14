@@ -3,8 +3,10 @@ import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Typography}
 import {TextField} from "@mui/material";
 import Box from "@mui/material/Box";
 import Select from "../../shared/Select";
+import MediaBlock from './MediaBlock';
+import ImgsBlock from "./ImgsBlock";
 
-const Field = ({name, type, title, values, product, setValue, isRequired}) => {
+const Field = ({name, type, title, values, product, setValue, isRequired, isMulti}) => {
     const setValueHandler = (value) => setValue(name, value);
     const changeValueHandler = ({target: {value}}) => setValue(name, value);
 
@@ -34,6 +36,16 @@ const Field = ({name, type, title, values, product, setValue, isRequired}) => {
                 onChange={setValueHandler}
             />;
             break;
+        case 'catalogImgs':
+            block = <ImgsBlock/>
+            break;
+        case 'mediaDrop':
+            block = <MediaBlock
+                value={product[name]}
+                onChange={setValueHandler}
+                isMulti={isMulti}
+            />;
+            break;
         case 'integer':
             block = <TextField
                 type="number"
@@ -51,6 +63,7 @@ const Field = ({name, type, title, values, product, setValue, isRequired}) => {
             </FormControl>
             break;
     }
+
     return <Box
         display={'flex'}
         flexDirection={'column'}

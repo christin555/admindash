@@ -24,7 +24,11 @@ export default () => (
                         path='/'
                         render={wrap('products')}
                     />
-
+                    <Route
+                        exact={true}
+                        path='/posts'
+                        render={wrap('posts')}
+                    />
                     <Route
                         exact={true}
                         path='/login'
@@ -32,7 +36,7 @@ export default () => (
                     />
                     <Route
                         exact={true}
-                        path='/products'
+                        path='/products/:category?'
                         render={wrap('products')}
                     />
                     <Route

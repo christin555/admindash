@@ -25,6 +25,7 @@ const StyledDrawer = withStyles(({palette}) =>
 const menu = [
     {name: 'Товары', link: '/products'},
     {name: 'Добавить товар', link: '/addproduct'},
+    {name: 'Посты', link: '/posts'},
 ]
 
 const Header = () => {
@@ -53,7 +54,7 @@ const Header = () => {
                     <Divider className={s.divider}/>
                     <List className={s.list}>
                         {menu.map(({name, link}) => (
-                            <Link to={link}>
+                            <Link to={link} key={link}>
                                 <ListItem button key={name}>
                                     <ListItemText primary={name}/>
                                 </ListItem>

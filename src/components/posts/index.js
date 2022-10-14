@@ -1,7 +1,7 @@
 import React from 'react';
 import {inject, Provider} from 'mobx-react';
-import ProductView from './ProductView';
-import AddStore from "../../stores/AddStore";
+import {PostsStore} from '../../stores/PostsStore';
+import PostsView from './PostsView';
 
 @inject('RouterStore')
 class FilterViewHOC extends React.Component {
@@ -10,17 +10,18 @@ class FilterViewHOC extends React.Component {
 
         const {RouterStore} = this.props;
 
-        this.ProductStore = new AddStore(RouterStore);
+        this.PostsStore = new PostsStore(RouterStore);
+
     }
 
     componentWillUnmount() {
-        this.ProductStore.closeStore()
+        this.PostsStore.closeStore()
     }
 
     render() {
         return (
-            <Provider ListStore={this.ProductStore} >
-                <ProductView/>
+            <Provider ListStore ={this.PostsStore} PostsStore={this.PostsStore}>
+                <PostsView/>
             </Provider>
         );
     }
