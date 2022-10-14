@@ -73,10 +73,10 @@ class Select extends React.Component {
   defaultPlaceholder = 'Выберете значение'
 
   render() {
-    const {placeholder, options = [], loadOptions, defaultOptions, value} = this.props;
-    let selected;
+    const {placeholder, options, loadOptions, defaultOptions, value} = this.props;
+    let selected = null;
 
-    if (typeof value === 'number') {
+    if (typeof value === 'number' && options) {
       selected = options.find(({value: val}) => Number(val) === Number(value));
     }
 
