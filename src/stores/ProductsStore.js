@@ -35,11 +35,11 @@ class ProductsStore  extends  ListItemsStore{
     }
 
     @computed get updatedPrice() {
-        const {initProducts, products} = this;
+        const {initList, list} = this;
         const updated = [];
 
-        initProducts.forEach(({id, price}) => {
-            const item = products.find(({id: _id}) => id === _id);
+        initList.forEach(({id, price}) => {
+            const item = list.find(({id: _id}) => id === _id);
 
             if (item && item.price !== price) {
                 updated.push({id, oldPrice: price, newPrice: item.price})
@@ -57,7 +57,7 @@ class ProductsStore  extends  ListItemsStore{
 
 
     @action setPrice = (_id, price) => {
-        const pr = this.products.find(({id}) => id === _id);
+        const pr = this.list.find(({id}) => id === _id);
         pr['price'] = price;
     };
 
@@ -84,7 +84,7 @@ class ProductsStore  extends  ListItemsStore{
     };
 
 
-    afterSave = () => this.updatedPrice.length && this.updatePricesQuery(updatedPrice);
+    afterSave = () => this.updatedPrice.length && this.updatePricesQuery(this.updatedPrice);
     deleteQuery = async () => {
         try {
             await api.post('deleteProducts', {ids: this.deleted});
@@ -97,7 +97,7 @@ class ProductsStore  extends  ListItemsStore{
     updatePricesQuery = async (updated) => {
         try {
             await api.post('updatePrices', {products: updated});
-            this.initProducts = toJS(this.products);
+            this.initProducts = toJS(this.list);
 
             this.closeModal();
             this.setPriceChecked('');
