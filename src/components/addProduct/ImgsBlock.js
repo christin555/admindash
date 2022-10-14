@@ -1,17 +1,17 @@
 import React from 'react';
 import {inject} from 'mobx-react';
-import s from './style.module.scss';
+import s from '../listComponetns/Drawer/style.module.scss';
 import Box from "@mui/material/Box";
 import {toJS} from "mobx";
 import Dropzone from 'react-dropzone';
-import Button from "../../../shared/Button";
+import Button from "../../shared/Button";
 import PublishIcon from '@material-ui/icons/Publish';
 import {IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 
 @inject(({DrawerStore}) => {
     return {
-        product: toJS(DrawerStore.product),
+        product: toJS(DrawerStore.card) || {},
         loadFiled: DrawerStore.loadFiled,
         setMainPhoto: DrawerStore.setMainPhoto,
         deletePhoto: DrawerStore.deletePhoto,
@@ -23,6 +23,7 @@ class DrawerStore extends React.Component {
     get isShow() {
         return this.props.mode !== 'show'
     }
+
     get blocks() {
         const {
             product,
@@ -48,7 +49,7 @@ class DrawerStore extends React.Component {
                     <Box display={'flex'} flexDirection={'column'}>
                         {
                             isMain ? <span className={s.main}> Главная </span> :
-                               this.isShow ?
+                                this.isShow ?
                                     <Button className={s.buttmain} size={'small'} onClick={() => setMainPhoto(src)}>
                                         Сделать главной
                                     </Button> : null

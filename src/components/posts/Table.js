@@ -9,7 +9,7 @@ import {
 } from '@mui/x-data-grid';
 import {toJS} from "mobx";
 import {TextField} from "@mui/material";
-import {status as statusEnum} from '../../enums';
+import {status as statusEnum, posts} from '../../enums';
 import {withStyles} from "@material-ui/core/styles";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import {IconButton} from "@material-ui/core";
@@ -29,6 +29,11 @@ function CustomToolbar() {
     );
 }
 
+const typesNames = {
+    [posts.WORKS]: 'работы',
+    [posts.PRODUCT]: 'каталог-товары',
+    [posts.OTHER]: 'другое'
+}
 const StyledDataGrid = withStyles({
     root: {
         "& .MuiDataGrid-renderingZone": {
@@ -51,20 +56,16 @@ const StyledDataGrid = withStyles({
     }
 })(DataGrid);
 
-@inject(({ProductsStore}) => {
+@inject(({PostsStore}) => {
     return {
-        products: toJS(ProductsStore.list) || [],
-        status: ProductsStore.status,
-        isEdit: ProductsStore.isEdit,
-        setPrice: ProductsStore.setPrice,
-        setSelected: ProductsStore.setSelected,
-        selected: ProductsStore.selected,
-        setLimit: ProductsStore.setLimit,
-        limit: ProductsStore.limit,
-        category: ProductsStore.category,
-        categories: ProductsStore.categories,
-        columns: ProductsStore.columns,
-        openDrawerWithMode: ProductsStore.openDrawerWithMode
+        list: toJS(PostsStore.list) || [],
+        status: PostsStore.status,
+        isEdit: PostsStore.isEdit,
+        setSelected: PostsStore.setSelected,
+        selected: PostsStore.selected,
+        setLimit: PostsStore.setLimit,
+        limit: PostsStore.limit,
+        openDrawerWithMode: PostsStore.openDrawerWithMode
     };
 })
 class PriceView extends React.Component {
@@ -74,23 +75,33 @@ class PriceView extends React.Component {
             headerName: 'Фото',
             width: 100,
             renderCell: (cellValues) => {
-                const src = cellValues.row.imgs?.find(({isMain}) => isMain === true)?.src;
-                const _src = 'https://master-pola.com' + src;
-                return src && <img src={_src} height={'50px'}/> || null
+                const src = cellValues.row.imgPreview;
+                if (!src) {
+                    return null;
+                }
+                const _src = src.includes('https') ? src : 'https://master-pola.com' + src;
+                return <img src={_src} height={'50px'}/> || null
             }
         },
         {
-            field: 'name',
+            field: 'title',
             headerName: 'Название',
             minWidth: 350,
             flex: 1,
             renderCell: (cellValues) =>
                 <a target="_blank"
                    rel="noopener noreferrer"
-                   href={`https://master-pola.com/product/${cellValues.row.alias}`}
+                   href={`https://master-pola.com/article/${cellValues.row.alias}`}
                 >
-                    {cellValues.row.name}
+                    {cellValues.row.title}
                 </a>,
+        },
+        {
+            field: 'type',
+            headerName: 'Категория',
+            minWidth: 350,
+            flex: 1,
+            renderCell: (cellValues) => typesNames[cellValues.row.type]
         },
         {
             field: 'actions',
@@ -119,45 +130,16 @@ class PriceView extends React.Component {
                     />
                 </Box>
             }
-        },
-        {
-            field: 'collection',
-            flex: 1,
-            headerName: 'Коллекция',
-            minWidth: 290
-        },
-        {
-            field: 'brand',
-            flex: 1,
-            headerName: 'Бренд',
-            minWidth: 290
-        },
-        {
-            field: 'price',
-            flex: 1,
-            headerName: 'Цена, руб',
-            minWidth: 150,
-            renderCell: (cellValues) => {
-                if (!this.props.isEdit) {
-                    return cellValues.value
-                }
-                return <TextField
-                    onChange={({target: {value}}) => this.props.setPrice(cellValues.row.id, value)}
-                    value={cellValues.value || ''}
-                    variant="standard"
-                    size={'small'}
-                />
-            }
         }
     ];
 
     get columns() {
-        return [...this.baseColumns, ...this.props.columns]
+        return this.baseColumns
     }
 
     render() {
         const {
-            products,
+            list,
             setSelected,
             isEdit,
             status,
@@ -171,7 +153,7 @@ class PriceView extends React.Component {
                 loading={status === statusEnum.LOADING}
                 localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
                 autoHeight={true}
-                rows={products}
+                rows={list}
                 columns={this.columns}
                 pageSize={limit}
                 rowsPerPageOptions={[20, 50, 100]}

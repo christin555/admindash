@@ -7,14 +7,14 @@ class DrawerStore extends ProductStore {
     @observable mode;
 
     constructor(ProductsStore) {
-        super(ProductsStore.RouterStore);
+        super(ProductsStore?.RouterStore);
 
         this.ProductsStore = ProductsStore;
 
         reaction(
             () => this.ProductsStore.actionsData,
             this.setActions
-        )
+        );
     }
 
     get selected() {
@@ -22,7 +22,7 @@ class DrawerStore extends ProductStore {
     }
 
     get preparedObject() {
-        return Object.entries(this.product).reduce((res, [key, val]) => {
+        return Object.entries(this.card).reduce((res, [key, val]) => {
                 res[key] = val?.value || val;
                 return res;
             }, {}
@@ -34,19 +34,23 @@ class DrawerStore extends ProductStore {
         this.category = this.ProductsStore.category;
 
         if (this.mode === 'show' || this.mode === 'edit') {
-            this.product = toJS(this.ProductsStore.actionsData.values);
+            this.card = toJS(this.ProductsStore.actionsData.values);
+        }
+
+        if(this.mode === 'add'){
+            this.card['categoryId'] = this.category;
         }
 
         if (this.mode === 'copy') {
-            this.product = toJS(this.ProductsStore.actionsData.values);
-            delete this.product.id;
-            delete this.product.name;
-            delete this.product.imgs;
+            this.card = toJS(this.ProductsStore.actionsData.values);
+            delete this.card.id;
+            delete this.card.name;
+            delete this.card.imgs;
         }
     }
 
     @action reset = () => {
-        this.product = {};
+        this.card = {};
         this.mode = null;
         this.ProductsStore.actionsData = {};
         this.ProductsStore.setDrawerShow(false);
@@ -54,7 +58,7 @@ class DrawerStore extends ProductStore {
 
     @action apply = () => {
         if (this.mode === 'edit') {
-            this.edit({ids: [this.product.id], data: this.preparedObject});
+            this.edit({ids: [this.card.id], data: this.preparedObject});
         }
 
         if (this.mode === 'massedit') {
@@ -69,7 +73,7 @@ class DrawerStore extends ProductStore {
     }
 
     @action setMainPhoto = (src) => {
-        this.setValue('imgs', toJS(this.product.imgs).map((item) => {
+        this.setValue('imgs', toJS(this.card.imgs).map((item) => {
             if (src === item.src) {
                 item.isMain = true;
             } else {
@@ -81,27 +85,31 @@ class DrawerStore extends ProductStore {
     }
 
     @action deletePhoto = (src) => {
-        this.setValue('imgs', toJS(this.product.imgs).filter((item) => src !== item.src))
+        this.setValue('imgs', toJS(this.card.imgs).filter((item) => src !== item.src))
+    }
+
+    @computed get categoryParams(){
+        return this.ProductsStore.categories.find(({id}) => id === this.category) || {};
     }
 
     get preparedNewObject() {
-        const res = Object.entries(this.product).reduce((res, [key, val]) => {
+        const res = Object.entries(this.card).reduce((res, [key, val]) => {
                 res[key] = val?.value || val;
                 return res;
             }, {}
         )
 
-        res._collection = this.product.collectionId?.label || this.product.collection;
-        res._category = this.product.categoryId?.label || this.product.category;
+        res._collection = this.card.collectionId?.label || this.card.collection;
+        res._category = this.categoryParams.name;
 
         return res;
     }
 
     create = async () => {
-        const {preparedNewObject: product} = this;
+        const {preparedNewObject} = this;
 
         try {
-            await api.post('addObject', {product});
+            await api.post('addObject', {product:preparedNewObject});
             this.ProductsStore.afterRequestSuccess()
         } catch (err) {
             alert(`Ошибка создания: ${err}`)
@@ -121,20 +129,19 @@ class DrawerStore extends ProductStore {
         files.map(async(file) => {
             const data = new FormData();
             data.append('file', file);
-            data.append('name', this.product.alias);
+            data.append('name', this.card.alias);
 
             try {
                 const file = await api.post('upload', data);
 
-                if (!this.product.imgs) {
-                    this.product.imgs = [{src: file}];
-                } else this.product.imgs.push({src: file});
+                if (!this.card.imgs) {
+                    this.card.imgs = [{src: file}];
+                } else this.card.imgs.push({src: file});
 
             } catch (e) {
                 console.log(e);
             }
         })
-
     }
 }
 

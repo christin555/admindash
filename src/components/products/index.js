@@ -20,7 +20,7 @@ class FilterViewHOC extends React.Component {
 
     render() {
         return (
-            <Provider ProductsStore={this.ProductsStore}>
+            <Provider ListStore ={this.ProductsStore} ProductsStore={this.ProductsStore}>
                 <PriceView/>
             </Provider>
         );

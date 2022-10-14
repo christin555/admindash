@@ -11,10 +11,10 @@ class AddStore extends ProductStore{
 
 
     save = async () => {
-        const {preparedNewObject: product} = this;
+        const {preparedNewObject: card} = this;
 
         try {
-            const alias = await api.post('addObject', {product});
+            const alias = await api.post('addObject', {product: card});
             alert(`Успешно, ссылка: https://master-pola.com/product/${alias}`)
             this.RouterStore.history.push('/');
 

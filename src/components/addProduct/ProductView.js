@@ -7,17 +7,16 @@ import Button from "@mui/material/Button";
 import Select from "../../shared/Select";
 import Box from "@mui/material/Box";
 import 'react-dropzone-uploader/dist/styles.css'
-import Dropzon from 'react-dropzone-uploader';
 
-@inject(({ProductStore}) => {
+@inject(({ListStore}) => {
     return {
-        product: ProductStore.product,
-        setValue: ProductStore.setValue,
-        fields: ProductStore.fields || [],
-        save: ProductStore.save,
-        categories: ProductStore.categories,
-        category: ProductStore.category,
-        setCategory: ProductStore.setCategory
+        product: ListStore.product,
+        setValue: ListStore.setValue,
+        fields: ListStore.fields || [],
+        save: ListStore.save,
+        categories: ListStore.categories,
+        category: ListStore.category,
+        setCategory: ListStore.setCategory
     };
 })
 class PriceView extends React.Component {
@@ -56,18 +55,18 @@ class PriceView extends React.Component {
                         {fields.map((field) => <Field {...field} key={field.name} setValue={setValue} product={product}/>)}
                     </div>
 
-                    {/*<Box margin={'20px 0 '}>*/}
-                    {/*    <Dropzon*/}
-                    {/*        inputWithFilesContent={'Загрузить еще'}*/}
-                    {/*        styles={{*/}
-                    {/*            dropzone: {*/}
-                    {/*                overflow: 'hidden',*/}
-                    {/*                padding: '10px'*/}
-                    {/*            },*/}
-                    {/*            dropzoneActive: {borderColor: 'green'},*/}
-                    {/*        }}*/}
-                    {/*        inputContent="Загрузить фотографии"/>*/}
-                    {/*</Box>*/}
+                    <Box margin={'20px 0 '}>
+                        <Dropzon
+                            inputWithFilesContent={'Загрузить еще'}
+                            styles={{
+                                dropzone: {
+                                    overflow: 'hidden',
+                                    padding: '10px'
+                                },
+                                dropzoneActive: {borderColor: 'green'},
+                            }}
+                            inputContent="Загрузить фотографии"/>
+                    </Box>
 
                     <Button onClick={save} variant={'contained'}> Сохранить </Button>
                 </Typography>

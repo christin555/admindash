@@ -1,17 +1,15 @@
 import React from 'react';
 import {inject, Provider} from 'mobx-react';
-import DrawerStore from '../../../stores/DrawerStore';
 import DrawerView from "./DrawerView";
 
-@inject('ProductsStore')
+@inject('ListStore')
 class FilterViewHOC extends React.Component {
     constructor(props) {
         super(props);
 
-        const {ProductsStore} = this.props;
+        const {ListStore, DrawerStore} = this.props;
 
-        this.DrawerStore = new DrawerStore(ProductsStore);
-
+        this.DrawerStore = new DrawerStore(ListStore);
     }
 
 

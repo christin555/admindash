@@ -5,7 +5,7 @@ import {IconButton, Typography} from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import {toJS} from "mobx";
 
-@inject(({DrawerStore,}) => {
+@inject(({DrawerStore}) => {
     return {
         reset: DrawerStore.reset,
         mode: DrawerStore.mode
