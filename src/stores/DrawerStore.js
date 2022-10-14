@@ -92,14 +92,21 @@ class DrawerStore extends ProductStore {
         return this.ProductsStore.categories.find(({id}) => id === this.category) || {};
     }
 
+    getLabelCollection = (val) => this.fields
+        .find(({name}) => name === 'collectionId')
+        .values
+        .find(({value}) => value === val)?.label
+
     get preparedNewObject() {
-        const res = Object.entries(this.card).reduce((res, [key, val]) => {
+        const {card} = this;
+
+        const res = Object.entries(card).reduce((res, [key, val]) => {
                 res[key] = val?.value || val;
                 return res;
             }, {}
         )
 
-        res._collection = this.card.collectionId?.label || this.card.collection;
+        res._collection = this.getLabelCollection(card.collectionId);
         res._category = this.categoryParams.name;
 
         return res;
