@@ -6,7 +6,7 @@ import Select from "../../shared/Select";
 import MediaBlock from './MediaBlock';
 import ImgsBlock from "./ImgsBlock";
 
-const Field = ({name, type, title, values, product, setValue, isRequired, isMulti}) => {
+const Field = ({name, type, title, adminDesc, values, product, setValue, isRequired, isMulti}) => {
     const setValueHandler = ({value}) => setValue(name, value);
     const changeValueHandler = ({target: {value}}) => setValue(name, value);
 
@@ -19,6 +19,7 @@ const Field = ({name, type, title, values, product, setValue, isRequired, isMult
                 maxLength={255}
                 value={product[name] || ''}
                 onChange={changeValueHandler}
+                helperText={adminDesc}
             />
             break;
         case 'text':
@@ -27,6 +28,7 @@ const Field = ({name, type, title, values, product, setValue, isRequired, isMult
                 multiline={true}
                 value={product[name] || ''}
                 onChange={changeValueHandler}
+                helperText={adminDesc}
             />;
             break;
         case 'select':
@@ -52,6 +54,7 @@ const Field = ({name, type, title, values, product, setValue, isRequired, isMult
                 variant="standard"
                 value={product[name] || ''}
                 onChange={changeValueHandler}
+                helperText={adminDesc}
             />
             break;
         case 'boolean':
@@ -69,8 +72,7 @@ const Field = ({name, type, title, values, product, setValue, isRequired, isMult
         flexDirection={'column'}
     >
         <Typography
-            variant={'button'}
-            style={{marginBottom: '4px', color: '#6f6e6e', fontWeight: '400', display: 'flex'}}>
+            style={{marginBottom: '4px', display: 'flex', fontWeight: '300'}}>
             {title || name} {isRequired && <Box marginLeft={'10px'} color={'red'}> * </Box> || null}
         </Typography>
         {block}

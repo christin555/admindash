@@ -1,4 +1,5 @@
-import {array2Object} from './arr2Object';
+import {array2Object, groupArray2Object} from './arr2Object';
 export {
-  array2Object
+  array2Object,
+  groupArray2Object
 };

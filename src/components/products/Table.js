@@ -124,18 +124,35 @@ class PriceView extends React.Component {
             field: 'collection',
             flex: 1,
             headerName: 'Коллекция',
-            minWidth: 290
+            minWidth: 200
         },
         {
             field: 'brand',
             flex: 1,
             headerName: 'Бренд',
-            minWidth: 290
+            minWidth: 200
         },
         {
             field: 'price',
             flex: 1,
             headerName: 'Цена, руб',
+            minWidth: 150,
+            renderCell: (cellValues) => {
+                if (!this.props.isEdit) {
+                    return cellValues.value
+                }
+                return <TextField
+                    onChange={({target: {value}}) => this.props.setPrice(cellValues.row.id, value)}
+                    value={cellValues.value || ''}
+                    variant="standard"
+                    size={'small'}
+                />
+            }
+        },
+        {
+            field: 'salePrice',
+            flex: 1,
+            headerName: 'Цена со скидкой, руб',
             minWidth: 150,
             renderCell: (cellValues) => {
                 if (!this.props.isEdit) {

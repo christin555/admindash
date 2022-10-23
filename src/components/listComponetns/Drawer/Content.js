@@ -8,7 +8,7 @@ import {toJS} from "mobx";
     return {
         card: toJS(DrawerStore.card),
         setValue: DrawerStore.setValue,
-        fields: DrawerStore.fields || []
+        fields: DrawerStore.fields || {}
     };
 })
 class DrawerStore extends React.Component {
@@ -23,28 +23,32 @@ class DrawerStore extends React.Component {
 
         return (
             <div className={s.fields}>
-                <div>
-                    {fields.slice(0, fields.length / 2).map((field) =>
-                        <Field
-                            {...field}
-                            key={field.name}
-                            setValue={setValue}
-                            product={card}
-                        />)}
-                </div>
-                <div>
                     {
-                        fields.slice(fields.length / 2).map((field) =>
-                            <Field
-                                {...field}
-                                key={field.name}
-                                setValue={setValue}
-                                product={card}
-                            />)}
-                </div>
+                        Object.entries(fields).map(([key, values]) => {
+                            return  <>
+                            <div className={s.nameGroup}> {groupNames[key] || key}  </div>
+                                <div className={s.row}> {
+                                    values.map(field => {
+                                        return <Field   {...field}
+                                                    key={field.name}
+                                                    setValue={setValue}
+                                                    product={card}
+                                    />
+
+                                })}
+                                </div>
+                          </>
+                        })
+                    }
             </div>
         );
     }
+}
+
+const groupNames = {
+    [undefined]: 'Дополнительно',
+    'main': 'Основное',
+    'price': 'Цена'
 }
 
 export default DrawerStore;

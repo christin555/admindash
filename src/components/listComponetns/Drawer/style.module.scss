@@ -56,15 +56,21 @@
 
 .fields {
   padding: 20px 20px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0 50px;
   overflow-y: scroll;
 
-  & > * {
-    display: flex;
+  .nameGroup{
+    color: #6f6e6e;
+    font-weight: 400;
+    margin: 20px 0;
+    background: #e0faff;
+    padding: 5px 10px;
+  }
+  .row {
     flex-direction: column;
-    gap: 20px 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(100px, 450px));
+    gap: 20px 50px;
+
   }
 }
 

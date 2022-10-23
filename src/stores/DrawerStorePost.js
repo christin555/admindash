@@ -151,7 +151,6 @@ class DrawerStorePost {
     }
 
     loadFiled = async (files, isMulti) => {
-        console.log(files)
         if (isMulti) {
             return files.map(this.upload)
         } else return this.upload(files[0]);

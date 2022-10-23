@@ -39,8 +39,6 @@ class DrawerStore extends React.Component {
             return null
         }
 
-        console.log(value)
-
         if (isMulti) {
             return value?.map((src) => {
                     const _src = 'https://master-pola.com' + src;
