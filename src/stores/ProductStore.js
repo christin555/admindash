@@ -1,6 +1,7 @@
 import {observable, action, autorun, set, makeObservable, computed, toJS} from 'mobx';
 import {status as statusEnum} from '../enums';
 import api from 'api';
+import {groupArray2Object} from "../utils";
 
 
 class ProductStore {
@@ -9,7 +10,7 @@ class ProductStore {
     @observable category;
     @observable status = statusEnum.LOADING;
     @observable card = {};
-    @observable fields;
+    @observable fields = {};
 
 
     constructor(RouterStore, category) {
@@ -26,11 +27,6 @@ class ProductStore {
             {
                 name: 'categoryId', type: 'select', title: 'Категория',
                 values: this.categories,
-            },
-            {
-                name: 'imgs',
-                type: 'catalogImgs',
-                title: 'Фотографии'
             }
         ]
     }
@@ -40,7 +36,7 @@ class ProductStore {
     };
 
     @action setFields = (fields) => {
-        this.fields = [...this.baseFields, ...fields];
+        this.fields = fields;
     };
 
     @action setCategory = (category) => {
@@ -69,15 +65,21 @@ class ProductStore {
 
         try {
             const fields = await api.post('getFields', {category: category?.value || category});
-            this.setFields(fields.sort((a, b) => {
-                if (!!a.isRequired === !!b.isRequired) {
-                    const textA = a.title?.toUpperCase();
-                    const textB = b.title?.toUpperCase();
-                    return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
-                } else {
-                    return (!!a.isRequired < !!b.isRequired) ? 1 : (!!a.isRequired > !!b.isRequired) ? -1 : 0;
-                }
-            }));
+            const grouped  = groupArray2Object(fields, 'group');
+
+            Object.keys(grouped).forEach(key => {
+                grouped[key] = grouped[key].sort((a, b) => {
+                    if (!!a.isRequired === !!b.isRequired) {
+                        const textA = a.title?.toUpperCase();
+                        const textB = b.title?.toUpperCase();
+                        return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+                    } else {
+                        return (!!a.isRequired < !!b.isRequired) ? 1 : (!!a.isRequired > !!b.isRequired) ? -1 : 0;
+                    }
+                })
+            })
+
+            this.setFields(grouped);
         } catch (err) {
         }
     };
