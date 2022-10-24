@@ -92,9 +92,9 @@ class DrawerStore extends ProductStore {
         return this.ProductsStore.categories.find(({id}) => id === this.category) || {};
     }
 
-    getLabelCollection = (val) => this.fields
-        .find(({name}) => name === 'collectionId')
-        .values
+    getLabelCollection = (val) => Object.values(this.fields)
+        .flat()
+        .find(({name}) => name === 'collectionId')?.values
         .find(({value}) => value === val)?.label
 
     get preparedNewObject() {
