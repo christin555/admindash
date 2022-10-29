@@ -119,7 +119,7 @@ class DrawerStore extends ProductStore {
             await api.post('addObject', {product:preparedNewObject});
             this.ProductsStore.afterRequestSuccess()
         } catch (err) {
-            alert(`Ошибка создания: ${err}`)
+            alert({type: 'error', title: `Ошибка создания: ${err}`})
         }
     };
 
