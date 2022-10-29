@@ -17,7 +17,10 @@ const verify = (err) => {
         localStorage.removeItem("token");
         window.location.reload();
     }
+
+    throw new Error(err)
 }
+
 const API = {
     post: (address, body) => baseQuery
         .post(address, body)
