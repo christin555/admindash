@@ -8,21 +8,21 @@ class DrawerStorePost {
     @observable mode;
     @observable status = statusEnum.LOADING;
     @observable card = {};
+    oldCard = {}
 
     baseFields = [
         {name: 'title', type: 'character varying', title: 'Название', isRequired: true},
-        {name: 'imgPreview', type: 'mediaDrop', title: 'Превью', isRequired: true},
         {name: 'isPopular', type: 'boolean', title: 'Популярное'},
         {name: 'content', type: 'text', title: 'Текст', isRequired: true},
         {name: 'watchCount', type: 'integer', title: 'Колво просмотров', isRequired: true},
         {name: 'place', type: 'character varying', title: 'Место'},
         {
-            name: 'articleType', type: 'select', title: 'Тип медиа',
+            name: 'mediaPosition', type: 'select', title: 'Расположение медиа',
             values: [
-                {value: 'short', label: 'Рилс'},
-                {value: 'carousel', label: 'Карусель'},
-                {value: 'video', label: 'Видео'}
-            ],
+                {value: 'vertical', label: 'Вертикально'},
+                {value: 'horizontal', label: 'Горизонтально'}
+                ],
+            isRequired: true
         },
         {
             name: 'type', type: 'select', title: 'Категория',
@@ -31,8 +31,18 @@ class DrawerStorePost {
                 {value: posts.PRODUCT, label: 'Каталог - товар'},
                 {value: posts.OTHER, label: 'Другое'}],
             isRequired: true
-        }
-    ];
+        },
+
+            {
+                name: 'articleType', type: 'select', title: 'Тип медиа',
+                values: [
+                    {value: 'short', label: 'Рилс'},
+                    {value: 'carousel', label: 'Карусель'},
+                    {value: 'video', label: 'Видео'}
+                ],
+            },
+            {name: 'imgPreview', type: 'mediaDrop', title: 'Превью', isRequired: true}
+    ]
 
     constructor(ListStore) {
         this.ListStore = ListStore;
@@ -47,9 +57,13 @@ class DrawerStorePost {
 
     @computed get fields() {
         let mediaField = {};
-        const articleType = get(this.card, 'articleType')?.value;
+        const articleType = this.card.articleType;
 
+        console.log('get', articleType, this.card)
         switch (articleType) {
+            case 'img':
+                mediaField = {name: 'media', type: 'mediaDrop', title: 'Фотография', isRequired: true};
+                break;
             case 'carousel':
                 mediaField = {name: 'media', type: 'mediaDrop', title: 'Фотографии', isRequired: true, isMulti: true};
                 break;
@@ -59,7 +73,7 @@ class DrawerStorePost {
                 break;
         }
 
-        return [...this.baseFields, mediaField];
+        return {'main':this.baseFields, 'media': [mediaField]};
     }
 
 
@@ -68,9 +82,14 @@ class DrawerStorePost {
     }
 
     get preparedObject() {
+        const mainFields = ['title', 'media', 'content', 'type', 'isPopular', 'imgPreview', 'watchCount', 'mediaPosition', 'articleType', 'place', 'square'];
+
         return Object.entries(this.card).reduce((res, [key, val]) => {
-                res[key] = val?.value || val;
-                return res;
+            const value = val?.value || val;
+               if (value && mainFields.includes(key) && this.oldCard[key] !== value) {
+                   res[key] =val
+               }
+               return res;
             }, {}
         )
     }
@@ -79,6 +98,7 @@ class DrawerStorePost {
         this.mode = this.ListStore.actionsData.mode;
 
         if (this.mode === 'show' || this.mode === 'edit') {
+            this.oldCard = toJS(this.ListStore.actionsData.values);
             this.card = toJS(this.ListStore.actionsData.values);
         }
 
@@ -92,13 +112,22 @@ class DrawerStorePost {
 
     @action reset = () => {
         this.card = {};
+        this.oldCard = {}
         this.mode = null;
         this.ListStore.actionsData = {};
         this.ListStore.setDrawerShow(false);
     }
 
+    failReq = () => Object.values(this.fields).flat().some(({isRequired, name}) => isRequired && !this.card[name])
+
     @action apply = () => {
         if (this.mode === 'edit') {
+            console.log(this.failReq());
+
+            if(this.failReq()){
+                return
+            }
+
             this.edit({ids: [this.card.id], data: this.preparedObject});
         }
 
@@ -106,7 +135,17 @@ class DrawerStorePost {
             this.edit({ids: this.selected, data: this.preparedObject});
         }
 
-        if (this.mode === 'copy' || this.mode === 'add') {
+        if (this.mode === 'add') {
+            console.log(this.failReq());
+
+            if(this.failReq()){
+                return
+            }
+
+            this.create();
+        }
+
+        if (this.mode === 'copy' ) {
             this.create();
         }
 
@@ -114,6 +153,7 @@ class DrawerStorePost {
     }
 
     @action setValue = (name, value) => {
+        console.log('setValue', name, value)
         if (name === 'articleType') {
             set(this.card, {media: null});
         }
@@ -143,7 +183,7 @@ class DrawerStorePost {
 
     edit = async (data) => {
         try {
-            await api.post('editProducts', data);
+            await api.post('editPosts', data);
             this.ListStore.afterRequestSuccess();
         } catch (err) {
             alert({type: 'error', title: 'Ошибка'});
@@ -152,7 +192,7 @@ class DrawerStorePost {
 
     loadFiled = async (files, isMulti) => {
         if (isMulti) {
-            return files.map(this.upload)
+            return Promise.all(files.map(this.upload))
         } else return this.upload(files[0]);
     }
 

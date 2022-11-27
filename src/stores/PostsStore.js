@@ -27,7 +27,7 @@ class PostsStore extends ListItemsStore {
         const {fastfilter} = this;
 
         try {
-            const body = {fastfilter};
+            const body = {fastfilter, withMedia: true};
             const list = await api.post('getPosts', body);
 
             this.setList(list);
