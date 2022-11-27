@@ -21,15 +21,17 @@ class DrawerStore extends React.Component {
         return this.props.mode !== 'show'
     }
 
-    deletePhoto = (src) => this.props.onChange(this.props.value?.filter((_src) => src != _src));
+    deletePhoto = (src) => this.props.onChange({value: this.props.value?.filter((_src) => src != _src)});
 
     handlerDrop = async (files) => {
         const uploaded = await this.props.loadFiled(files, this.props.isMulti);
         const oldValues = this.props.value || [];
 
+        console.log('handlerDrop', uploaded, uploaded);
+
         if (this.props.isMulti) {
-            this.props.onChange(oldValues.concat(uploaded));
-        } else this.props.onChange(uploaded);
+            this.props.onChange({value: oldValues.concat(uploaded)});
+        } else this.props.onChange({value: uploaded});
     }
 
     get blocks() {

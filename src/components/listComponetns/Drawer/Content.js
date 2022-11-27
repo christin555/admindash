@@ -21,6 +21,8 @@ class DrawerStore extends React.Component {
             setValue
         } = this.props;
 
+        console.log(card);
+
         return (
             <div className={s.fields}>
                     {
@@ -48,7 +50,8 @@ class DrawerStore extends React.Component {
 const groupNames = {
     [undefined]: 'Дополнительно',
     'main': 'Основное',
-    'price': 'Цена'
+    'price': 'Цена',
+    'media': 'Медиа'
 }
 
 export default DrawerStore;

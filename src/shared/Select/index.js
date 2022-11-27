@@ -74,11 +74,7 @@ class Select extends React.Component {
 
   render() {
     const {placeholder, options, loadOptions, defaultOptions, value} = this.props;
-    let selected = null;
-
-    if (typeof value === 'number') {
-      selected = options?.find(({value: val}) => Number(val) === Number(value));
-    }
+    let selected = options?.find(({value: val}) => typeof value === 'number' ? Number(val) === Number(value) : val === value);
 
     return (
       !loadOptions && (
