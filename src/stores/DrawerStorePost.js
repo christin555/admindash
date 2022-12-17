@@ -146,6 +146,31 @@ class DrawerStorePost extends DrawerStoreBase {
     this.card = copy;
   }
 
+  get preparedNewObject() {
+    const res = Object.entries(this.card).reduce((result, [key, val]) => {
+      if (key === 'relations') {
+        result[key] = val.map(({entity, entityId}) => {
+          if (entity && entityId) {
+            return {
+              entity: entity?.value || entity,
+              entityId: entityId?.value || entityId
+            };
+          }
+
+          return null;
+        }).filter(Boolean);
+      } else if (Array.isArray(val)) {
+        result[key] = val.map((item) => item?.value || item);
+      } else {
+        result[key] = val?.value || val;
+      }
+
+      return result;
+    }, {});
+
+    return res;
+  }
+
   create = async() => {
     const {preparedNewObject: card} = this;
 
