@@ -101,7 +101,6 @@ class DrawerStoreBase {
         set(this.card, {media: null});
       }
 
-      console.log(name)
       if (name === 'media') {
         this.mediaUpdated = true;
       }
