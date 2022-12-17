@@ -35,6 +35,7 @@ class ListItemsStore {
     constructor(RouterStore) {
         this.RouterStore = RouterStore;
 
+        this.disposer = autorun(this.getList);
         makeObservable(this);
     }
 
@@ -127,6 +128,9 @@ class ListItemsStore {
         this.setSelected([]);
     }
 
+    closeStore = () => {
+        this.disposer && this.disposer()
+    }
 }
 
 export {ListItemsStore};

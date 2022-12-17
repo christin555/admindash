@@ -21,7 +21,7 @@ class DrawerStore extends React.Component {
             setValue
         } = this.props;
 
-        console.log(card);
+        console.log(fields);
 
         return (
             <div className={s.fields}>

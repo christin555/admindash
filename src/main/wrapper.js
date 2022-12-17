@@ -25,7 +25,12 @@ const Page = loadable(
             case 'login': {
                 return import('../components/Login');
             }
-
+            case 'brands': {
+                return import('../components/brands');
+            }
+            case 'collections': {
+                return import('../components/collections');
+            }
             default:
                 return import('../shared/InformBlocks/PageNotFound');
         }

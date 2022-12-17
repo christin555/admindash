@@ -31,6 +31,16 @@ export default () => (
                     />
                     <Route
                         exact={true}
+                        path='/collections'
+                        render={wrap('collections')}
+                    />
+                    <Route
+                        exact={true}
+                        path='/brands'
+                        render={wrap('brands')}
+                    />
+                    <Route
+                        exact={true}
                         path='/login'
                         render={wrap('login')}
                     />
