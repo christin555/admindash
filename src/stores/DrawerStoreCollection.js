@@ -5,7 +5,6 @@ import {alert} from './Notifications';
 import DrawerStoreBase from './DrawerStoreBase';
 
 class DrawerStorePost extends DrawerStoreBase {
-    @observable categories = [];
     @observable brands = [];
 
     baseFields = [
@@ -16,32 +15,22 @@ class DrawerStorePost extends DrawerStoreBase {
       super(ListStore);
 
       this.getBrands();
-      this.getCategories();
 
       makeObservable(this);
     }
 
     @computed get fields() {
-      const categories = {
-        name: 'categoryId', type: 'select', title: 'Категория',
-        values: this.categories,
-        isRequired: true
-      };
       const brand = {
         name: 'brandId', type: 'select', title: 'Бренд',
         values: this.brands,
         isRequired: true
       };
 
-      return {'main': [...this.baseFields, brand, categories]};
+      return {'main': [...this.baseFields, brand]};
     }
 
     @action setBrands = (brands) => {
       this.brands = brands;
-    };
-
-    @action setCategories = (categories) => {
-      this.categories = categories;
     };
 
     getBrands = async() => {
@@ -56,22 +45,9 @@ class DrawerStorePost extends DrawerStoreBase {
       }
     };
 
-    getCategories = async() => {
-      try {
-        const categories = await api.get('categories/get');
-
-        this.setCategories(categories.map(({id, name}) => {
-          return {value: id, label: name};
-        }));
-      } catch(err) {
-        console.log(err);
-      }
-    };
-
     create = async() => {
       const {preparedNewObject: card} = this;
 
-      console.log('create', card);
       try {
         await api.post('addCollection', card);
         this.ListStore.afterRequestSuccess();
