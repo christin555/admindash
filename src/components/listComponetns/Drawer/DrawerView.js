@@ -28,7 +28,7 @@ class DrawerStore extends React.Component {
             >
                 <div className={s.container}>
                     <Header/>
-                   <Content/>
+                    <Content/>
                     <Footer/>
                 </div>
 

@@ -8,3 +8,13 @@
   left: 50%;
 }
 
+@media only screen and (max-width: 930px) {
+  .search {
+    width: 90vw
+  }
+  .menu {
+    flex-direction: column;
+    width: min-content;
+    padding: 0 10px;
+  }
+}

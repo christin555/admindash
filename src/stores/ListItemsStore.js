@@ -19,7 +19,6 @@ class ListItemsStore {
     @observable fastfilter;
     @observable fastFilterInput;
 
-
     @observable selected;
     @observable deleted = [];
     @observable edited = [];
@@ -33,100 +32,101 @@ class ListItemsStore {
     body = {};
 
     constructor(RouterStore) {
-        this.RouterStore = RouterStore;
+      this.RouterStore = RouterStore;
 
-        makeObservable(this);
+      makeObservable(this);
     }
-
 
     @action openDrawerWithMode = (mode, values = {}) => {
-        this.actionsData = {mode, values};
-        this.isDrawerShow = true;
+      this.actionsData = {mode, values};
+      this.isDrawerShow = true;
     }
 
-    @action setDrawerShow = status => this.isDrawerShow = status;
+    @action setDrawerShow = (status) => this.isDrawerShow = status;
 
     @action toggleModalDeleteShow = () => this.isModalDeleteShow = !this.isModalDeleteShow;
 
-
     @action setDeleteIds = () => {
-        this.deleted.push(...(this.selected || []));
-        this.toggleModalDeleteShow();
+      this.deleted.push(...this.selected || []);
+      this.toggleModalDeleteShow();
 
-        this.list = this.list.filter(({id}) => !this.deleted.includes((id)))
+      this.list = this.list.filter(({id}) => !this.deleted.includes(id));
     };
 
     @action setFastFilter = () => {
-        this.fastfilter = this.fastFilterInput;
+      this.fastfilter = this.fastFilterInput;
     };
 
     @action setFastFilterInput = (fastFilterInput) => {
-        this.fastFilterInput = fastFilterInput;
+      this.fastFilterInput = fastFilterInput;
     };
 
-
     @action setSelected = (ids) => {
-        this.selected = ids;
+      this.selected = ids;
     };
 
     @action setLimit = (limit) => {
-        if (limit) {
-            this.limit = limit;
-        }
+      if (limit) {
+        this.limit = limit;
+      }
     };
 
     @action toggleEdit = () => {
-        this.setSelected([]);
-        this.updated = [];
-        this.deleted = [];
-        this.edited = [];
-        this.isEdit = !this.isEdit;
+      this.setSelected([]);
+      this.updated = [];
+      this.deleted = [];
+      this.edited = [];
+      this.isEdit = !this.isEdit;
     };
 
     @action showModal = () => {
-        this.isModalShow = true;
+      this.isModalShow = true;
     };
 
     @action closeModal = () => {
-        this.isModalShow = false;
+      this.isModalShow = false;
     };
 
     @action setStatus = (status) => {
-        this.status = status;
+      this.status = status;
     };
 
     @action reset = () => {
-        this.toggleEdit();
-        this.list = toJS(this.initList);
+      this.toggleEdit();
+      this.list = toJS(this.initList);
     };
 
     @action setList= (list) => {
-        this.list = list;
+      this.list = list;
     };
 
     @action setInitList = (initList) => {
-        this.initList = initList;
+      this.initList = initList;
     };
 
     @action save = () => {
-        const {deleted} = this;
-        deleted.length && this.deleteQuery();
+      const {deleted} = this;
 
-        this.afterSave()
-        this.toggleEdit();
+      deleted.length && this.deleteQuery();
+
+      this.afterSave();
+      this.toggleEdit();
     };
 
     afterSave = () => {}
     deleteQuery = () => {}
     getList = () => {}
 
-    afterRequestSuccess = async () => {
-        await this.getList();
-        this.initList = toJS(this.list);
-        alert({type: 'success', title: 'Успешно обновлено'});
-        this.setSelected([]);
+    afterRequestSuccess = async() => {
+      await this.getList();
+      this.initList = toJS(this.list);
+      alert({type: 'success', title: 'Успешно обновлено'});
+      this.setSelected([]);
     }
 
+    closeStore = () => {
+      this.disposer && this.disposer();
+    }
 }
 
 export {ListItemsStore};

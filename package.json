@@ -95,7 +95,7 @@
   "scripts": {
     "prodstart": "pm2 start server.js --name admindash",
     "lint": "eslint src --ext .js",
-    "lint:fix": "npm run lint -- --fix",
+    "lint:fix": "npm run lint --fix",
     "dev": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
