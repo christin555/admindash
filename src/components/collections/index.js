@@ -5,26 +5,26 @@ import View from './View';
 
 @inject('RouterStore')
 class Collections extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        const {RouterStore} = this.props;
+    const {RouterStore} = this.props;
 
-        this.CollectionsStore = new CollectionsStore(RouterStore);
+    this.CollectionsStore = new CollectionsStore(RouterStore);
 
-    }
+  }
 
-    componentWillUnmount() {
-        this.CollectionsStore.closeStore()
-    }
+  componentWillUnmount() {
+    this.CollectionsStore.closeStore();
+  }
 
-    render() {
-        return (
-            <Provider ListStore ={this.CollectionsStore} CollectionsStore={this.CollectionsStore}>
-                <View/>
-            </Provider>
-        );
-    }
+  render() {
+    return (
+      <Provider ListStore={this.CollectionsStore} CollectionsStore={this.CollectionsStore}>
+        <View />
+      </Provider>
+    );
+  }
 }
 
 export default Collections;
