@@ -1,3 +1,4 @@
+import {autorun} from 'mobx';
 import {status as statusEnum} from '../enums';
 import api from 'api';
 import {alert} from './Notifications';
@@ -5,6 +6,12 @@ import {ListItemsStore} from './ListItemsStore';
 
 class BrandsStore extends ListItemsStore {
     RouterStore;
+
+    constructor(RouterStore) {
+      super(RouterStore);
+
+      this.disposer = autorun(this.getList);
+    }
 
     deleteQuery = async() => {
       try {

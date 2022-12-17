@@ -2,9 +2,16 @@ import {status as statusEnum} from '../enums';
 import api from 'api';
 import {alert} from './Notifications';
 import {ListItemsStore} from './ListItemsStore';
+import {autorun} from 'mobx';
 
 class CollectionsStore extends ListItemsStore {
     RouterStore;
+
+    constructor(RouterStore) {
+      super(RouterStore);
+
+      this.disposer = autorun(this.getList);
+    }
 
     deleteQuery = async() => {
       try {
