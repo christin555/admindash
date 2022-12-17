@@ -5,26 +5,26 @@ import PostsView from './PostsView';
 
 @inject('RouterStore')
 class FilterViewHOC extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        const {RouterStore} = this.props;
+    const {RouterStore} = this.props;
 
-        this.PostsStore = new PostsStore(RouterStore);
+    this.PostsStore = new PostsStore(RouterStore);
 
-    }
+  }
 
-    componentWillUnmount() {
-        this.PostsStore.closeStore()
-    }
+  componentWillUnmount() {
+    this.PostsStore.closeStore();
+  }
 
-    render() {
-        return (
-            <Provider ListStore ={this.PostsStore} PostsStore={this.PostsStore}>
-                <PostsView/>
-            </Provider>
-        );
-    }
+  render() {
+    return (
+      <Provider ListStore={this.PostsStore} PostsStore={this.PostsStore}>
+        <PostsView />
+      </Provider>
+    );
+  }
 }
 
 export default FilterViewHOC;

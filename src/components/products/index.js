@@ -5,26 +5,26 @@ import PriceView from './PriceView';
 
 @inject('RouterStore')
 class FilterViewHOC extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        const {RouterStore} = this.props;
+    const {RouterStore} = this.props;
 
-        this.ProductsStore = new ProductsStore(RouterStore);
+    this.ProductsStore = new ProductsStore(RouterStore);
 
-    }
+  }
 
-    componentWillUnmount() {
-        this.ProductsStore.closeStore()
-    }
+  componentWillUnmount() {
+    this.ProductsStore.closeStore();
+  }
 
-    render() {
-        return (
-            <Provider ListStore ={this.ProductsStore} ProductsStore={this.ProductsStore}>
-                <PriceView/>
-            </Provider>
-        );
-    }
+  render() {
+    return (
+      <Provider ListStore={this.ProductsStore} ProductsStore={this.ProductsStore}>
+        <PriceView />
+      </Provider>
+    );
+  }
 }
 
 export default FilterViewHOC;

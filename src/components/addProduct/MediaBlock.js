@@ -2,7 +2,6 @@ import React from 'react';
 import {inject} from 'mobx-react';
 import s from '../listComponetns/Drawer/style.module.scss';
 import Box from "@mui/material/Box";
-import {toJS} from "mobx";
 import Dropzone from 'react-dropzone';
 import Button from "../../shared/Button";
 import PublishIcon from '@material-ui/icons/Publish';
@@ -12,7 +11,7 @@ import CloseIcon from "@material-ui/icons/Close";
 @inject(({DrawerStore}) => {
     return {
         loadFiled: DrawerStore.loadFiled,
-        mode: DrawerStore.mode,
+        mode: DrawerStore.mode
     };
 })
 
@@ -21,13 +20,12 @@ class DrawerStore extends React.Component {
         return this.props.mode !== 'show'
     }
 
-    deletePhoto = (src) => this.props.onChange({value: this.props.value?.filter((_src) => src != _src)});
+    deletePhoto = (src) => this.props.onChange({value: this.props.value?.filter((_src) => src !== _src)});
 
     handlerDrop = async (files) => {
         const uploaded = await this.props.loadFiled(files, this.props.isMulti);
         const oldValues = this.props.value || [];
 
-        console.log('handlerDrop', uploaded, uploaded);
 
         if (this.props.isMulti) {
             this.props.onChange({value: oldValues.concat(uploaded)});
@@ -35,14 +33,14 @@ class DrawerStore extends React.Component {
     }
 
     get blocks() {
-        const {value, isMulti} = this.props;
+        const {value: _value, isMulti} = this.props;
 
-        if (!value) {
+        if (!_value) {
             return null
         }
 
         if (isMulti) {
-            return value?.map((src) => {
+            return _value?.map((src) => {
                     const _src = 'https://master-pola.com' + src;
                     return <div
                         key={src}
@@ -62,7 +60,7 @@ class DrawerStore extends React.Component {
             );
         }
 
-        const src = value.includes('https') ? value : 'https://master-pola.com' + value;
+        const src = _value.includes('https') ? _value : 'https://master-pola.com' + _value;
         const isVideo = src.includes('MOV');
 
         return <div

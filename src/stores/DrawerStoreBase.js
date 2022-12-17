@@ -1,7 +1,7 @@
 import {observable, action, set, reaction, toJS, makeObservable} from 'mobx';
 import {status as statusEnum} from '../enums';
 
-class DrawerStorePost {
+class DrawerStoreBase {
     @observable mode;
     @observable status = statusEnum.LOADING;
     @observable card = {};
@@ -26,12 +26,10 @@ class DrawerStorePost {
     }
 
     get preparedObject() {
-      const mainFields = ['title', 'media', 'content', 'type', 'isPopular', 'imgPreview', 'watchCount', 'mediaPosition', 'articleType', 'place', 'square'];
-
       return Object.entries(this.card).reduce((res, [key, val]) => {
         const value = val?.value || val;
 
-        if (value && mainFields.includes(key) && this.oldCard[key] !== value) {
+        if (value && this.oldCard[key] !== value) {
           res[key] = val;
         }
 
@@ -53,11 +51,14 @@ class DrawerStorePost {
         delete this.card.name;
         delete this.card.imgs;
       }
+
+      this.modifyCard && this.modifyCard();
     }
 
     @action reset = () => {
       this.card = {};
       this.oldCard = {};
+      this.mediaUpdated = false;
       this.mode = null;
       this.ListStore.actionsData = {};
       this.ListStore.setDrawerShow(false);
@@ -68,8 +69,6 @@ class DrawerStorePost {
 
     @action apply = () => {
       if (this.mode === 'edit') {
-        console.log(this.failReq());
-
         if (this.failReq()) {
           return;
         }
@@ -98,18 +97,27 @@ class DrawerStorePost {
     }
 
     @action setValue = (name, value) => {
-      console.log('setValue', name, value);
       if (name === 'articleType') {
         set(this.card, {media: null});
       }
+
+      console.log(name)
+      if (name === 'media') {
+        this.mediaUpdated = true;
+      }
+
       set(this.card, {[name]: value});
     };
 
     get preparedNewObject() {
-      const res = Object.entries(this.card).reduce((res, [key, val]) => {
-        res[key] = val?.value || val;
+      const res = Object.entries(this.card).reduce((result, [key, val]) => {
+        if (Array.isArray(val)) {
+          result[key] = val.map((item) => item?.value || item);
+        } else {
+          result[key] = val?.value || val;
+        }
 
-        return res;
+        return result;
       }, {});
 
       return res;
@@ -117,4 +125,4 @@ class DrawerStorePost {
 
 }
 
-export default DrawerStorePost;
+export default DrawerStoreBase;

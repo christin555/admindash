@@ -1,14 +1,12 @@
-import {observable, action, get, computed, set, reaction, toJS, makeObservable} from 'mobx';
+import {observable, action, computed, set, reaction, toJS, makeObservable} from 'mobx';
 
 import api from '../api';
 import {alert} from './Notifications';
-import {status as statusEnum, posts} from '../enums';
+import {posts} from '../enums';
+import DrawerStoreBase from './DrawerStoreBase';
 
-class DrawerStorePost {
-    @observable mode;
-    @observable status = statusEnum.LOADING;
-    @observable card = {};
-    oldCard = {}
+class DrawerStorePost extends DrawerStoreBase {
+    @observable mediaUpdated = false;
 
     baseFields = [
       {name: 'title', type: 'character varying', title: 'Название', isRequired: true},
@@ -46,12 +44,7 @@ class DrawerStorePost {
     ]
 
     constructor(ListStore) {
-      this.ListStore = ListStore;
-
-      reaction(
-        () => this.ListStore.actionsData,
-        this.setActions
-      );
+      super(ListStore);
 
       makeObservable(this);
     }
@@ -60,7 +53,6 @@ class DrawerStorePost {
       let mediaField = {};
       const {articleType} = this.card;
 
-      console.log('get', articleType, this.card);
       switch (articleType) {
         case 'img':
           mediaField = {name: 'media', type: 'mediaDrop', title: 'Фотография', isRequired: true};
@@ -74,114 +66,96 @@ class DrawerStorePost {
           break;
       }
 
-      return {'main': this.baseFields, 'media': [mediaField]};
-    }
-
-    get selected() {
-      return this.ListStore.selected;
+      return {
+        'main': this.baseFields,
+        'media': [mediaField],
+        'relations': [
+          {
+            search: this.searchRelation,
+            name: 'relations',
+            type: 'relations',
+            title: 'Связи'
+          }
+        ]
+      };
     }
 
     get preparedObject() {
-      const mainFields = ['title', 'media', 'content', 'type', 'isPopular', 'imgPreview', 'watchCount', 'mediaPosition', 'articleType', 'place', 'square'];
+      const mainFields = [
+        'title',
+        'media',
+        'relations',
+        'content',
+        'type',
+        'isPopular',
+        'imgPreview',
+        'watchCount',
+        'mediaPosition',
+        'articleType',
+        'place',
+        'square'
+      ];
 
       return Object.entries(this.card).reduce((res, [key, val]) => {
         const value = val?.value || val;
 
         if (value && mainFields.includes(key) && this.oldCard[key] !== value) {
-          res[key] = val;
+          if (key === 'media') {
+            if (this.mediaUpdated) {
+              res[key] = val;
+            }
+          } else if (key === 'relations') {
+            res[key] = val.map(({entity, entityId}) => {
+              if (entity && entityId) {
+                return {
+                  entity: entity?.value || entity,
+                  entityId: entityId?.value || entityId
+                };
+              }
+
+              return null;
+            }).filter(Boolean);
+          } else {
+            res[key] = val;
+          }
         }
 
         return res;
       }, {});
     }
 
-    @action setActions = () => {
-      this.mode = this.ListStore.actionsData.mode;
+  @action modifyCard = async() => {
+    const copy = {...this.card};
+    const relations = [];
 
-      if (this.mode === 'show' || this.mode === 'edit') {
-        this.oldCard = toJS(this.ListStore.actionsData.values);
-        this.card = toJS(this.ListStore.actionsData.values);
-      }
+    if (copy.relations) {
+      for await (const item of copy.relations) {
+        if (typeof item?.entityId === 'number') {
+          const [option] = await this.searchRelation({type: item.entity, id: item.entityId});
 
-      if (this.mode === 'copy') {
-        this.card = toJS(this.ListStore.actionsData.values);
-        delete this.card.id;
-        delete this.card.name;
-        delete this.card.imgs;
-      }
-    }
-
-    @action reset = () => {
-      this.card = {};
-      this.oldCard = {};
-      this.mode = null;
-      this.ListStore.actionsData = {};
-      this.ListStore.setDrawerShow(false);
-    }
-
-    failReq = () => Object.values(this.fields).flat()
-      .some(({isRequired, name}) => isRequired && !this.card[name])
-
-    @action apply = () => {
-      if (this.mode === 'edit') {
-        console.log(this.failReq());
-
-        if (this.failReq()) {
-          return;
+          relations.push({
+            ...item,
+            entityId: option
+          });
         }
-
-        this.edit({ids: [this.card.id], data: this.preparedObject});
       }
-
-      if (this.mode === 'massedit') {
-        this.edit({ids: this.selected, data: this.preparedObject});
-      }
-
-      if (this.mode === 'add') {
-        console.log(this.failReq());
-
-        if (this.failReq()) {
-          return;
-        }
-
-        this.create();
-      }
-
-      if (this.mode === 'copy') {
-        this.create();
-      }
-
-      this.reset();
     }
 
-    @action setValue = (name, value) => {
-      console.log('setValue', name, value);
-      if (name === 'articleType') {
-        set(this.card, {media: null});
-      }
-      set(this.card, {[name]: value});
-    };
+    copy.relations = relations;
 
-    get preparedNewObject() {
-      const res = Object.entries(this.card).reduce((res, [key, val]) => {
-        res[key] = val?.value || val;
+    this.card = copy;
+  }
 
-        return res;
-      }, {});
+  create = async() => {
+    const {preparedNewObject: card} = this;
 
-      return res;
+    try {
+      await api.post('addPost', card);
+      this.ListStore.afterRequestSuccess();
+    } catch(err) {
+      alert(`Ошибка создания: ${err}`);
     }
-
-    create = async() => {
-      const {preparedNewObject: card} = this;
-
-      try {
-        await api.post('addPost', card);
-        this.ListStore.afterRequestSuccess();
-      } catch(err) {
-        alert(`Ошибка создания: ${err}`);
-      }
-    };
+  };
 
     edit = async(data) => {
       try {
@@ -199,6 +173,17 @@ class DrawerStorePost {
 
       return this.upload(files[0]);
     }
+
+   searchRelation = async({type, fastfilter, id}) => {
+
+     try {
+       const res = await api.post('searchRelation', {type, id, fastfilter});
+
+       return res;
+     } catch(err) {
+       alert(`Ошибка: ${err}`);
+     }
+   }
 
     upload = async(file) => {
       const data = new FormData();
