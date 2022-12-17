@@ -73,6 +73,13 @@ class PriceView extends React.Component {
         minWidth: 350,
         flex: 1,
         renderCell: (cellValues) => cellValues.row.brand
+      },
+      {
+        field: 'categoryIds',
+        headerName: 'Категории',
+        minWidth: 350,
+        flex: 1,
+        renderCell: (cellValues) => cellValues.row.categoryIds
       }
     ];
   }

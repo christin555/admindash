@@ -73,12 +73,14 @@ class Select extends React.Component {
   defaultPlaceholder = 'Выберете значение'
 
   render() {
-    const {placeholder, options, loadOptions, defaultOptions, value} = this.props;
-    let selected = options?.find(({value: val}) => typeof value === 'number' ? Number(val) === Number(value) : val === value);
+    const {placeholder, isMulti, options, loadOptions, defaultOptions, value} = this.props;
+    const selected = isMulti ? value :
+      options?.find(({value: val}) => typeof value === 'number' ? Number(val) === Number(value) : val === value);
 
     return (
       !loadOptions && (
         <ReactSelect
+          isMulti={isMulti}
           placeholder={placeholder || this.defaultPlaceholder}
           {...this.props}
           styles={customStyles}
@@ -87,6 +89,7 @@ class Select extends React.Component {
         />
       ) || (
         <AsyncSelect
+          isMulti={isMulti}
           placeholder={placeholder || this.defaultPlaceholder}
           {...this.props}
           styles={customStyles}
