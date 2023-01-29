@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './Loader.module.scss';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Loader = () => (
   <div className={s.loader}>

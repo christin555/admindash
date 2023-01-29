@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
-import SvgIcon from '@material-ui/core/SvgIcon';
+import SvgIcon from '@mui/material/SvgIcon';
 
 const House = (props) => (
   <SvgIcon viewBox='0 0 123 106' fill='none' {...props}>

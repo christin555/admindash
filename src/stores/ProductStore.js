@@ -1,4 +1,4 @@
-import {observable, action, autorun, set, makeObservable, computed, toJS} from 'mobx';
+import {observable, action, autorun, set, makeObservable, computed} from 'mobx';
 import {status as statusEnum} from '../enums';
 import api from 'api';
 import {groupArray2Object} from '../utils';
@@ -81,6 +81,7 @@ class ProductStore {
 
         this.setFields(grouped);
       } catch(err) {
+        console.log(err);
       }
     };
 

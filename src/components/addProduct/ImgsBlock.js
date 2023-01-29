@@ -5,9 +5,9 @@ import Box from "@mui/material/Box";
 import {toJS} from "mobx";
 import Dropzone from 'react-dropzone';
 import Button from "../../shared/Button";
-import PublishIcon from '@material-ui/icons/Publish';
-import {IconButton, Typography} from "@material-ui/core";
-import CloseIcon from "@material-ui/icons/Close";
+import PublishIcon from '@mui/icons-material/Publish';
+import {IconButton, Typography} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 @inject(({DrawerStore}) => {
     return {

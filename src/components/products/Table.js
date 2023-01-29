@@ -10,9 +10,9 @@ import {
 import {toJS} from "mobx";
 import {TextField} from "@mui/material";
 import {status as statusEnum} from '../../enums';
-import {withStyles} from "@material-ui/core/styles";
+import {withStyles} from "@mui/styles";
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import {IconButton} from "@material-ui/core";
+import {IconButton} from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import Box from "@mui/material/Box";
 import VisibilityIcon from '@mui/icons-material/Visibility';

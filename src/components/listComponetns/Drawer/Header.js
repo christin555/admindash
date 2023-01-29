@@ -1,8 +1,8 @@
 import React from 'react';
 import {inject} from 'mobx-react';
 import s from './style.module.scss';
-import {IconButton, Typography} from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+import {IconButton, Typography} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 
 @inject(({DrawerStore}) => {
   return {

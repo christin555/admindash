@@ -4,7 +4,7 @@ import s from './style.module.scss';
 import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
 
-import {Modal, Typography} from "@material-ui/core";
+import {Modal, Typography} from "@mui/material";
 
 @inject(({ProductsStore}) => {
     return {

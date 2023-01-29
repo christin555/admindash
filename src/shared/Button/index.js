@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ButtonUi from '@material-ui/core/Button';
-import {createStyles, withStyles} from '@material-ui/core/styles';
+import ButtonUi from '@mui/material/Button';
+import {createStyles, withStyles} from '@mui/styles';
 import cn from 'classnames';
 
 const StyledButton = withStyles(({palette}) =>
