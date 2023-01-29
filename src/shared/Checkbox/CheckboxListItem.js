@@ -1,5 +1,5 @@
 import React from 'react';
-import {withStyles} from '@material-ui/core/styles';
+import {withStyles} from '@mui/styles';
 import {
   Checkbox,
   Tooltip,
@@ -8,8 +8,8 @@ import {
   ListItemIcon as ListItemIconUi,
   IconButton,
   ListItemSecondaryAction, TextField
-} from '@material-ui/core';
-import HelpIcon from '@material-ui/icons/Help';
+} from '@mui/material';
+import HelpIcon from '@mui/icons-material/Help';
 import s from './Checkbox.module.scss';
 
 const LightTooltip = withStyles((theme) => {

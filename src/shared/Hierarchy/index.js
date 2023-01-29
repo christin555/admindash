@@ -1,6 +1,6 @@
 import React from 'react';
 import s from './Hierarchy.module.scss';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import {inject} from 'mobx-react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';

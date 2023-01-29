@@ -9,7 +9,7 @@ import {
 } from '@mui/x-data-grid';
 import {toJS} from 'mobx';
 import {status as statusEnum} from '../../enums';
-import {withStyles} from '@material-ui/core/styles';
+import {withStyles} from '@mui/styles';
 import s from './style.module.scss';
 
 function CustomToolbar() {

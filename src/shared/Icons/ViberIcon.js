@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
-import SvgIcon from '@material-ui/core/SvgIcon';
+import SvgIcon from '@mui/material/SvgIcon';
 
 const ViberIcon = (props) => (
   <SvgIcon viewBox='0 0 24 24' {...props}>

@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormControl, FormControlLabel, Radio, RadioGroup, Typography} from '@material-ui/core';
+import {FormControl, FormControlLabel, Radio, RadioGroup, Typography} from '@mui/material';
 import {TextField} from '@mui/material';
 import Box from '@mui/material/Box';
 import Select from '../../shared/Select';

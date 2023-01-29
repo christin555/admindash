@@ -3,7 +3,7 @@ import {inject, Provider} from 'mobx-react';
 import s from './style.module.scss';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import {AppBar} from '@material-ui/core';
+import {AppBar} from '@mui/material';
 import {toJS} from 'mobx';
 import ModalDelete from '../listComponetns/ModalDelete';
 

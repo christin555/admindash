@@ -1,9 +1,9 @@
 import React from 'react';
 import s from './Footer.module.scss';
-import InstagramIcon from '@material-ui/icons/Instagram';
-import WhatsAppIcon from '@material-ui/icons/WhatsApp';
+import InstagramIcon from '@mui/icons-material/Instagram';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import ViberIcon from '../../shared/Icons/ViberIcon';
-import MailOutlineIcon from '@material-ui/icons/MailOutline';
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import Callme from '../Callme';
 const Contacts = () => (
 

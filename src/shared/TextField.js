@@ -1,7 +1,7 @@
 import React from 'react';
-import TextFieldUi from '@material-ui/core/TextField';
-import withStylesUi from '@material-ui/core/styles/withStyles';
-import {createStyles} from '@material-ui/core/styles';
+import TextFieldUi from '@mui/material/TextField';
+import withStylesUi from '@mui/styles/withStyles';
+import {createStyles} from '@mui/styles';
 
 const StyledTextField = withStylesUi(() => createStyles({
   root: {

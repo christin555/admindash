@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
-import SvgIcon from '@material-ui/core/SvgIcon';
+import SvgIcon from '@mui/material/SvgIcon';
 
 const Reliable = (props) => (
   <SvgIcon viewBox='0 0 40 40' {...props}>

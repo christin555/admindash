@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import React from 'react';
-import SvgIcon from '@material-ui/core/SvgIcon';
+import SvgIcon from '@mui/material/SvgIcon';
 
 const Russia = (props) => (
   <SvgIcon viewBox='0 0 1280.000000 642.000000' {...props}>

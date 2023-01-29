@@ -1,9 +1,9 @@
 import React from 'react';
 import s from './Cards.module.scss';
-import CardActions from '@material-ui/core/CardActions';
+import CardActions from '@mui/material/CardActions';
 import {inject} from 'mobx-react';
 import Callme from '../Callme';
-import AddShoppingCartIcon from '@material-ui/icons/ShoppingCart';
+import AddShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 @inject(({RouterStore}) => {
   return {RouterStore};

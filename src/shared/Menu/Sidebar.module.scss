@@ -1,18 +1,27 @@
-.list {
-  a {
-  }
-}
-
-.button {
-  position: absolute !important;
+.menuList {
+  position: fixed !important;
   left: 0;
-  top: 15px;
-  background: rgba(64, 64, 64, 0.56);
-  border-radius: 5%;
+  top: 0;
+  height: 100%;
   padding: 6px 10px;
+  width: 78px;
 
-  & > * {
-    color: white;
+  .logo {
+    margin: 20px auto;
+    width: 40px;
+    height: 40px;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  a > {
+    * {
+      padding: 8px 4px !important;
+      color: white !important;
+      font-size: 13px !important;
+    }
   }
 }
 

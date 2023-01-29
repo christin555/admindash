@@ -1,8 +1,8 @@
 import React from 'react';
 import s from './style.module.scss';
-import ChipUi from '@material-ui/core/Chip';
-import withStylesUi from '@material-ui/core/styles/withStyles';
-import {createStyles} from '@material-ui/core/styles';
+import ChipUi from '@mui/material/Chip';
+import withStylesUi from '@mui/styles/withStyles';
+import {createStyles} from '@mui/styles';
 import classNames from 'classnames';
 
 const StyledChip = withStylesUi(({palette}) => createStyles({
