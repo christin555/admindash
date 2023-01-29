@@ -26,7 +26,8 @@ const menu = [
   {name: 'Товары', link: '/products'},
   {name: 'Посты', link: '/posts'},
   {name: 'Бренды', link: '/brands'},
-  {name: 'Коллекции', link: '/collections'}
+  {name: 'Коллекции', link: '/collections'},
+  {name: 'Заявки', link: '/calls'}
 ];
 
 const Header = () => (

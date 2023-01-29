@@ -8,7 +8,7 @@ import {
   ruRU
 } from '@mui/x-data-grid';
 import {toJS} from 'mobx';
-import {status as statusEnum} from '../../enums';
+import {status as statusEnum, posts} from '../../enums';
 import {withStyles} from '@mui/styles';
 import s from './style.module.scss';
 
@@ -62,24 +62,39 @@ class PriceView extends React.Component {
     return [
       {
         field: 'name',
-        headerName: 'Название',
-        minWidth: 350,
+        headerName: 'Имя',
+        maxWidth: 100,
         flex: 1,
         renderCell: (cellValues) => cellValues.row.name
       },
       {
-        field: 'weight',
-        headerName: 'Порядок',
-        minWidth: 350,
+        field: 'phone',
+        headerName: 'Номер',
+        maxWidth: 200,
         flex: 1,
-        renderCell: (cellValues) => cellValues.row.weight
+        renderCell: (cellValues) => cellValues.row.phone
       },
       {
-        field: 'category',
-        headerName: 'Категория',
+        field: 'createdAt',
+        headerName: 'Дата',
+        maxWidth: 200,
+        flex: 1,
+        renderCell: (cellValues) => new Date(cellValues.row.createdAt).toLocaleString()
+      },
+
+      {
+        field: 'product',
+        headerName: 'Товар',
+        maxWidth: 350,
+        flex: 1,
+        renderCell: (cellValues) => <a href={cellValues.row.product}> Ссылка </a>
+      },
+      {
+        field: 'desc',
+        headerName: 'Подробнее',
         minWidth: 350,
         flex: 1,
-        renderCell: (cellValues) => cellValues.row.category
+        renderCell: (cellValues) => <div dangerouslySetInnerHTML={{__html: cellValues.row.desc}} />
       }
     ];
   }

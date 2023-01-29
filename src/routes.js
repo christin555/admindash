@@ -10,56 +10,62 @@ import {ReactNotifications} from 'react-notifications-component';
 import 'react-notifications-component/dist/theme.css';
 
 // eslint-disable-next-line react/display-name
-const wrap = (name) => (props) => <StoreWrapper {...props} name={name}/>;
+const wrap = (name) => (props) => <StoreWrapper {...props} name={name} />;
+
 //debugger
 // eslint-disable-next-line react/display-name,react/no-multi-comp
 export default () => (
-    <DefaultStyle>
-        <Provider RouterStore={RouterStore}>
-            <BrowserRouter>
-                <ReactNotifications/>
-                <Switch>
-                    <Route
-                        exact={true}
-                        path='/'
-                        render={wrap('products')}
-                    />
-                    <Route
-                        exact={true}
-                        path='/posts'
-                        render={wrap('posts')}
-                    />
-                    <Route
-                        exact={true}
-                        path='/collections'
-                        render={wrap('collections')}
-                    />
-                    <Route
-                        exact={true}
-                        path='/brands'
-                        render={wrap('brands')}
-                    />
-                    <Route
-                        exact={true}
-                        path='/login'
-                        render={wrap('login')}
-                    />
-                    <Route
-                        exact={true}
-                        path='/products/:category?'
-                        render={wrap('products')}
-                    />
-                    <Route
-                        exact={true}
-                        path='/addproduct'
-                        render={wrap('addproduct')}
-                    />
-                    <Route
-                        render={wrap('notFound')}
-                    />
-                </Switch>
-            </BrowserRouter>
-        </Provider>
-    </DefaultStyle>
+  <DefaultStyle>
+    <Provider RouterStore={RouterStore}>
+      <BrowserRouter>
+        <ReactNotifications />
+        <Switch>
+          <Route
+            exact={true}
+            path='/'
+            render={wrap('products')}
+          />
+          <Route
+            exact={true}
+            path='/posts'
+            render={wrap('posts')}
+          />
+          <Route
+            exact={true}
+            path='/collections'
+            render={wrap('collections')}
+          />
+          <Route
+            exact={true}
+            path='/brands'
+            render={wrap('brands')}
+          />
+          <Route
+            exact={true}
+            path='/login'
+            render={wrap('login')}
+          />
+          <Route
+            exact={true}
+            path='/products/:category?'
+            render={wrap('products')}
+          />
+          <Route
+            exact={true}
+            path='/addproduct'
+            render={wrap('addproduct')}
+          />
+          <Route
+            exact={true}
+            path='/calls'
+            render={wrap('calls')}
+          />
+          <Route
+            render={wrap('notFound')}
+          />
+        </Switch>
+      </BrowserRouter>
+    </Provider>
+  </DefaultStyle>
 );
 
