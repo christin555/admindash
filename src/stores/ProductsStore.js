@@ -27,6 +27,8 @@ class ProductsStore extends ListItemsStore {
       this.getCategories();
       this.getColumns();
       this.getCatalogDisposer = autorun(this.getList);
+
+      this.setInitialColumns();
     }
 
     @computed get category() {
@@ -48,6 +50,18 @@ class ProductsStore extends ListItemsStore {
       return updated;
     }
 
+    setInitialColumns = () => {
+      this.showColumns = {
+        img: true,
+        name: true,
+        actions: true,
+        collection: true,
+        brand: true,
+        price: true,
+        salePrice: true
+      };
+    };
+
     @action setCategory = (_, category) => {
       //this.category = category;
       this.RouterStore.history.push(`/products/${category}`);
@@ -61,6 +75,10 @@ class ProductsStore extends ListItemsStore {
 
     @action setPriceChecked = (price) => {
       this.checkedPrice = price;
+    };
+
+    @action setColumns = (_columns) => {
+      this.columns = _columns;
     };
 
     @action updatePrices = () => {
@@ -108,12 +126,11 @@ class ProductsStore extends ListItemsStore {
         const _columns = [];
 
         columns.forEach(({name, title}) => {
-          if (name !== 'name') {
+          if (!Object.keys(this.showColumns).includes(name) && !_columns.some(({field}) => field === name)) {
             _columns.push({
               field: name,
               headerName: title,
               hide: true,
-              flex: 1,
               minWidth: 250
             });
           }

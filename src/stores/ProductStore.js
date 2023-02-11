@@ -1,32 +1,24 @@
-import {observable, action, autorun, set, makeObservable, computed} from 'mobx';
+import {observable, action, autorun, set, makeObservable} from 'mobx';
 import {status as statusEnum} from '../enums';
 import api from 'api';
 import {groupArray2Object} from '../utils';
 
 class ProductStore {
 
-    @observable categories;
-    @observable category;
     @observable status = statusEnum.LOADING;
     @observable card = {};
     @observable fields = {};
 
-    constructor(RouterStore, category) {
+    constructor(RouterStore) {
       this.RouterStore = RouterStore;
-      this.category = category;
+
       makeObservable(this);
-      this.getCategories();
 
       this.getFieldsDisposer = autorun(this.getFields);
     }
 
-    @computed get baseFields() {
-      return [
-        {
-          name: 'categoryId', type: 'select', title: 'Категория',
-          values: this.categories
-        }
-      ];
+    get baseFields() {
+      return {};
     }
 
     @action setValue = (name, value) => {
@@ -35,27 +27,6 @@ class ProductStore {
 
     @action setFields = (fields) => {
       this.fields = fields;
-    };
-
-    @action setCategory = (category) => {
-      this.category = category;
-      this.card.categoryId = category;
-    };
-
-    @action setCategories = (categories) => {
-      this.categories = categories;
-    };
-
-    getCategories = async() => {
-      try {
-        const categories = await api.get('categories/get');
-
-        this.setCategories(categories.map(({id, name}) => {
-          return {value: id, label: name};
-        }));
-      } catch(err) {
-        console.log(err);
-      }
     };
 
     getFields = async() => {
@@ -75,7 +46,6 @@ class ProductStore {
             }
 
             return !!a.isRequired < !!b.isRequired ? 1 : !!a.isRequired > !!b.isRequired ? -1 : 0;
-
           });
         });
 
