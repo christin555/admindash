@@ -1,4 +1,4 @@
-import {observable, action, autorun, computed, set, reaction, toJS} from 'mobx';
+import {observable, action, computed, reaction, toJS} from 'mobx';
 import ProductStore from './ProductStore';
 import api from '../api';
 import {alert} from './Notifications';
@@ -31,20 +31,21 @@ class DrawerStore extends ProductStore {
 
     @action setActions = () => {
       this.mode = this.ProductsStore.actionsData.mode;
-      this.category = this.ProductsStore.category;
+      const {category} = this.ProductsStore;
 
       if (this.mode === 'show' || this.mode === 'edit') {
         this.card = toJS(this.ProductsStore.actionsData.values);
       }
 
       if (this.mode === 'add') {
-        this.card.categoryId = this.category;
+        this.card.categoryId = category;
       }
 
       if (this.mode === 'copy') {
         this.card = toJS(this.ProductsStore.actionsData.values);
         delete this.card.id;
         delete this.card.name;
+        delete this.card.alias;
         delete this.card.imgs;
       }
     }
@@ -89,7 +90,7 @@ class DrawerStore extends ProductStore {
     }
 
     @computed get categoryParams() {
-      return this.ProductsStore.categories.find(({id}) => id === this.category) || {};
+      return this.ProductsStore.categories.find(({id}) => id === this.card.categoryId) || {};
     }
 
     getLabelCollection = (val) => Object.values(this.fields)
@@ -112,11 +113,19 @@ class DrawerStore extends ProductStore {
       return res;
     }
 
+    formatBody = (product) => {
+      if (product.color) {
+        product.color = product.color?.toLowerCase();
+      }
+
+      return product;
+    }
+
     create = async() => {
       const {preparedNewObject} = this;
 
       try {
-        await api.post('addObject', {product: preparedNewObject});
+        await api.post('addObject', {product: this.formatBody(preparedNewObject)});
         this.ProductsStore.afterRequestSuccess();
       } catch(err) {
         alert({type: 'error', title: `Ошибка создания: ${err}`});
@@ -125,7 +134,7 @@ class DrawerStore extends ProductStore {
 
     edit = async(data) => {
       try {
-        await api.post('editProducts', data);
+        await api.post('editProducts', this.formatBody(data));
         this.ProductsStore.afterRequestSuccess();
       } catch(err) {
         alert({type: 'error', title: 'Ошибка'});
@@ -140,12 +149,12 @@ class DrawerStore extends ProductStore {
         data.append('name', this.card.alias);
 
         try {
-          const file = await api.post('upload', data);
+          const _file = await api.post('upload', data);
 
           if (!this.card.imgs) {
-            this.card.imgs = [{src: file}];
+            this.card.imgs = [{src: _file}];
           } else {
-            this.card.imgs.push({src: file});
+            this.card.imgs.push({src: _file});
           }
 
         } catch(e) {

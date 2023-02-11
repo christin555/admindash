@@ -29,12 +29,18 @@ class ListItemsStore {
 
     @observable isDrawerShow = false;
 
+    @observable showColumns = {};
+
     body = {};
 
     constructor(RouterStore) {
       this.RouterStore = RouterStore;
 
       makeObservable(this);
+    }
+
+    @action setShowColumns = ({field, isVisible}) => {
+      this.showColumns[field] = isVisible;
     }
 
     @action openDrawerWithMode = (mode, values = {}) => {

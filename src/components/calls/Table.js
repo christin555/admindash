@@ -94,7 +94,10 @@ class PriceView extends React.Component {
         headerName: 'Подробнее',
         minWidth: 350,
         flex: 1,
-        renderCell: (cellValues) => <div dangerouslySetInnerHTML={{__html: cellValues.row.desc}} />
+        renderCell: (cellValues) => <div
+          dangerouslySetInnerHTML={{__html: cellValues.row.desc}}
+          style={{wordBreak: 'break-word'}}
+        />
       }
     ];
   }
