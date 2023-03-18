@@ -34,6 +34,7 @@ class DrawerStore extends ProductStore {
       const {category} = this.ProductsStore;
 
       if (this.mode === 'show' || this.mode === 'edit') {
+        this.oldCard = toJS(this.ProductsStore.actionsData.values);
         this.card = toJS(this.ProductsStore.actionsData.values);
       }
 
@@ -52,6 +53,7 @@ class DrawerStore extends ProductStore {
 
     @action reset = () => {
       this.card = {};
+      this.oldCard = {};
       this.mode = null;
       this.ProductsStore.actionsData = {};
       this.ProductsStore.setDrawerShow(false);
@@ -59,11 +61,11 @@ class DrawerStore extends ProductStore {
 
     @action apply = () => {
       if (this.mode === 'edit') {
-        this.edit({ids: [this.card.id], data: this.preparedObject});
+        this.edit({ids: [this.card.id], product: this.preparedObject});
       }
 
       if (this.mode === 'massedit') {
-        this.edit({ids: this.selected, data: this.preparedObject});
+        this.edit({ids: this.selected, product: this.preparedObject});
       }
 
       if (this.mode === 'copy' || this.mode === 'add') {
@@ -121,6 +123,18 @@ class DrawerStore extends ProductStore {
       return product;
     }
 
+    getEditedFields = (product) => {
+      const updated = {};
+
+      Object.keys(this.oldCard).forEach((key) => {
+        if (JSON.stringify(product[key]) !== JSON.stringify(this.oldCard[key])) {
+          updated[key] = product[key];
+        }
+      });
+
+      return updated;
+    }
+
     create = async() => {
       const {preparedNewObject} = this;
 
@@ -132,9 +146,14 @@ class DrawerStore extends ProductStore {
       }
     };
 
-    edit = async(data) => {
+    edit = async({ids, product}) => {
+      const body = {
+        ids,
+        data: this.getEditedFields(this.formatBody(product))
+      };
+
       try {
-        await api.post('editProducts', this.formatBody(data));
+        await api.post('editProducts', body);
         this.ProductsStore.afterRequestSuccess();
       } catch(err) {
         alert({type: 'error', title: 'Ошибка'});

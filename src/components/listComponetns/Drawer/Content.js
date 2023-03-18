@@ -21,8 +21,6 @@ class DrawerStore extends React.Component {
         setValue
       } = this.props;
 
-      console.log(fields);
-
       return (
         <div className={s.fields}>
           {

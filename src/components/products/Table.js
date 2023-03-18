@@ -183,7 +183,6 @@ class PriceView extends React.Component {
       const {showColumns} = this.props;
 
       return [...this.baseColumns, ...this.props.columns].map((column) => {
-        console.log(!this.props.showColumns[column.field]);
 
         return {
           ...column,
