@@ -8,6 +8,7 @@ class ProductStore {
     @observable status = statusEnum.LOADING;
     @observable card = {};
     @observable fields = {};
+    @observable oldCard = {};
 
     constructor(RouterStore) {
       this.RouterStore = RouterStore;

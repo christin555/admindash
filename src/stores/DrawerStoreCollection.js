@@ -71,7 +71,6 @@ class DrawerStorePost extends DrawerStoreBase {
     create = async() => {
       const {preparedNewObject: card} = this;
 
-      console.log('create', card);
       try {
         await api.post('addCollection', card);
         this.ListStore.afterRequestSuccess();
