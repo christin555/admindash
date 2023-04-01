@@ -61,11 +61,17 @@ class DrawerStore extends ProductStore {
 
     @action apply = () => {
       if (this.mode === 'edit') {
-        this.edit({ids: [this.card.id], product: this.preparedObject});
+        this.edit({
+          ids: [this.card.id],
+          product: this.getEditedFields(this.formatBody(this.preparedObject))
+        });
       }
 
       if (this.mode === 'massedit') {
-        this.edit({ids: this.selected, product: this.preparedObject});
+        this.edit({
+          ids: this.selected,
+          product: this.formatBody(this.preparedObject)
+        });
       }
 
       if (this.mode === 'copy' || this.mode === 'add') {
@@ -149,7 +155,7 @@ class DrawerStore extends ProductStore {
     edit = async({ids, product}) => {
       const body = {
         ids,
-        data: this.getEditedFields(this.formatBody(product))
+        data: product
       };
 
       try {

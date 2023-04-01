@@ -82,7 +82,7 @@ class ProductsStore extends ListItemsStore {
     };
 
     @action updatePrices = () => {
-      const updated = this.initProducts
+      const updated = this.initList
         .filter(({id}) => this.selected.includes(id))
         .map(({id, price}) => {
           return {
@@ -110,7 +110,7 @@ class ProductsStore extends ListItemsStore {
     updatePricesQuery = async(updated) => {
       try {
         await api.post('updatePrices', {products: updated});
-        this.initProducts = toJS(this.list);
+        this.initList = toJS(this.list);
 
         this.closeModal();
         this.setPriceChecked('');
@@ -166,7 +166,7 @@ class ProductsStore extends ListItemsStore {
         const products = await api.post('getPricesProducts', body);
 
         this.setList(products);
-        this.setInitList();
+        this.setInitList(products);
         this.setStatus(statusEnum.SUCCESS);
       } catch(err) {
         this.setStatus(statusEnum.ERROR);
