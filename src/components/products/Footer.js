@@ -14,56 +14,77 @@ import ModalDelete from './ModalDelete';
     showModal: ProductsStore.showModal,
     isEdit: ProductsStore.isEdit,
     openDrawerWithMode: ProductsStore.openDrawerWithMode,
-    toggleModalDeleteShow: ProductsStore.toggleModalDeleteShow
+    toggleModalDeleteShow: ProductsStore.toggleModalDeleteShow,
+    filter: ProductsStore.filter,
+    setShowOnSite: ProductsStore.setShowOnSite
   };
 })
 class PriceView extends React.Component {
-    openDrawer = () => this.props.openDrawerWithMode('massedit', this.props.selected)
+  openDrawer = () => this.props.openDrawerWithMode('massedit', this.props.selected)
 
-    render() {
-      const {
-        selected,
-        showModal,
-        isEdit,
-        toggleModalDeleteShow
-      } = this.props;
+  render() {
+    const {
+      selected,
+      showModal,
+      isEdit,
+      toggleModalDeleteShow,
+      filter,
+      setShowOnSite
+    } = this.props;
 
-      return (
-        <React.Fragment>
-          {
-            selected?.length && isEdit && (
-              <AppBar className={s.bar} position='sticky'>
-                <Button
-                  variant={'contained'}
-                  onClick={toggleModalDeleteShow}
-                  color={'secondary'}
-                > Удалить товары
-                </Button>
-                {
+    return (
+      <React.Fragment>
+        {
+          selected?.length && isEdit && (
+            <AppBar className={s.bar} position='sticky'>
+
+              {
+                filter.showOnSite === false ? (
                   <Button
                     variant={'contained'}
-                    onClick={showModal}
-                  > Изменить цену
+                    onClick={() => setShowOnSite(true)}
+                    color={'primary'}
+                  > Показывать на сайте
                   </Button>
-                }
-                {
-                  <Button
-                    variant={'contained'}
-                    onClick={this.openDrawer}
-                  > Массовое редактирование
-                  </Button>
-                }
+                ) :
+                  (
+                    <Button
+                      variant={'contained'}
+                      onClick={() => setShowOnSite(false)}
+                      color={'primary'}
+                    > Скрыть с сайта
+                    </Button>
+                  )
+              }
+              <Button
+                variant={'contained'}
+                onClick={toggleModalDeleteShow}
+                color={'secondary'}
+              > Удалить товары
+              </Button>
 
-                <Box> Выбрано {selected?.length} строки </Box>
-              </AppBar>
-            ) ||
-                    null
-          }
-          <Modal />
-          <ModalDelete />
-        </React.Fragment>
-      );
-    }
+              <Button
+                variant={'contained'}
+                onClick={showModal}
+              > Изменить цену
+              </Button>
+
+              <Button
+                variant={'contained'}
+                onClick={this.openDrawer}
+              > Массовое редактирование
+              </Button>
+
+              <Box> Выбрано {selected?.length} строки </Box>
+            </AppBar>
+          ) ||
+          null
+        }
+        <Modal />
+        <ModalDelete />
+      </React.Fragment>
+    );
+  }
 }
 
 export default PriceView;

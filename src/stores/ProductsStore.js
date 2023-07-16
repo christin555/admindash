@@ -18,6 +18,10 @@ class ProductsStore extends ListItemsStore {
     @observable count = 0;
     @observable isHydrating;
 
+    @observable filter = {
+      'showOnSite': true
+    }
+
     body = {};
 
     constructor(RouterStore) {
@@ -62,6 +66,10 @@ class ProductsStore extends ListItemsStore {
       };
     };
 
+    @action setFilter = (key, val) => {
+      this.filter = {...this.filter, [key]: val};
+    }
+
     @action setCategory = (_, category) => {
       //this.category = category;
       this.RouterStore.history.push(`/products/${category}`);
@@ -96,6 +104,20 @@ class ProductsStore extends ListItemsStore {
     @action setCategories = (categories) => {
       this.categories = categories;
     };
+
+    setShowOnSite = async(state) => {
+      try {
+        await api.post('editProducts', {
+          ids: this.selected,
+          data: {
+            showOnSite: state
+          }
+        });
+        this.afterRequestSuccess();
+      } catch(err) {
+        alert({type: 'error', title: 'Ошибка'});
+      }
+    }
 
     afterSave = () => this.updatedPrice.length && this.updatePricesQuery(this.updatedPrice);
     deleteQuery = async() => {
@@ -152,7 +174,7 @@ class ProductsStore extends ListItemsStore {
 
     getList = async() => {
       this.setStatus(statusEnum.LOADING);
-      const {category, fastfilter} = this;
+      const {category, fastfilter, filter} = this;
 
       if (!this.category) {
         return;
@@ -161,7 +183,8 @@ class ProductsStore extends ListItemsStore {
       try {
         const body = {
           fastfilter,
-          categoryId: category
+          categoryId: category,
+          ...filter
         };
         const products = await api.post('getPricesProducts', body);
 
