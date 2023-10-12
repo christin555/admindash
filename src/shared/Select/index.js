@@ -74,7 +74,10 @@ class Select extends React.Component {
 
   render() {
     const {placeholder, isMulti, options, loadOptions, defaultOptions, value} = this.props;
-    const selected = isMulti ? value :
+    const values = [value].flat().map((item) => item?.value || item);
+
+    const selected = isMulti ?
+      options?.filter(({value: val}) => values?.includes(val)) :
       options?.find(({value: val}) => typeof value === 'number' ? Number(val) === Number(value) : val === value);
 
     return (
