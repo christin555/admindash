@@ -11,7 +11,7 @@ const Field = ({name, type, title, adminDesc, search, values, product, setValue,
   const setValueHandler = ({value}) => setValue(name, value);
   const changeValueHandler = ({target: {value}}) => setValue(name, value);
   const setValueMultiHandler = (arrayValues) => {
-    setValue(name, arrayValues);
+    setValue(name, arrayValues.map(({value}) => value));
   };
 
   let block;

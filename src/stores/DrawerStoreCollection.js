@@ -23,7 +23,9 @@ class DrawerStorePost extends DrawerStoreBase {
 
     @computed get fields() {
       const categories = {
-        name: 'categoryIds', type: 'multiselect', title: 'Категория',
+        name: 'categoryIds',
+        type: 'multiselect',
+        title: 'Категория',
         values: this.categories,
         isRequired: false
       };
