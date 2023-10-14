@@ -200,7 +200,6 @@ class DrawerStorePost extends DrawerStoreBase {
     }
 
    searchRelation = async({type, fastfilter, id}) => {
-
      try {
        const res = await api.post('searchRelation', {type, id, fastfilter});
 
