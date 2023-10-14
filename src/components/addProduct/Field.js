@@ -13,6 +13,9 @@ const Field = ({name, type, title, adminDesc, search, values, product, setValue,
   const setValueMultiHandler = (arrayValues) => {
     setValue(name, arrayValues.map(({value}) => value));
   };
+  const setRelations = (arrayValues) => {
+    setValue(name, arrayValues);
+  };
 
   let block;
 
@@ -74,7 +77,7 @@ const Field = ({name, type, title, adminDesc, search, values, product, setValue,
       block = (
         <Relations
           relations={product[name]}
-          onChange={setValueMultiHandler}
+          onChange={setRelations}
           search={search}
         />
       );
