@@ -91,7 +91,7 @@ class PriceView extends React.Component {
             renderCell: (cellValues) =>
                 <a target="_blank"
                    rel="noopener noreferrer"
-                   href={`https://master-pola.com/article/${cellValues.row.alias}`}
+                   href={`https://master-pola.com/blog/article/${cellValues.row.alias}`}
                 >
                     {cellValues.row.title}
                 </a>,
