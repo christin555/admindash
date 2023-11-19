@@ -6,32 +6,32 @@ import {toJS} from "mobx";
 import Dropzone from 'react-dropzone';
 import Button from "../../shared/Button";
 import PublishIcon from '@mui/icons-material/Publish';
-import {IconButton, Typography} from "@mui/material";
+import {IconButton} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 @inject(({DrawerStore}) => {
+
     return {
         product: toJS(DrawerStore.card) || {},
         loadFiled: DrawerStore.loadFiled,
-        setMainPhoto: DrawerStore.setMainPhoto,
-        deletePhoto: DrawerStore.deletePhoto,
-        mode: DrawerStore.mode,
+        deleteVideo: DrawerStore.deleteVideo,
+        mode: DrawerStore.mode
     };
 })
 class DrawerStore extends React.Component {
 
     get isShow() {
-        return this.props.mode !== 'show'
+        return this.props.mode !== 'show';
     }
 
     get blocks() {
         const {
             product,
             setMainPhoto,
-            deletePhoto
+            deleteVideo
         } = this.props;
 
-        return product.imgs?.map(({src, isMain}) => {
+        return product.video?.map(({src}) => {
                 const _src = 'https://master-pola.com' + src;
                 return <div
                     key={src}
@@ -39,22 +39,13 @@ class DrawerStore extends React.Component {
                     <IconButton
                         size={'small'}
                         className={s.delBut}
-                        onClick={() => deletePhoto(src)}>
+                        onClick={() => deleteVideo(src)}>
                         {this.isShow ? <CloseIcon/> : null}
                     </IconButton>
 
                     <div className={s.imgBlock}>
-                        <img src={_src}/>
+                        <video src={_src}/>
                     </div>
-                    <Box display={'flex'} flexDirection={'column'}>
-                        {
-                            isMain ? <span className={s.main}> Главная </span> :
-                                this.isShow ?
-                                    <Button className={s.buttmain} size={'small'} onClick={() => setMainPhoto(src)}>
-                                        Сделать главной
-                                    </Button> : null
-                        }
-                    </Box>
                 </div>
             }
         );
@@ -74,7 +65,7 @@ class DrawerStore extends React.Component {
                 </div>
 
                 {
-                    this.isShow ? <Dropzone onDrop={(files) => loadFiled(files, 'imgs')}>
+                    this.isShow ? <Dropzone onDrop={(files) => loadFiled(files, 'video')}>
                         {({getRootProps, getInputProps}) => (
                             <React.Fragment>
                                 <Button
@@ -83,7 +74,7 @@ class DrawerStore extends React.Component {
                                     variant="contained"
                                     className={s.upButton}
                                     {...getRootProps()}>
-                                    Загрузить фотографию
+                                    Загрузить видео
                                     <input {...getInputProps()} />
                                 </Button>
                             </React.Fragment>
