@@ -48,6 +48,7 @@ class DrawerStore extends ProductStore {
         delete this.card.name;
         delete this.card.alias;
         delete this.card.imgs;
+        delete this.card.video;
       }
     }
 
@@ -95,6 +96,10 @@ class DrawerStore extends ProductStore {
 
     @action deletePhoto = (src) => {
       this.setValue('imgs', toJS(this.card.imgs).filter((item) => src !== item.src));
+    }
+
+    @action deleteVideo = (src) => {
+      this.setValue('video', toJS(this.card.video).filter((item) => src !== item.src));
     }
 
     @computed get categoryParams() {
@@ -166,7 +171,7 @@ class DrawerStore extends ProductStore {
       }
     }
 
-    loadFiled = async(files) => {
+    loadFiled = (files, field) => {
       files.map(async(file) => {
         const data = new FormData();
 
@@ -176,10 +181,10 @@ class DrawerStore extends ProductStore {
         try {
           const _file = await api.post('upload', data);
 
-          if (!this.card.imgs) {
-            this.card.imgs = [{src: _file}];
+          if (!this.card[field]) {
+            this.card[field] = [{src: _file}];
           } else {
-            this.card.imgs.push({src: _file});
+            this.card[field].push({src: _file});
           }
 
         } catch(e) {

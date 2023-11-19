@@ -4,6 +4,7 @@ import {TextField} from '@mui/material';
 import Box from '@mui/material/Box';
 import Select from '../../shared/Select';
 import MediaBlock from './MediaBlock';
+import VideoBlock from './VideoBlock'
 import ImgsBlock from './ImgsBlock';
 import Relations from './Relations';
 
@@ -63,6 +64,9 @@ const Field = ({name, type, title, adminDesc, search, values, product, setValue,
       break;
     case 'catalogImgs':
       block = <ImgsBlock />;
+      break;
+    case 'catalogVideo':
+      block = <VideoBlock />;
       break;
     case 'mediaDrop':
       block = (
