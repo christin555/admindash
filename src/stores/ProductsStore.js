@@ -62,7 +62,8 @@ class ProductsStore extends ListItemsStore {
         collection: true,
         brand: true,
         price: true,
-        salePrice: true
+        salePrice: true,
+        priceUpdatedAt: true
       };
     };
 

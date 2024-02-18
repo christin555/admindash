@@ -6,7 +6,7 @@ import {toJS} from "mobx";
 import Dropzone from 'react-dropzone';
 import Button from "../../shared/Button";
 import PublishIcon from '@mui/icons-material/Publish';
-import {IconButton, Typography} from "@mui/material";
+import {IconButton} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
 @inject(({DrawerStore}) => {

@@ -5,6 +5,7 @@ import Button from '@mui/material/Button';
 import {AppBar} from '@mui/material';
 import {toJS} from 'mobx';
 import ModalDelete from './ModalDelete';
+import s from './style.module.scss';
 
 @inject(({ListStore}) => {
   return {
@@ -16,6 +17,8 @@ import ModalDelete from './ModalDelete';
   };
 })
 class Footer extends React.Component {
+  openDrawer = () => this.props.openDrawerWithMode('massedit', this.props.selected)
+
   render() {
     const {
       selected,
