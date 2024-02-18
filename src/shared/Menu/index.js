@@ -24,6 +24,7 @@ const StyledDrawer = withStyles(({palette}) =>
 
 const menu = [
   {name: 'Товары', link: '/products'},
+  {name: 'Услуги', link: '/services'},
   {name: 'Посты', link: '/posts'},
   {name: 'Бренды', link: '/brands'},
   {name: 'Коллекции', link: '/collections'},

@@ -61,6 +61,11 @@ export default () => (
             render={wrap('calls')}
           />
           <Route
+            exact={true}
+            path='/services'
+            render={wrap('services')}
+          />
+          <Route
             render={wrap('notFound')}
           />
         </Switch>

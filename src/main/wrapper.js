@@ -34,6 +34,9 @@ const Page = loadable(
       case 'calls' : {
         return import('../components/calls');
       }
+      case 'services' : {
+        return import('../components/services');
+      }
       default:
         return import('../shared/InformBlocks/PageNotFound');
     }

@@ -1,25 +1,24 @@
 import React from 'react';
 import {inject, Provider} from 'mobx-react';
-import DrawerView from "./DrawerView";
+import DrawerView from './DrawerView';
 
 @inject('ListStore')
 class FilterViewHOC extends React.Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        const {ListStore, DrawerStore} = this.props;
+    const {ListStore, DrawerStore} = this.props;
 
-        this.DrawerStore = new DrawerStore(ListStore);
-    }
+    this.DrawerStore = new DrawerStore(ListStore);
+  }
 
-
-    render() {
-        return (
-            <Provider DrawerStore={this.DrawerStore}>
-                <DrawerView/>
-            </Provider>
-        );
-    }
+  render() {
+    return (
+      <Provider DrawerStore={this.DrawerStore}>
+        <DrawerView />
+      </Provider>
+    );
+  }
 }
 
 export default FilterViewHOC;

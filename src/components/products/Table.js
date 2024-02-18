@@ -85,7 +85,7 @@ class PriceView extends React.Component {
       {
         field: 'name',
         headerName: 'Название',
-        minWidth: 350,
+        minWidth: 300,
         flex: 1,
         renderCell: (cellValues) => (
           <a
@@ -99,9 +99,8 @@ class PriceView extends React.Component {
       },
       {
         field: 'actions',
-        flex: 1,
         headerName: '',
-        minWidth: 150,
+        width: 120,
         renderCell: (cellValues) => (
           <Box display={'flex'} gap={'5px'}>
             <IconButton
@@ -135,13 +134,13 @@ class PriceView extends React.Component {
         field: 'brand',
         flex: 1,
         headerName: 'Бренд',
-        minWidth: 200
+        minWidth: 150
       },
       {
         field: 'price',
         flex: 1,
         headerName: 'Цена, руб',
-        minWidth: 150,
+        minWidth: 100,
         renderCell: (cellValues) => {
           if (!this.props.isEdit) {
             return cellValues.value;
@@ -161,7 +160,7 @@ class PriceView extends React.Component {
         field: 'salePrice',
         flex: 1,
         headerName: 'Цена со скидкой, руб',
-        minWidth: 150,
+        minWidth: 100,
         renderCell: (cellValues) => {
           if (!this.props.isEdit) {
             return cellValues.value;
@@ -176,6 +175,13 @@ class PriceView extends React.Component {
             />
           );
         }
+      },
+      {
+        field: 'priceUpdatedAt',
+        headerName: 'Дата обновления цены',
+        minWidth: 100,
+        flex: 1,
+        renderCell: (cellValues) => cellValues.row.priceUpdatedAt || 'Не указано'
       }
     ];
 
