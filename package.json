@@ -5,6 +5,7 @@
   "dependencies": {
     "@babel/core": "7.20.12",
     "@babel/plugin-proposal-decorators": "^7.12.1",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@brainhubeu/react-carousel": "^2.0.4",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
@@ -110,10 +111,11 @@
     ]
   },
   "browserslist": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
+    ">0.2%",
+    "not dead",
+    "not op_mini all",
+    "not op_mob >= 1"
+  ],
   "babel": {
     "presets": [
       "react-app"
