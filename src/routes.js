@@ -52,6 +52,11 @@ export default () => (
           />
           <Route
             exact={true}
+            path='/stocks/:tab?'
+            render={wrap('stocks')}
+          />
+          <Route
+            exact={true}
             path='/addproduct'
             render={wrap('addproduct')}
           />

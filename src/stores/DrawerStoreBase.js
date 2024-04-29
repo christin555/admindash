@@ -29,9 +29,10 @@ class DrawerStoreBase {
   get preparedObject() {
     return Object.entries(this.card).reduce((res, [key, val]) => {
       const value = val?.value || val;
+      const oldValue = this.oldCard[key]?.value || this.oldCard[key];
 
-      if (value && this.oldCard[key] !== value) {
-        res[key] = val;
+      if (value !== null && oldValue !== value) {
+        res[key] = value;
       }
 
       return res;
@@ -40,6 +41,10 @@ class DrawerStoreBase {
 
   @action setActions = () => {
     this.mode = this.ListStore.actionsData.mode;
+
+    if (this.mode === 'add') {
+      this.setDefualts();
+    }
 
     if (this.mode === 'show' || this.mode === 'edit') {
       this.oldCard = toJS(this.ListStore.actionsData.values);
@@ -66,7 +71,16 @@ class DrawerStoreBase {
   }
 
   failReq = () => Object.values(this.fields).flat()
-    .some(({isRequired, name}) => isRequired && !this.card[name])
+    .some(({isRequired, name}) => isRequired && this.card[name] == null)
+
+  @action setDefualts = () => {
+    Object.values(this.fields).flat()
+      .forEach((item) => {
+        if ('default' in item) {
+          this.card[item.name] = item.default;
+        }
+      });
+  }
 
   @action apply = () => {
     if (this.mode === 'edit') {
@@ -84,7 +98,6 @@ class DrawerStoreBase {
     }
 
     if (this.mode === 'add') {
-
       if (this.failReq()) {
         alert({type: 'error', title: 'Заполните обязательные поля'});
 

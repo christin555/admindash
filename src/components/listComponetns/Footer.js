@@ -23,7 +23,8 @@ class Footer extends React.Component {
     const {
       selected,
       isEdit,
-      toggleModalDeleteShow
+      toggleModalDeleteShow,
+      withMassEdit = true
     } = this.props;
 
     return (
@@ -38,17 +39,20 @@ class Footer extends React.Component {
               > Удалить
               </Button>
               {
-                <Button
-                  variant={'contained'}
-                  onClick={this.openDrawer}
-                > Массовое редактирование
-                </Button>
+                withMassEdit ? (
+                  <Button
+                    variant={'contained'}
+                    onClick={this.openDrawer}
+                  > Массовое редактирование
+                  </Button>
+                ) :
+                  null
               }
 
               <Box> Выбрано {selected?.length} строки </Box>
             </AppBar>
           ) ||
-                    null
+          null
         }
         <ModalDelete />
       </React.Fragment>
