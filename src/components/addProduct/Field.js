@@ -4,13 +4,21 @@ import {TextField} from '@mui/material';
 import Box from '@mui/material/Box';
 import Select from '../../shared/Select';
 import MediaBlock from './MediaBlock';
-import VideoBlock from './VideoBlock'
+import VideoBlock from './VideoBlock';
 import ImgsBlock from './ImgsBlock';
 import Relations from './Relations';
+import {AdapterDayjs} from '@mui/x-date-pickers/AdapterDayjs';
+import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
+import {DatePicker} from '@mui/x-date-pickers/DatePicker';
+import 'dayjs/locale/ru';
+import dayjs from 'dayjs';
 
-const Field = ({name, type, title, adminDesc, search, values, product, setValue, isRequired, isMulti}) => {
+const Field = ({placeholder, name, type, title, adminDesc, search, values, product, setValue, isRequired, isMulti}) => {
   const setValueHandler = ({value}) => setValue(name, value);
   const changeValueHandler = ({target: {value}}) => setValue(name, value);
+
+  const changeBoolValueHandler = ({target: {value}}) => setValue(name, value === 'true');
+
   const setValueMultiHandler = (arrayValues) => {
     setValue(name, arrayValues.map(({value}) => value));
   };
@@ -86,6 +94,26 @@ const Field = ({name, type, title, adminDesc, search, values, product, setValue,
         />
       );
       break;
+    case 'searchSelect' :
+      block = (
+        <Select
+          value={product[name] || null}
+          onChange={(val) => setValue(name, val)}
+          loadOptions={search}
+          placeholder={placeholder}
+        />
+      );
+      break;
+    case 'date':
+      block = (
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
+          <DatePicker
+            value={product[name] ? dayjs(product[name]) : null}
+            onChange={(val) => setValue(name, val)}
+          />
+        </LocalizationProvider>
+      );
+      break;
     case 'integer':
       block = (
         <TextField
@@ -100,9 +128,9 @@ const Field = ({name, type, title, adminDesc, search, values, product, setValue,
     case 'boolean':
       block = (
         <FormControl>
-          <RadioGroup row={true} value={product[name] || ''} onChange={changeValueHandler}>
-            <FormControlLabel value={'true'} control={<Radio />} label='Да' />
-            <FormControlLabel value={'false'} control={<Radio />} label='Нет' />
+          <RadioGroup row={true} value={product[name]} onChange={changeBoolValueHandler}>
+            <FormControlLabel value={true} control={<Radio />} label='Да' />
+            <FormControlLabel value={false} control={<Radio />} label='Нет' />
           </RadioGroup>
         </FormControl>
       );

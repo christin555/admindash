@@ -17,6 +17,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import s from './style.module.scss';
+import dayjs from 'dayjs';
 
 function CustomToolbar() {
   return (
@@ -181,7 +182,7 @@ class PriceView extends React.Component {
         headerName: 'Дата обновления цены',
         minWidth: 100,
         flex: 1,
-        renderCell: (cellValues) => cellValues.row.priceUpdatedAt || 'Не указано'
+        renderCell: (cellValues) => dayjs(cellValues.row.priceUpdatedAt).format('DD.MM.YYYY hh:mm') || 'Не указано'
       }
     ];
 

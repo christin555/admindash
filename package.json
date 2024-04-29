@@ -13,6 +13,7 @@
     "@mui/material": "^5.11.6",
     "@mui/styles": "^5.11.2",
     "@mui/x-data-grid": "^5.5.0",
+    "@mui/x-date-pickers": "^7.3.1",
     "@pmmmwh/react-refresh-webpack-plugin": "0.4.2",
     "@svgr/webpack": "5.4.0",
     "@testing-library/jest-dom": "^5.11.6",
@@ -108,18 +109,11 @@
       "react-app/jest"
     ]
   },
-  "browserslist": {
-    "production": [
-      "last 5 chrome version",
+  "browserslist": [
+      ">0.2%",
       "not dead",
       "not op_mini all"
     ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
   "babel": {
     "presets": [
       "react-app"
