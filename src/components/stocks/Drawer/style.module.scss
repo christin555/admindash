@@ -20,21 +20,38 @@
   }
 }
 
-.id{
+.id {
   font-weight: 300;
   color: #737374;
+}
+
+.headerCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .buttons {
+    display: flex;
+    gap: 10px;
+
+    .button{
+      background: #5b6e82;
+      color: white;
+    }
+
+  }
 }
 
 .drawer {
   max-width: 80%;
 }
 
-.name{
-  margin-top:20px;
+.name {
+  margin-top: 20px;
   font-size: 18px;
   font-weight: 400;
 
-  &:hover{
+  &:hover {
     color: #69ceff;
   }
 }

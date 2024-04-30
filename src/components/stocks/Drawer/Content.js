@@ -2,12 +2,11 @@ import React from 'react';
 import {inject} from 'mobx-react';
 import s from './style.module.scss';
 import {toJS} from 'mobx';
-import Box from '@mui/material/Box';
-import {Typography} from '@mui/material';
+import {Box, Tab, Button} from '@mui/material';
 import Tabs, {tabsClasses} from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Table from './Table';
 import DataPicker from '../../../shared/DataPicker';
+import AddIcon from '@mui/icons-material/Add';
 
 @inject(({DrawerCardStore}) => {
   return {
@@ -46,17 +45,36 @@ class DrawerStore extends React.Component {
 
     return (
       <div className={s.fields}>
-        <div>
-          <div className={s.name}>
-            <a
-              target='_blank'
-              rel='noopener noreferrer'
-              href={`https://master-pola.com/product/${card.alias}`}
-            >
-              {card.name}
-            </a>
+        <div className={s.headerCard}>
+          <div>
+            <div className={s.name}>
+              <a
+                target='_blank'
+                rel='noopener noreferrer'
+                href={`https://master-pola.com/product/${card.alias}`}
+              >
+                {card.name}
+              </a>
+            </div>
+            <div className={s.code}> aрт. {card.code}</div>
           </div>
-          <div className={s.code}> aрт. {card.code}</div>
+
+          <div className={s.buttons}>
+            <Button
+              className={s.button}
+              variant={'outlined'}
+              startIcon={<AddIcon width={'10px'} />}
+            >
+              Добавить приход
+            </Button>
+            <Button
+              className={s.button}
+              variant={'outlined'}
+              startIcon={<AddIcon width={'10px'} />}
+            >
+              Добавить продажу
+            </Button>
+          </div>
         </div>
 
         <div className={s.prices}>
