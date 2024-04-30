@@ -38,31 +38,31 @@ class DrawerStore extends React.Component {
       <div> {`Цена: ${card.prices?.price} руб`}  </div> :
       null;
 
-    const blocks = card.next?.map(({dateArrival, amount}) => (
+    const blocks = card.next ? card.next.map(({dateArrival, amount}) => (
       <div key={`${dateArrival}_${amount}`}>
         <span className={s.dateArrival}> {dateArrival}</span>, {amount} уп.
       </div>
-    )) || null;
+    )) : null;
 
     return (
       <div className={s.fields}>
-          <div>
-            <div className={s.name}>
-              <a
-                target='_blank'
-                rel='noopener noreferrer'
-                href={`https://master-pola.com/product/${card.alias}`}
-              >
-                {card.name}
-              </a>
-            </div>
-            <div className={s.code}> aрт. {card.code}</div>
+        <div>
+          <div className={s.name}>
+            <a
+              target='_blank'
+              rel='noopener noreferrer'
+              href={`https://master-pola.com/product/${card.alias}`}
+            >
+              {card.name}
+            </a>
           </div>
+          <div className={s.code}> aрт. {card.code}</div>
+        </div>
 
-          <div className={s.prices}>
-            {salePrice}
-            {price}
-          </div>
+        <div className={s.prices}>
+          {salePrice}
+          {price}
+        </div>
 
         <Box display={'flex'} flexDirection={'row'} alignItems={'flex-start'} gap={'300px'}>
           <div className={s.fieldName}> В наличии: {card.amount} уп.</div>
