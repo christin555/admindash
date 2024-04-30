@@ -31,7 +31,12 @@ class DrawerStorePost extends DrawerStoreBase {
             type: 'searchSelect',
             title: 'Товар',
             isRequired: true,
-            placeholder: 'Введите код или наименование'
+            placeholder: 'Введите код или наименование',
+            additionals: {
+              amount: 'В наличии на складе',
+              price: 'Цена',
+              salePrice: 'Цена со скидкой'
+            }
           }
         ]
       };

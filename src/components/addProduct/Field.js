@@ -13,7 +13,20 @@ import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import 'dayjs/locale/ru';
 import dayjs from 'dayjs';
 
-const Field = ({placeholder, name, type, title, adminDesc, search, values, product, setValue, isRequired, isMulti}) => {
+const Field = ({
+  placeholder,
+  name,
+  type,
+  title,
+  additionals,
+  adminDesc,
+  search,
+  values,
+  product,
+  setValue,
+  isRequired,
+  isMulti
+}) => {
   const setValueHandler = ({value}) => setValue(name, value);
   const changeValueHandler = ({target: {value}}) => setValue(name, value);
 
@@ -137,6 +150,22 @@ const Field = ({placeholder, name, type, title, adminDesc, search, values, produ
       break;
   }
 
+  const additonals = additionals ? (
+    <Box display={'flex'} flexDirection={'column'} marginTop={'10px'}>
+      {Object.entries(additionals).flatMap(([key, label]) => {
+        if (product[name]?.[key] == null) {
+          return [];
+        }
+
+        return (
+          <div>
+            {label}: {product[name]?.[key]}
+          </div>
+        );
+      })}
+    </Box>
+  ) : null;
+
   return (
     <Box
       display={'flex'}
@@ -148,6 +177,7 @@ const Field = ({placeholder, name, type, title, adminDesc, search, values, produ
         {title || name} {isRequired && <Box marginLeft={'10px'} color={'red'}> * </Box> || null}
       </Typography>
       {block}
+      {additonals}
     </Box>
   );
 };

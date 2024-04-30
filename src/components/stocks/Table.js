@@ -277,7 +277,7 @@ class PriceView extends React.Component {
               <div key={`${dateArrival}_${amount}`}>
                 <span className={s.dateArrival}>{dayjs(dateArrival).format('DD.MM.YYYY')}
                 </span>
-                {` - ${amount} уп.`}
+                {`, ${amount} уп.`}
               </div>
             ));
 
