@@ -9,8 +9,31 @@
   gap: 20px;
 }
 
+
+.cardButton {
+  color: black;
+  background: rgba(206, 206, 206, 0.3);
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 7px;
+  width: max-content;
+  font-weight: 350;
+}
+
 .dateArrival {
-  color: #0c4361;
+  color: #07495f;
+}
+
+.entityName {
+  color: #737374;
+}
+
+.id {
+  color: #737374;
+}
+
+.arrow {
+  color: #737374;
 }
 
 .modal {
@@ -23,8 +46,32 @@
   left: 50%;
 }
 
+.cardHeader {
+  letter-spacing: 0.25px;
+  cursor: pointer;
+  width: 100%;
+
+  .name {
+    font-weight: 400;
+  }
+
+  .code {
+    margin-top: 8px;
+    color: #737374;
+  }
+
+  .price {
+    margin-top: 10px;
+
+    & > * + * {
+      margin-top: 8px;
+    }
+  }
+}
+
+
 .amount {
-  font-weight: 500;
+  font-weight: 400;
   color: #127f97;
 }
 

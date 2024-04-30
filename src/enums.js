@@ -1,3 +1,14 @@
+const entity = {
+  CATEGORY: 1,
+  PRODUCT: 2,
+  ARTICLE: 3,
+  SERVICE: 4,
+  WORK: 5,
+  ARRIVAL: 6,
+  SALE: 7,
+  STOCK: 8
+};
+
 const status = {
   LOADING: 1,
   SUCCESS: 2,
@@ -10,6 +21,7 @@ const posts = {
 };
 
 module.exports = {
+  entity,
   status,
   posts
 };

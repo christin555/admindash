@@ -2,15 +2,28 @@ import {status as statusEnum} from '../enums';
 import api from 'api';
 import {alert} from './Notifications';
 import {ListItemsStore} from './ListItemsStore';
-import {action, autorun, computed} from 'mobx';
+import {action, autorun, computed, makeObservable, observable} from 'mobx';
 
 class Store extends ListItemsStore {
   RouterStore;
+  @observable isDrawerCardShow = false;
 
   constructor(RouterStore) {
     super(RouterStore);
 
     this.disposer = autorun(this.getList);
+
+    makeObservable(this);
+  }
+
+  @action setDrawerCardShow = (status, card) => {
+    this.isDrawerCardShow = status;
+
+    if (status) {
+      this.actionsData = {mode: 'show', values: card};
+    } else {
+      this.actionsData = {};
+    }
   }
 
   @computed get tab() {

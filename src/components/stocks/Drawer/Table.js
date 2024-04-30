@@ -5,7 +5,7 @@ import {
   ruRU
 } from '@mui/x-data-grid';
 import {toJS} from 'mobx';
-import {status as statusEnum} from '../../enums';
+import {status as statusEnum} from '../../../enums';
 import {withStyles} from '@mui/styles';
 import s from './style.module.scss';
 import {IconButton} from '@mui/material';
@@ -14,15 +14,14 @@ import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import dayjs from 'dayjs';
-import formatLogs from './formatLogs';
-import formatLogsName from './formatLogsName';
-import Button from '../../shared/Button';
-import renderCard from './renderCard';
+import formatLogs from '../formatLogs';
+import formatLogsName from '../formatLogsName';
 
 const StyledDataGrid = withStyles({
   root: {
     '& .MuiDataGrid-renderingZone': {
-      maxHeight: 'none !important'
+      maxHeight: 'none !important',
+      minHeight: '200px'
     },
     '& .MuiDataGrid-cell': {
       lineHeight: 'unset !important',
@@ -36,24 +35,20 @@ const StyledDataGrid = withStyles({
       position: 'relative !important'
     },
     '& .MuiDataGrid-virtualScrollerContent': {
-      height: 'auto !important'
+      minHeight: '200px',
+      height: '100% !important'
     }
   }
 })(DataGrid);
 
-@inject(({ListStore}) => {
+@inject(({DrawerCardStore, ListStore}) => {
   return {
-    list: toJS(ListStore.list) || [],
-    status: ListStore.status,
-    isEdit: ListStore.isEdit,
-    setSelected: ListStore.setSelected,
-    selected: ListStore.selected,
-    setLimit: ListStore.setLimit,
-    limit: ListStore.limit,
-    openDrawerWithMode: ListStore.openDrawerWithMode,
-    priceUnitGrouped: ListStore.priceUnitGrouped,
-    tab: ListStore.tab,
-    setDrawerCardShow: ListStore.setDrawerCardShow
+    list: toJS(DrawerCardStore.TableStore.list) || [],
+    status: DrawerCardStore.TableStore.status,
+    setLimit: DrawerCardStore.TableStore.setLimit,
+    limit: DrawerCardStore.TableStore.limit,
+    tab: DrawerCardStore.tab,
+    openDrawerWithMode: ListStore.openDrawerWithMode
   };
 })
 class PriceView extends React.Component {
@@ -72,20 +67,22 @@ class PriceView extends React.Component {
           field: 'action',
           headerName: 'Действие',
           minWidth: 100,
+          maxWidth: 300,
           flex: 1,
           renderCell: (cellValues) => formatLogsName(cellValues.row.action)
         },
         {
           field: 'data',
           headerName: 'Детали',
-          minWidth: 200,
+          minWidth: 300,
+          maxWidth: 500,
           flex: 1,
           renderCell: (cellValues) => formatLogs(cellValues.row)
         },
         {
           field: 'created_at',
           headerName: 'Дата',
-          minWidth: 100,
+          maxWidth: 150,
           flex: 1,
           renderCell: (cellValues) => dayjs(cellValues.row.created_at).format('DD.MM.YYYY HH:mm') || 'Не указано'
         }
@@ -94,22 +91,17 @@ class PriceView extends React.Component {
         {
           field: 'id',
           headerName: 'Номер',
-          maxWidth: 80,
+          minWidth: 100,
+          maxWidth: 200,
           flex: 1,
-          renderCell: (cellValues) => <span className={s.id}>#{cellValues.row.id}</span>
-        },
-        {
-          field: 'name',
-          headerName: 'Товар',
-          minWidth: 300,
-          flex: 1,
-          renderCell: ({row}) => renderCard({row, setDrawerCardShow: this.props.setDrawerCardShow})
+          renderCell: (cellValues) => <span className={s.id}> #{cellValues.row.id}</span>
         },
         {
           field: 'amount',
           flex: 1,
           headerName: 'Колво упаковок',
-          minWidth: 150,
+          minWidth: 100,
+          maxWidth: 200,
           renderCell: (cellValues) => {
             const count = cellValues.row.amount || '0';
 
@@ -120,6 +112,7 @@ class PriceView extends React.Component {
           field: 'dateArrival',
           headerName: 'Дата прихода',
           minWidth: 100,
+          maxWidth: 200,
           flex: 1,
           renderCell: (cellValues) => dayjs(cellValues.row.dateArrival).format('DD.MM.YYYY') || 'Не указано'
         },
@@ -127,6 +120,7 @@ class PriceView extends React.Component {
           field: 'isReceived',
           headerName: 'Получен',
           minWidth: 100,
+          maxWidth: 200,
           flex: 1,
           renderCell: (cellValues) => cellValues.row.isReceived ? 'да' : 'нет'
         },
@@ -134,35 +128,9 @@ class PriceView extends React.Component {
           field: 'updated_at',
           headerName: 'Дата обновления',
           minWidth: 100,
+          maxWidth: 200,
           flex: 1,
           renderCell: (cellValues) => dayjs(cellValues.row.updated_at).format('DD.MM.YYYY HH:mm') || 'Не указано'
-        },
-        {
-          field: 'actions',
-          headerName: '',
-          width: 120,
-          renderCell: (cellValues) => (
-            <Box display={'flex'} gap={'5px'}>
-              <IconButton
-                onClick={() => this.props.openDrawerWithMode('copy', cellValues.row)}
-                children={<ContentCopyIcon />}
-                variant='standard'
-                size={'small'}
-              />
-              <IconButton
-                onClick={() => this.props.openDrawerWithMode('edit', cellValues.row)}
-                children={<EditIcon />}
-                variant='standard'
-                size={'small'}
-              />
-              <IconButton
-                onClick={() => this.props.openDrawerWithMode('show', cellValues.row)}
-                children={<VisibilityIcon />}
-                variant='standard'
-                size={'small'}
-              />
-            </Box>
-          )
         }
       ],
       'sales': [
@@ -174,17 +142,11 @@ class PriceView extends React.Component {
           renderCell: (cellValues) => <span className={s.id}> #{cellValues.row.id}</span>
         },
         {
-          field: 'name',
-          headerName: 'Товар',
-          minWidth: 300,
-          flex: 1,
-          renderCell: ({row}) => renderCard({row, setDrawerCardShow: this.props.setDrawerCardShow})
-        },
-        {
           field: 'amount',
           flex: 1,
           headerName: 'Продано упаковок',
-          minWidth: 150,
+          minWidth: 100,
+          maxWidth: 200,
           renderCell: (cellValues) => {
             const count = cellValues.row.amount || '0';
 
@@ -211,90 +173,58 @@ class PriceView extends React.Component {
           minWidth: 100,
           flex: 1,
           renderCell: (cellValues) => dayjs(cellValues.row.updated_at).format('DD.MM.YYYY HH:mm') || 'Не указано'
-        },
-        {
-          field: 'actions',
-          headerName: '',
-          width: 120,
-          renderCell: (cellValues) => (
-            <Box display={'flex'} gap={'5px'}>
-              <IconButton
-                onClick={() => this.props.openDrawerWithMode('copy', cellValues.row)}
-                children={<ContentCopyIcon />}
-                variant='standard'
-                size={'small'}
-              />
-              <IconButton
-                onClick={() => this.props.openDrawerWithMode('edit', cellValues.row)}
-                children={<EditIcon />}
-                variant='standard'
-                size={'small'}
-              />
-              <IconButton
-                onClick={() => this.props.openDrawerWithMode('show', cellValues.row)}
-                children={<VisibilityIcon />}
-                variant='standard'
-                size={'small'}
-              />
-            </Box>
-          )
         }
       ],
       'stock': [
         {
-          field: 'name',
-          headerName: 'Товар',
-          minWidth: 400,
+          field: 'id',
+          headerName: 'Номер',
+          maxWidth: 80,
           flex: 1,
-          renderCell: ({row}) => renderCard({row, setDrawerCardShow: this.props.setDrawerCardShow})
+          renderCell: (cellValues) => <span className={s.id}> #{cellValues.row.id}</span>
+        },
+        {
+          field: 'action',
+          headerName: 'Действие',
+          minWidth: 100,
+          maxWidth: 200,
+          flex: 1,
+          renderCell: (cellValues) => formatLogsName(cellValues.row.action)
         },
         {
           field: 'amount',
-          flex: 1,
-          headerName: 'В наличии на складе',
-          minWidth: 200,
-          maxWidth: 250,
-          renderCell: (cellValues) => {
-            const count = cellValues.row.amount || '0';
-
-            return <span className={s.amount}> {count} уп.</span>;
-          }
-        },
-        {
-          field: 'next',
-          flex: 1,
-          headerName: 'Ожидается',
-          minWidth: 250,
-          maxWidth: 350,
-          renderCell: (cellValues) => {
-            const {next} = cellValues.row;
-
-            if (!next) {
-              return;
-            }
-
-            const blocks = next.map(({dateArrival, amount}) => (
-              <div key={`${dateArrival}_${amount}`}>
-                <span className={s.dateArrival}>{dayjs(dateArrival).format('DD.MM.YYYY')}
-                </span>
-                {` - ${amount} уп.`}
-              </div>
-            ));
-
-            return (
-              <Box display={'flex'} flexDirection={'column'} gap={'10px'} padding={'10px 0'}>
-                {blocks}
-              </Box>
-            );
-          }
-        },
-        {
-          field: 'updated_at',
-          headerName: 'Дата обновления',
+          headerName: 'Количество',
           minWidth: 100,
-          maxWidth: 160,
+          maxWidth: 200,
           flex: 1,
-          renderCell: (cellValues) => dayjs(cellValues.row.updated_at).format('DD.MM.YYYY HH:mm') || 'Не указано'
+          renderCell: (cellValues) =>
+            `${cellValues.row.action === 'addStock' ? '+' : ''}${cellValues.row.data?.amount} уп.`
+        },
+        {
+          field: 'stockCount',
+          headerName: 'Остаток на складе',
+          minWidth: 100,
+          maxWidth: 200,
+          flex: 1,
+          renderCell: (cellValues) => `${cellValues.row.data?.stockCount} уп.`
+        },
+        {
+          field: 'reason',
+          headerName: 'Причина',
+          minWidth: 100,
+          flex: 1,
+          renderCell: (cellValues) => {
+            const {reason, reasonId} = cellValues.row.data || {};
+
+            return reason ? <span>{reason} #{reasonId}</span> : null;
+          }
+        },
+        {
+          field: 'created_at',
+          headerName: 'Дата',
+          maxWidth: 150,
+          flex: 1,
+          renderCell: (cellValues) => dayjs(cellValues.row.created_at).format('DD.MM.YYYY HH:mm') || 'Не указано'
         }
       ]
     };
@@ -303,29 +233,24 @@ class PriceView extends React.Component {
   render() {
     const {
       list,
-      setSelected,
-      isEdit,
       status,
       setLimit,
       limit,
-      selected,
       tab
     } = this.props;
 
     return (
       <StyledDataGrid
+        height={'100%'}
         loading={status === statusEnum.LOADING}
         localeText={ruRU.components.MuiDataGrid.defaultProps.localeText}
-        autoHeight={true}
+        autoHeight={false}
         rows={list}
         columns={this.columns[tab]}
         pageSize={limit}
         rowsPerPageOptions={[20, 50, 100]}
         onPageSizeChange={setLimit}
-        checkboxSelection={isEdit}
         disableSelectionOnClick={true}
-        selectionModel={selected}
-        onSelectionModelChange={setSelected}
         disableColumnMenu={true}
         //   autoPageSize
       />

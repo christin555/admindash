@@ -159,8 +159,7 @@ class ProductsStore extends ListItemsStore {
           }
         });
         this.setColumns(_columns);
-      } catch(err) {
-      }
+      } catch(err) {}
     };
 
     getCategories = async() => {

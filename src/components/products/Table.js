@@ -22,7 +22,7 @@ import dayjs from 'dayjs';
 function CustomToolbar() {
   return (
     <GridToolbarContainer style={{margin: '10px', gap: '10px'}} className={s.toolbar}>
-      <GridToolbarColumnsButton onChange={() => console.log('GridToolbarColumnsButton')} />
+      <GridToolbarColumnsButton />
       <GridToolbarFilterButton />
       <GridToolbarDensitySelector />
       <GridToolbarExport csvOptions={{fileName: 'Экспорт', utf8WithBom: true}} />
@@ -182,7 +182,7 @@ class PriceView extends React.Component {
         headerName: 'Дата обновления цены',
         minWidth: 100,
         flex: 1,
-        renderCell: (cellValues) => dayjs(cellValues.row.priceUpdatedAt).format('DD.MM.YYYY hh:mm') || 'Не указано'
+        renderCell: (cellValues) => dayjs(cellValues.row.priceUpdatedAt).format('DD.MM.YYYY HH:mm') || 'Не указано'
       }
     ];
 

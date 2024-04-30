@@ -42,6 +42,11 @@ class DrawerStoreBase {
   @action setActions = () => {
     this.mode = this.ListStore.actionsData.mode;
 
+    if (!this.mode) {
+      this.oldCard = {};
+      this.card = {};
+    }
+
     if (this.mode === 'add') {
       this.setDefualts();
     }

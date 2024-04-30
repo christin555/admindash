@@ -47,7 +47,7 @@ class Toolbar extends React.Component {
               placeholder={'Поиск по названию, коллекции или бренду'}
             />
           </Box>
-          <Box display={'flex'}  alignItems={'center'}>
+          <Box display={'flex'} alignItems={'center'}>
             <Typography>Показывать</Typography>
             <Checkbox
               size={'small'}

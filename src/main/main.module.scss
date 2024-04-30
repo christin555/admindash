@@ -1,5 +1,5 @@
 @import '../shared/style';
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;350;400;450;500&display=swap');
 
 a {
   color: black !important;
@@ -93,7 +93,7 @@ body {
   z-index: 3;
   box-sizing: border-box;
   min-height: 100vh;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 1);
   padding: 0 20px 10px;
   flex-direction: column;
 }
