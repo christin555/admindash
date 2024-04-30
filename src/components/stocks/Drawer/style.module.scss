@@ -1,0 +1,73 @@
+.container {
+  background: white;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100%;
+  width: 1200px;
+}
+
+.dateArrival {
+  color: #0773b3;
+}
+
+.prices {
+  font-weight: 350;
+  margin: 20px 0;
+
+  & > * + * {
+    margin-top: 8px;
+  }
+}
+
+.id{
+  font-weight: 300;
+  color: #737374;
+}
+
+.drawer {
+  max-width: 80%;
+}
+
+.name{
+  margin-top:20px;
+  font-size: 18px;
+  font-weight: 400;
+
+  &:hover{
+    color: #69ceff;
+  }
+}
+
+.code {
+  font-size: 14px;
+  font-weight: 350;
+  color: #737374;
+  margin-top: 10px;
+}
+
+.fieldName {
+  background: rgb(227, 187, 87);
+  color: white;
+  width: max-content;
+  font-weight: 350;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.fields {
+  padding: 6px 14px;
+  overflow-y: scroll;
+  height: 100%;
+  font-weight: 350;
+}
+
+.header {
+  background: rgb(47, 140, 203);
+  color: white !important;
+  padding: 6px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+

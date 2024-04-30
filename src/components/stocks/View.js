@@ -5,6 +5,8 @@ import Header from './Header';
 import Toolbar from './Toolbar';
 import Drawer from '../listComponetns/Drawer';
 import DrawerStore from '../../stores/DrawerStoreStock';
+import DrawerCardStoreStock from '../../stores/DrawerCardStoreStock';
+import DrawerCard from './Drawer';
 
 const View = () => (
   <React.Fragment>
@@ -13,6 +15,7 @@ const View = () => (
     <Table />
     <Footer withMassEdit={false} />
     <Drawer DrawerStore={DrawerStore} />
+    <DrawerCard DrawerCardStore={DrawerCardStoreStock} />
   </React.Fragment>
 );
 

@@ -2,14 +2,13 @@ import React from 'react';
 import {inject} from 'mobx-react';
 import s from './style.module.scss';
 import {Drawer} from '@mui/material';
-import Footer from './Footer';
 import Header from './Header';
 import Content from './Content';
 
-@inject(({DrawerStore, ListStore}) => {
+@inject(({DrawerCardStore, ListStore}) => {
   return {
-    isDrawerShow: ListStore.isDrawerShow,
-    reset: DrawerStore.resetCard
+    isDrawerShow: ListStore.isDrawerCardShow,
+    reset: DrawerCardStore.resetCard
   };
 })
 class DrawerStore extends React.Component {
@@ -29,7 +28,6 @@ class DrawerStore extends React.Component {
         <div className={s.container}>
           <Header />
           <Content />
-          <Footer />
         </div>
       </Drawer>
     );

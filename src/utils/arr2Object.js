@@ -46,7 +46,7 @@ module.exports = {
         });
 
         if (
-            typeof newKey === 'number' ||
+          typeof newKey === 'number' ||
             typeof newKey === 'string' ||
             typeof newKey === 'boolean'
         ) {

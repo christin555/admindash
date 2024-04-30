@@ -2,7 +2,7 @@ import {status as statusEnum} from '../enums';
 import api from 'api';
 import {alert} from './Notifications';
 import {ListItemsStore} from './ListItemsStore';
-import {action, computed, observable} from 'mobx';
+import {action, observable} from 'mobx';
 import {array2Object} from '../utils';
 
 class ServicesStore extends ListItemsStore {

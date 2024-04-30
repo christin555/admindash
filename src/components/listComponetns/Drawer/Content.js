@@ -24,7 +24,7 @@ class DrawerStore extends React.Component {
       return (
         <div className={s.fields}>
           {
-            Object.entries(fields).map(([key, values]) => (
+            Object.entries(fields)?.map(([key, values]) => (
               <React.Fragment>
                 <div className={s.nameGroup}> {groupNames[key] || key}  </div>
                 <div className={s.row}> {

@@ -7,7 +7,9 @@ const names = {
   'addArrival': 'Добавление прихода',
   'addSale': 'Продажа',
   'deleteSale': 'Удаление продажи',
-  'deleteArrival': 'Удаление прихода'
+  'deleteArrival': 'Удаление прихода',
+  'editArrival': 'Изменение прихода',
+  'editSale': 'Изменение продажи'
 };
 
 const classes = {
