@@ -16,14 +16,16 @@ class Store extends ListItemsStore {
     makeObservable(this);
   }
 
-  @action setDrawerCardShow = (status, card) => {
-    this.isDrawerCardShow = status;
-
+  @action setDrawerCardShow = async(status, card) => {
     if (status) {
-      this.actionsData = {mode: 'show', values: card};
+      const stock = await this.getStockProduct(card);
+
+      this.actionsData = {mode: 'show', values: stock};
     } else {
       this.actionsData = {};
     }
+
+    this.isDrawerCardShow = status;
   }
 
   @computed get tab() {
@@ -32,6 +34,18 @@ class Store extends ListItemsStore {
 
   @action setTab = (_, tab) => {
     this.RouterStore.history.push(`/stocks/${tab}`);
+  }
+
+  getStockProduct = async(card) => {
+    const body = {id: card.code};
+
+    try {
+      const [stock] = await api.post('getStocks', body);
+
+      return stock;
+    } catch(err) {
+      alert({type: 'error', title: 'Ошибка'});
+    }
   }
 
   deleteQuery = async() => {
