@@ -16,6 +16,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import dayjs from 'dayjs';
 import formatLogs from '../formatLogs';
 import formatLogsName from '../formatLogsName';
+import formaSaleBlock from '../aboutSale';
 
 const StyledDataGrid = withStyles({
   root: {
@@ -92,9 +93,16 @@ class PriceView extends React.Component {
           field: 'id',
           headerName: 'Номер',
           minWidth: 100,
-          maxWidth: 200,
+          maxWidth: 80,
           flex: 1,
           renderCell: (cellValues) => <span className={s.id}> #{cellValues.row.id}</span>
+        },
+        {
+          field: 'accountNumber',
+          flex: 1,
+          headerName: 'Номер счета',
+          minWidth: 150,
+          renderCell: (cellValues) => <span>#{cellValues.row.accountNumber}</span>
         },
         {
           field: 'amount',
@@ -125,6 +133,13 @@ class PriceView extends React.Component {
           renderCell: (cellValues) => cellValues.row.isReceived ? 'да' : 'нет'
         },
         {
+          field: 'notes',
+          flex: 1,
+          headerName: 'Примечание',
+          minWidth: 150,
+          renderCell: (cellValues) => cellValues.row.notes
+        },
+        {
           field: 'updated_at',
           headerName: 'Дата обновления',
           minWidth: 100,
@@ -142,6 +157,20 @@ class PriceView extends React.Component {
           renderCell: (cellValues) => <span className={s.id}> #{cellValues.row.id}</span>
         },
         {
+          field: 'saleDate',
+          headerName: 'Дата продажи',
+          minWidth: 100,
+          flex: 1,
+          renderCell: (cellValues) => dayjs(cellValues.row.saleDate).format('DD.MM.YYYY') || 'Не указано'
+        },
+        {
+          field: 'about',
+          flex: 1,
+          headerName: 'О продаже',
+          minWidth: 150,
+          renderCell: (cellValues) => formaSaleBlock(cellValues)
+        },
+        {
           field: 'amount',
           flex: 1,
           headerName: 'Продано упаковок',
@@ -154,11 +183,19 @@ class PriceView extends React.Component {
           }
         },
         {
-          field: 'saleDate',
-          headerName: 'Дата продажи',
+          field: 'shippingDate',
+          headerName: 'Дата отгрузки',
           minWidth: 100,
           flex: 1,
-          renderCell: (cellValues) => dayjs(cellValues.row.saleDate).format('DD.MM.YYYY') || 'Не указано'
+          renderCell: (cellValues) => cellValues.row.shippingDate ?
+            dayjs(cellValues.row.shippingDate).format('DD.MM.YYYY') : 'Не указано'
+        },
+        {
+          field: 'isShipped',
+          headerName: 'Отгружен',
+          minWidth: 100,
+          flex: 1,
+          renderCell: (cellValues) => cellValues.row.isShipped ? 'да' : 'нет'
         },
         {
           field: 'notes',
@@ -214,9 +251,10 @@ class PriceView extends React.Component {
           minWidth: 100,
           flex: 1,
           renderCell: (cellValues) => {
-            const {reason, reasonId} = cellValues.row.data || {};
+            const {reason, reasonId, reasonDetails} = cellValues.row.data || {};
+            const det = reasonDetails ? `(${reasonDetails})` : null;
 
-            return reason ? <span>{reason} #{reasonId}</span> : null;
+            return reason ? <span>{reason} #{reasonId} {det} </span> : null;
           }
         },
         {

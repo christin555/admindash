@@ -1,19 +1,23 @@
-import {status as statusEnum} from '../enums';
+import {status as statusEnum} from '../../enums';
 import api from 'api';
-import {alert} from './Notifications';
-import {ListItemsStore} from './ListItemsStore';
+import {alert} from '../Notifications';
+import {ListItemsStore} from '../ListItemsStore';
 import {action, autorun, computed, makeObservable, observable} from 'mobx';
 
 class Store extends ListItemsStore {
   RouterStore;
   @observable isDrawerCardShow = false;
+  @observable date = {min: null, max: null}
 
   constructor(RouterStore) {
     super(RouterStore);
+    makeObservable(this);
 
     this.disposer = autorun(this.getList);
+  }
 
-    makeObservable(this);
+  @action setDate = (prop, val) => {
+    this.date = {...this.date, [prop]: val};
   }
 
   @action setDrawerCardShow = async(status, card) => {
@@ -66,10 +70,10 @@ class Store extends ListItemsStore {
 
   getList = async() => {
     this.setStatus(statusEnum.LOADING);
-    const {fastfilter} = this;
+    const {fastfilter, date} = this;
 
     try {
-      const body = {fastfilter};
+      const body = {fastfilter, date};
 
       let list = [];
 

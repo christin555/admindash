@@ -9,7 +9,7 @@ import Content from './Content';
 @inject(({DrawerStore, ListStore}) => {
   return {
     isDrawerShow: ListStore.isDrawerShow,
-    reset: DrawerStore.resetCard
+    reset: DrawerStore.reset
   };
 })
 class DrawerStore extends React.Component {

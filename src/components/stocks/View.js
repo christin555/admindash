@@ -4,8 +4,8 @@ import Table from './Table';
 import Header from './Header';
 import Toolbar from './Toolbar';
 import Drawer from '../listComponetns/Drawer';
-import DrawerStore from '../../stores/DrawerStoreStock';
-import DrawerCardStoreStock from '../../stores/DrawerCardStoreStock';
+import DrawerStore from '../../stores/stocks/DrawerStoreStock';
+import DrawerCardStoreStock from '../../stores/stocks/DrawerCardStoreStock';
 import DrawerCard from './Drawer';
 
 const View = () => (
