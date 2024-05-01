@@ -1,6 +1,6 @@
 import React from 'react';
 import {inject, Provider} from 'mobx-react';
-import StocksStore from '../../stores/StocksStore';
+import StocksStore from '../../stores/stocks/StocksStore';
 import View from './View';
 
 @inject('RouterStore')

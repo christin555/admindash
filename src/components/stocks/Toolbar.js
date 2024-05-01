@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import {TextField} from '@mui/material';
 import s from './style.module.scss';
+import DataPicker from "../../shared/DataPicker";
 
 @inject(({ListStore}) => {
   return {
@@ -15,7 +16,9 @@ import s from './style.module.scss';
     fastFilterInput: ListStore.fastFilterInput,
     setFastFilter: ListStore.setFastFilter,
     setFastFilterInput: ListStore.setFastFilterInput,
-    openDrawerWithMode: ListStore.openDrawerWithMode
+    openDrawerWithMode: ListStore.openDrawerWithMode,
+    setDate: ListStore.setDate,
+    date: ListStore.date
   };
 })
 class Toolbar extends React.Component {
@@ -28,7 +31,9 @@ class Toolbar extends React.Component {
       fastFilterInput,
       setFastFilterInput,
       setFastFilter,
-      tab
+      tab,
+      setDate,
+      date
     } = this.props;
 
     let buttons = null;
@@ -68,8 +73,8 @@ class Toolbar extends React.Component {
     }
 
     return (
-      <Box className={s.menu} margin={'20px 0'} display={'flex'} gap={'20px'} justifyContent={'space-between'}>
-        <Box width={'390px'} className={s.search}>
+      <Box margin={'20px 0'} display={'flex'} gap={'20px'} justifyContent={'space-between'}>
+        <Box display={'flex'} alignItems={'center'} gap={'10px'}>
           <TextField
             onChange={({target: {value}}) => setFastFilterInput(value)}
             onBlur={setFastFilter}
@@ -78,6 +83,25 @@ class Toolbar extends React.Component {
             fullWidth={true}
             placeholder={'Поиск по названию'}
           />
+          <Box display={'flex'} alignItems={'center'} gap={'8px'} minWidth={'400px'}>
+            <div>
+              Период
+            </div>
+
+            <DataPicker
+              slotProps={{textField: {size: 'small'}}}
+              val={date.min}
+              setValue={(val) => setDate('min', val)}
+            />
+
+            <div> - </div>
+            <DataPicker
+              slotProps={{textField: {size: 'small'}}}
+              val={date.max}
+              setValue={(val) => setDate('max', val)}
+            />
+
+          </Box>
         </Box>
         <Box display={'flex'} gap={'20px'}>
           {buttons}

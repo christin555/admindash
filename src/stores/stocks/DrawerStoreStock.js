@@ -1,8 +1,8 @@
 import {observable, action, computed, set, reaction, toJS, makeObservable} from 'mobx';
 
-import api from '../api';
-import {alert} from './Notifications';
-import DrawerStoreBase from './DrawerStoreBase';
+import api from '../../api';
+import {alert} from '../Notifications';
+import DrawerStoreBase from '../DrawerStoreBase';
 
 class DrawerStorePost extends DrawerStoreBase {
   constructor(ListStore) {
@@ -16,16 +16,6 @@ class DrawerStorePost extends DrawerStoreBase {
       return {
         'main': [
           {
-            name: 'saleDate',
-            type: 'date',
-            title: 'Дата продажи',
-            isRequired: true,
-            default: new Date()
-          },
-          {name: 'amount', type: 'integer', title: 'Колво упаковок', isRequired: true},
-          {name: 'notes', type: 'text', title: 'Заметки'},
-          {name: 'price', type: 'integer', title: 'Стоимость'},
-          {
             search: this.searchProduct,
             name: 'productId',
             type: 'searchSelect',
@@ -37,7 +27,20 @@ class DrawerStorePost extends DrawerStoreBase {
               price: 'Цена',
               salePrice: 'Цена со скидкой'
             }
-          }
+          },
+          {
+            name: 'saleDate',
+            type: 'date',
+            title: 'Дата продажи',
+            isRequired: true,
+            default: new Date()
+          },
+          {name: 'amount', type: 'integer', title: 'Колво упаковок', isRequired: true},
+          {name: 'client', type: 'character varying', title: 'Клиент', isRequired: true},
+          {name: 'shippingDate', type: 'date', title: 'Дата отгрузки', isRequired: true, default: new Date()},
+          {name: 'isShipped', type: 'boolean', title: 'Отгружен', isRequired: true, default: true},
+          {name: 'price', type: 'integer', title: 'Стоимость'},
+          {name: 'notes', type: 'text', title: 'Заметки'}
         ]
       };
     }
@@ -45,22 +48,24 @@ class DrawerStorePost extends DrawerStoreBase {
     return {
       'main': [
         {
-          name: 'dateArrival',
-          type: 'date',
-          title: 'Дата прихода',
-          isRequired: true,
-          default: new Date()
-        },
-        {name: 'isReceived', type: 'boolean', title: 'Получен', isRequired: true},
-        {name: 'amount', type: 'integer', title: 'Колво упаковок', isRequired: true},
-        {
           search: this.searchProduct,
           name: 'productId',
           type: 'searchSelect',
           title: 'Товар',
           isRequired: true,
           placeholder: 'Введите код или наименование'
-        }
+        },
+        {
+          name: 'dateArrival',
+          type: 'date',
+          title: 'Дата прихода',
+          isRequired: true,
+          default: new Date()
+        },
+        {name: 'amount', type: 'integer', title: 'Колво упаковок', isRequired: true},
+        {name: 'accountNumber', type: 'character varying', title: 'Номер счета', isRequired: true},
+        {name: 'isReceived', type: 'boolean', title: 'Получен', isRequired: true},
+        {name: 'notes', type: 'text', title: 'Заметки'}
       ]
     };
   }

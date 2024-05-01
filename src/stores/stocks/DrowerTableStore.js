@@ -1,6 +1,6 @@
-import {status as statusEnum} from '../enums';
+import {status as statusEnum} from '../../enums';
 import api from 'api';
-import {ListItemsStore} from './ListItemsStore';
+import {ListItemsStore} from '../ListItemsStore';
 import {action, autorun, makeObservable, observable} from 'mobx';
 
 class Store extends ListItemsStore {

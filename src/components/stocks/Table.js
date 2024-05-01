@@ -8,7 +8,7 @@ import {toJS} from 'mobx';
 import {status as statusEnum} from '../../enums';
 import {withStyles} from '@mui/styles';
 import s from './style.module.scss';
-import {IconButton} from '@mui/material';
+import {IconButton, Tooltip} from '@mui/material';
 import Box from '@mui/material/Box';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import EditIcon from '@mui/icons-material/Edit';
@@ -16,8 +16,12 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import dayjs from 'dayjs';
 import formatLogs from './formatLogs';
 import formatLogsName from './formatLogsName';
-import Button from '../../shared/Button';
+
 import renderCard from './renderCard';
+import formatShipBlock from './awaitShipBlock';
+import formatStockBlock from './awaitStockBlock';
+import formaSaleBlock from './aboutSale';
+import HelpIcon from '@mui/icons-material/Help';
 
 const StyledDataGrid = withStyles({
   root: {
@@ -106,6 +110,20 @@ class PriceView extends React.Component {
           renderCell: ({row}) => renderCard({row, setDrawerCardShow: this.props.setDrawerCardShow})
         },
         {
+          field: 'accountNumber',
+          flex: 1,
+          headerName: 'Номер счета',
+          minWidth: 150,
+          renderCell: (cellValues) => <span>#{cellValues.row.accountNumber}</span>
+        },
+        {
+          field: 'dateArrival',
+          headerName: 'Дата прихода',
+          minWidth: 100,
+          flex: 1,
+          renderCell: (cellValues) => dayjs(cellValues.row.dateArrival).format('DD.MM.YYYY') || 'Не указано'
+        },
+        {
           field: 'amount',
           flex: 1,
           headerName: 'Колво упаковок',
@@ -117,18 +135,18 @@ class PriceView extends React.Component {
           }
         },
         {
-          field: 'dateArrival',
-          headerName: 'Дата прихода',
-          minWidth: 100,
-          flex: 1,
-          renderCell: (cellValues) => dayjs(cellValues.row.dateArrival).format('DD.MM.YYYY') || 'Не указано'
-        },
-        {
           field: 'isReceived',
           headerName: 'Получен',
           minWidth: 100,
           flex: 1,
           renderCell: (cellValues) => cellValues.row.isReceived ? 'да' : 'нет'
+        },
+        {
+          field: 'notes',
+          flex: 1,
+          headerName: 'Примечание',
+          minWidth: 150,
+          renderCell: (cellValues) => cellValues.row.notes
         },
         {
           field: 'updated_at',
@@ -143,12 +161,6 @@ class PriceView extends React.Component {
           width: 120,
           renderCell: (cellValues) => (
             <Box display={'flex'} gap={'5px'}>
-              <IconButton
-                onClick={() => this.props.openDrawerWithMode('copy', cellValues.row)}
-                children={<ContentCopyIcon />}
-                variant='standard'
-                size={'small'}
-              />
               <IconButton
                 onClick={() => this.props.openDrawerWithMode('edit', cellValues.row)}
                 children={<EditIcon />}
@@ -181,6 +193,20 @@ class PriceView extends React.Component {
           renderCell: ({row}) => renderCard({row, setDrawerCardShow: this.props.setDrawerCardShow})
         },
         {
+          field: 'saleDate',
+          headerName: 'Дата продажи',
+          minWidth: 100,
+          flex: 1,
+          renderCell: (cellValues) => dayjs(cellValues.row.saleDate).format('DD.MM.YYYY') || 'Не указано'
+        },
+        {
+          field: 'about',
+          flex: 1,
+          headerName: 'О продаже',
+          minWidth: 150,
+          renderCell: (cellValues) => formaSaleBlock(cellValues)
+        },
+        {
           field: 'amount',
           flex: 1,
           headerName: 'Продано упаковок',
@@ -192,18 +218,19 @@ class PriceView extends React.Component {
           }
         },
         {
-          field: 'saleDate',
-          headerName: 'Дата продажи',
+          field: 'shippingDate',
+          headerName: 'Дата отгрузки',
           minWidth: 100,
           flex: 1,
-          renderCell: (cellValues) => dayjs(cellValues.row.saleDate).format('DD.MM.YYYY') || 'Не указано'
+          renderCell: (cellValues) => cellValues.row.shippingDate ?
+            dayjs(cellValues.row.shippingDate).format('DD.MM.YYYY') : 'Не указано'
         },
         {
-          field: 'notes',
+          field: 'isShipped',
+          headerName: 'Отгружен',
+          minWidth: 100,
           flex: 1,
-          headerName: 'Заметки',
-          minWidth: 150,
-          renderCell: (cellValues) => cellValues.row.notes
+          renderCell: (cellValues) => cellValues.row.isShipped ? 'да' : 'нет'
         },
         {
           field: 'updated_at',
@@ -218,12 +245,6 @@ class PriceView extends React.Component {
           width: 120,
           renderCell: (cellValues) => (
             <Box display={'flex'} gap={'5px'}>
-              <IconButton
-                onClick={() => this.props.openDrawerWithMode('copy', cellValues.row)}
-                children={<ContentCopyIcon />}
-                variant='standard'
-                size={'small'}
-              />
               <IconButton
                 onClick={() => this.props.openDrawerWithMode('edit', cellValues.row)}
                 children={<EditIcon />}
@@ -251,7 +272,7 @@ class PriceView extends React.Component {
         {
           field: 'amount',
           flex: 1,
-          headerName: 'В наличии на складе',
+          headerName: <Box display={'flex'} alignItems={'center'} gap={'4px'}>В наличии на складе <Tooltip title='Без учета хранения и ожидаемых приходов'><HelpIcon color={'info'} fontSize={'10px'} /></Tooltip> </Box>,
           minWidth: 200,
           maxWidth: 250,
           renderCell: (cellValues) => {
@@ -266,27 +287,15 @@ class PriceView extends React.Component {
           headerName: 'Ожидается',
           minWidth: 250,
           maxWidth: 350,
-          renderCell: (cellValues) => {
-            const {next} = cellValues.row;
-
-            if (!next) {
-              return;
-            }
-
-            const blocks = next.map(({dateArrival, amount}) => (
-              <div key={`${dateArrival}_${amount}`}>
-                <span className={s.dateArrival}>{dayjs(dateArrival).format('DD.MM.YYYY')}
-                </span>
-                {`, ${amount} уп.`}
-              </div>
-            ));
-
-            return (
-              <Box display={'flex'} flexDirection={'column'} gap={'10px'} padding={'10px 0'}>
-                {blocks}
-              </Box>
-            );
-          }
+          renderCell: (cellValues) => formatStockBlock(cellValues)
+        },
+        {
+          field: 'awaits',
+          flex: 1,
+          headerName: 'На хранении',
+          minWidth: 250,
+          maxWidth: 350,
+          renderCell: (cellValues) => formatShipBlock(cellValues)
         },
         {
           field: 'updated_at',

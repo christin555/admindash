@@ -4,9 +4,8 @@
   flex-direction: column;
   overflow: hidden;
   height: 100%;
-  width: 1200px;
+  width: 1400px;
 }
-
 .dateArrival {
   color: #0773b3;
 }
@@ -42,17 +41,18 @@
   }
 }
 
-.drawer {
-  max-width: 80%;
+.helperText{
+  color: #737374;
 }
 
 .name {
   margin-top: 20px;
   font-size: 18px;
   font-weight: 400;
+  text-decoration: underline  !important;
 
-  &:hover {
-    color: #69ceff;
+  a:hover {
+    color: #165c84 !important;
   }
 }
 

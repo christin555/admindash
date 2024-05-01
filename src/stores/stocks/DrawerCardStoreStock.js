@@ -1,12 +1,13 @@
 import {observable, action, computed, set, reaction, toJS, makeObservable} from 'mobx';
 
-import DrawerStoreBase from './DrawerStoreBase';
+import DrawerStoreBase from '../DrawerStoreBase';
 import DrawerTableStore from './DrowerTableStore';
 
 class DrawerStorePost extends DrawerStoreBase {
   @observable tab = 'stock';
 
-  @observable date = {min: null, max: null}
+  @observable date = {min: null, max: null};
+
   constructor(ListStore) {
     super(ListStore);
 

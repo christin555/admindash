@@ -23,7 +23,6 @@ class DrawerStore extends React.Component {
         anchor={'right'}
         open={isDrawerShow}
         onClose={reset}
-        className={s.drawer}
       >
         <div className={s.container}>
           <Header />

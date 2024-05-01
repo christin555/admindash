@@ -8,7 +8,7 @@ const dataPicker = ({val, setValue, slotProps}) => (
   <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='ru'>
     <DatePicker
       value={val ? dayjs(val) : null}
-      onChange={setValue}
+      onChange={(date) => setValue(dayjs(date).format('YYYY.MM.DD.'))}
       slotProps={slotProps}
     />
   </LocalizationProvider>
