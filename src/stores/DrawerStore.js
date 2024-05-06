@@ -2,6 +2,7 @@ import {observable, action, computed, reaction, toJS} from 'mobx';
 import ProductStore from './ProductStore';
 import api from '../api';
 import {alert} from './Notifications';
+import {entity} from '../enums';
 
 class DrawerStore extends ProductStore {
     @observable mode;
@@ -176,7 +177,9 @@ class DrawerStore extends ProductStore {
         const data = new FormData();
 
         data.append('file', file);
-        data.append('name', this.card.alias);
+        data.append('dir', `${String(entity.PRODUCT)}/${this.card.categoryId}`);
+
+        this.card.alias && data.append('alias', this.card.alias);
 
         try {
           const _file = await api.post('upload', data);

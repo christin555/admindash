@@ -213,7 +213,8 @@ class DrawerStorePost extends DrawerStoreBase {
       const data = new FormData();
 
       data.append('file', file);
-      data.append('name', this.card.alias);
+      data.append('alias', this.card.alias);
+      data.append('dir', 'posts');
 
       try {
         return await api.post('upload', data);
