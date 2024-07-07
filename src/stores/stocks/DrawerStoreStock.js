@@ -172,7 +172,7 @@ class DrawerStorePost extends DrawerStoreBase {
   getArrivals = async() => {
     try {
       const res = await api.post('getArrives', {
-        id: this.card.productId,
+        productId: this.card.productId?.value || this.card.productId,
         date: {min: new Date()},
         withAvailableSum: true
       });
