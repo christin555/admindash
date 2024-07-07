@@ -57,19 +57,39 @@
 }
 
 .code {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 350;
-  color: #737374;
-  margin-top: 10px;
+  margin: 10px 0 20px;
+  color: black;
+
+  .title{
+    color: #737374;
+    font-weight: 400;
+  }
 }
 
-.fieldName {
-  background: rgb(227, 187, 87);
+.notes{
+  background: beige;
+  padding: 4px;
+  border-radius: 4px;
+}
+
+@mixin chipCount {
   color: white;
   width: max-content;
   font-weight: 350;
   padding: 2px 8px;
   border-radius: 10px;
+}
+
+.fieldName {
+  background: rgba(13, 96, 10, 0.38);
+  @include chipCount;
+
+  &All{
+    @include chipCount;
+    background: rgba(131, 185, 187, 0.69);
+  }
 }
 
 .fields {

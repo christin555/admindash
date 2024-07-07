@@ -4,18 +4,17 @@ import dayjs from 'dayjs';
 import s from './style.module.scss';
 
 const formatBlock = ({row}) => {
-  const {awaits} = row;
+  const {reserved} = row;
 
-  if (!awaits) {
+  if (!reserved) {
     return;
   }
 
-  const allAmount = awaits.reduce((acc, {amount}) => acc + amount, 0);
+  const allAmount = reserved?.reduce((acc, {amount}) => acc + amount, 0);
 
-  const blocks = awaits.map(({id, shippingDate, amount}) => (
-    <div key={`${shippingDate}_${amount}`}>
-      <span className={s.dateArrival}>{`до ${dayjs(shippingDate).format('DD.MM.YYYY')}`}</span>
-      {`, ${amount} уп.`}
+  const blocks = reserved.map(({id, amount}) => (
+    <div key={`${id}`}>
+      {`${amount} уп `}
       <span className={s.helperText}>  {`(продажа #${id})`}</span>
     </div>
   ));

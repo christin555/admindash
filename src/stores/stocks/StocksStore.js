@@ -8,6 +8,12 @@ class Store extends ListItemsStore {
   RouterStore;
   @observable isDrawerCardShow = false;
   @observable date = {min: null, max: null}
+  @observable filter = {
+    stock: {},
+    stockArrival: {},
+    sales: {},
+    logs: {}
+  };
 
   constructor(RouterStore) {
     super(RouterStore);
@@ -16,8 +22,19 @@ class Store extends ListItemsStore {
     this.disposer = autorun(this.getList);
   }
 
+  @computed get filterTab() {
+    return this.filter[this.tab] || {};
+  }
+
   @action setDate = (prop, val) => {
     this.date = {...this.date, [prop]: val};
+  }
+
+  @action setFilter = (prop, val) => {
+    this.filter = {
+      ...this.filter,
+      [this.tab]: {...this.filterTab, [prop]: val}
+    };
   }
 
   @action setDrawerCardShow = async(status, card) => {
@@ -70,17 +87,17 @@ class Store extends ListItemsStore {
 
   getList = async() => {
     this.setStatus(statusEnum.LOADING);
-    const {fastfilter, date} = this;
+    const {fastfilter, date, filterTab} = this;
 
     try {
-      const body = {fastfilter, date};
+      const body = {fastfilter, date, ...filterTab};
 
       let list = [];
 
       if (this.tab === 'stock') {
         list = await api.post('getStocks', body);
       } else if (this.tab === 'stockArrival') {
-        list = await api.post('getArrives', body);
+        list = await api.post('getArrives', {...body, withReservedData: true});
       } else if (this.tab === 'sales') {
         list = await api.post('getSales', body);
       } else if (this.tab === 'logs') {

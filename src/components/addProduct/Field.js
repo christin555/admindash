@@ -1,5 +1,5 @@
 import React from 'react';
-import {FormControl, FormControlLabel, Radio, RadioGroup, Typography} from '@mui/material';
+import {FormControl, FormControlLabel, Radio, RadioGroup, Tooltip, Typography} from '@mui/material';
 import {TextField} from '@mui/material';
 import Box from '@mui/material/Box';
 import Select from '../../shared/Select';
@@ -12,6 +12,7 @@ import {LocalizationProvider} from '@mui/x-date-pickers/LocalizationProvider';
 import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import 'dayjs/locale/ru';
 import dayjs from 'dayjs';
+import HelpIcon from '@mui/icons-material/Help';
 
 const Field = ({
   placeholder,
@@ -25,9 +26,11 @@ const Field = ({
   product,
   setValue,
   isRequired,
-  isMulti
+  isMulti,
+  isClearable,
+  tooltip
 }) => {
-  const setValueHandler = ({value}) => setValue(name, value);
+  const setValueHandler = (option) => setValue(name, option?.value || null);
   const changeValueHandler = ({target: {value}}) => setValue(name, value);
 
   const changeBoolValueHandler = ({target: {value}}) => setValue(name, value === 'true');
@@ -70,6 +73,7 @@ const Field = ({
           options={values}
           value={product[name]}
           onChange={setValueHandler}
+          isClearable={isClearable}
         />
       );
       break;
@@ -172,9 +176,19 @@ const Field = ({
       flexDirection={'column'}
     >
       <Typography
-        style={{marginBottom: '4px', display: 'flex', fontWeight: '300'}}
+        style={{marginBottom: '4px', display: 'flex', fontWeight: '300', alignItems: 'center'}}
       >
-        {title || name} {isRequired && <Box marginLeft={'10px'} color={'red'}> * </Box> || null}
+        {title || name}
+        {
+          tooltip ? (
+            <Box marginLeft={'10px'} color={'gray'}>
+              <Tooltip title={tooltip}>
+                <HelpIcon fontSize={'10px'} />
+              </Tooltip>
+            </Box>
+          ) : null
+        }
+        {isRequired && <Box marginLeft={'10px'} color={'red'}> * </Box> || null}
       </Typography>
       {block}
       {additonals}

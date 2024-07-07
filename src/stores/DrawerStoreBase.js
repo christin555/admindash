@@ -31,7 +31,7 @@ class DrawerStoreBase {
       const value = val?.value || val;
       const oldValue = this.oldCard[key]?.value || this.oldCard[key];
 
-      if (value !== null && oldValue !== value) {
+      if (oldValue !== value) {
         res[key] = value;
       }
 
@@ -106,6 +106,10 @@ class DrawerStoreBase {
       if (this.failReq()) {
         alert({type: 'error', title: 'Заполните обязательные поля'});
 
+        return;
+      }
+
+      if (!this.checks?.()) {
         return;
       }
 

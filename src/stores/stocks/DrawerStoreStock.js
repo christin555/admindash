@@ -1,14 +1,23 @@
-import {observable, action, computed, set, reaction, toJS, makeObservable} from 'mobx';
+import {observable, action, computed, set, reaction, toJS, makeObservable, autorun} from 'mobx';
 
 import api from '../../api';
 import {alert} from '../Notifications';
 import DrawerStoreBase from '../DrawerStoreBase';
+import dayjs from 'dayjs';
 
 class DrawerStorePost extends DrawerStoreBase {
+
+  @observable arrivals = [];
+
   constructor(ListStore) {
     super(ListStore);
 
     makeObservable(this);
+
+    reaction(
+      () => this.card.productId,
+      this.getArrivals
+    );
   }
 
   @computed get fields() {
@@ -24,9 +33,19 @@ class DrawerStorePost extends DrawerStoreBase {
             placeholder: 'Введите код или наименование',
             additionals: {
               amount: 'В наличии на складе',
+              reservedAmount: 'Зарезервировано',
               price: 'Цена',
               salePrice: 'Цена со скидкой'
             }
+          },
+          {
+            values: this.arrivals,
+            name: 'arrivalId',
+            type: 'select',
+            title: 'От прихода',
+            isRequired: false,
+            placeholder: 'Ввыберите приход',
+            isClearable: true
           },
           {
             name: 'saleDate',
@@ -38,7 +57,8 @@ class DrawerStorePost extends DrawerStoreBase {
           {name: 'amount', type: 'integer', title: 'Колво упаковок', isRequired: true},
           {name: 'client', type: 'character varying', title: 'Клиент', isRequired: true},
           {name: 'shippingDate', type: 'date', title: 'Дата отгрузки', isRequired: true, default: new Date()},
-          {name: 'isShipped', type: 'boolean', title: 'Отгружен', isRequired: true, default: true},
+          {name: 'isShipped', type: 'boolean', title: 'Отгружен', isRequired: true,
+            tooltip: 'При выборе "да", колво упаков будет списано со склада'},
           {name: 'price', type: 'integer', title: 'Стоимость'},
           {name: 'notes', type: 'text', title: 'Заметки'}
         ]
@@ -84,6 +104,32 @@ class DrawerStorePost extends DrawerStoreBase {
     return res;
   }
 
+  @action setArrivals = (arrivals) => {
+    this.arrivals = arrivals;
+  }
+
+  checks = () => {
+    const arrival = this.arrivals.find(({value}) => value === this.card.arrivalId);
+
+    if (arrival && (this.card.amount > arrival.available || arrival.available < 0)) {
+      alert({type: 'error', title: 'Количество упаковок больше доступного прихода'});
+
+      return false;
+    }
+
+    if (this.card.productId?.amount && (this.card.amount > this.card.productId?.amount || this.card.productId?.amount < 0)) {
+      alert({type: 'error', title: 'Количество упаковок больше, чем на складе'});
+
+      return false;
+    }
+
+    if (this.card.productId?.amount && this.card.amount >= this.card.productId?.amount - this.card.productId?.reservedAmount) {
+      alert({type: 'error', title: 'Внимание! Продажа с чужого резерва'});
+    }
+
+    return true;
+  }
+
   create = async() => {
     const {preparedNewObject: card} = this;
 
@@ -123,6 +169,26 @@ class DrawerStorePost extends DrawerStoreBase {
     }
   }
 
+  getArrivals = async() => {
+    try {
+      const res = await api.post('getArrives', {
+        id: this.card.productId,
+        date: {min: new Date()},
+        withAvailableSum: true
+      });
+
+      this.setArrivals(res.map(({id, accountNumber, dateArrival, amount, available}) => {
+        return {
+          value: id,
+          amount,
+          available,
+          label: `Приход от ${accountNumber} от ${dayjs(dateArrival).format('DD.MM.YYYY')}, доступно: ${available}`
+        };
+      }));
+    } catch(err) {
+      alert(`Ошибка: ${err}`);
+    }
+  }
 }
 
 export default DrawerStorePost;

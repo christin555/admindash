@@ -1,3 +1,13 @@
+
+.saleDetails {
+  display: flex;
+  flex-direction: column;
+
+  &Title {
+    font-weight: 350;
+  }
+}
+
 .bar {
   display: flex;
   flex-direction: row;
@@ -46,13 +56,13 @@
   left: 50%;
 }
 
-.notes{
+.notes {
   background: beige;
   padding: 4px;
   border-radius: 4px;
 }
 
-.helperText{
+.helperText {
   color: #737374;
 }
 
@@ -112,3 +122,4 @@
     }
   }
 }
+
