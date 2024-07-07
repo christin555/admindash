@@ -2,9 +2,9 @@ import React from 'react';
 import {inject} from 'mobx-react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import {TextField} from '@mui/material';
-import s from './style.module.scss';
-import DataPicker from "../../shared/DataPicker";
+import {TextField, Typography} from '@mui/material';
+import DataPicker from '../../shared/DataPicker';
+import Checkbox from '@mui/material/Checkbox';
 
 @inject(({ListStore}) => {
   return {
@@ -18,7 +18,9 @@ import DataPicker from "../../shared/DataPicker";
     setFastFilterInput: ListStore.setFastFilterInput,
     openDrawerWithMode: ListStore.openDrawerWithMode,
     setDate: ListStore.setDate,
-    date: ListStore.date
+    date: ListStore.date,
+    filter: ListStore.filterTab,
+    setFilter: ListStore.setFilter
   };
 })
 class Toolbar extends React.Component {
@@ -33,10 +35,70 @@ class Toolbar extends React.Component {
       setFastFilter,
       tab,
       setDate,
-      date
+      date,
+      filter,
+      setFilter
     } = this.props;
 
     let buttons = null;
+
+    const onlyReceived = (
+      <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
+        <Checkbox
+          size={'small'}
+          checked={filter.isReceived === true}
+          onChange={({target}) => {
+            if (target.checked) {
+              setFilter('isReceived', true);
+            } else {
+              setFilter('isReceived', null);
+            }
+          }}
+          value={true}
+        /><Typography>Полученные</Typography>
+        <Checkbox
+          size={'small'}
+          checked={filter.isReceived === false}
+          onChange={({target}) => {
+            if (target.checked) {
+              setFilter('isReceived', false);
+            } else {
+              setFilter('isReceived', null);
+            }
+          }}
+          value={false}
+        /> <Typography>Не полученные</Typography>
+      </Box>
+    );
+
+    const onlyShipped = (
+      <Box display={'flex'} flexDirection={'row'} alignItems={'center'}>
+        <Checkbox
+          size={'small'}
+          checked={filter.isShipped === true}
+          onChange={({target}) => {
+            if (target.checked) {
+              setFilter('isShipped', true);
+            } else {
+              setFilter('isShipped', null);
+            }
+          }}
+          value={true}
+        /><Typography>Отгруженные</Typography>
+        <Checkbox
+          size={'small'}
+          checked={filter.isShipped === false}
+          onChange={({target}) => {
+            if (target.checked) {
+              setFilter('isShipped', false);
+            } else {
+              setFilter('isShipped', null);
+            }
+          }}
+          value={false}
+        /> <Typography>Не отгруженные</Typography>
+      </Box>
+    );
 
     if (tab === 'logs') {
       return null;
@@ -80,7 +142,7 @@ class Toolbar extends React.Component {
             onBlur={setFastFilter}
             value={fastFilterInput || ''}
             size={'small'}
-            fullWidth={true}
+            fullWidth={false}
             placeholder={'Поиск по названию'}
           />
           <Box display={'flex'} alignItems={'center'} gap={'8px'} minWidth={'400px'}>
@@ -100,7 +162,8 @@ class Toolbar extends React.Component {
               val={date.max}
               setValue={(val) => setDate('max', val)}
             />
-
+            {tab === 'stockArrival' ? onlyReceived : null}
+            {tab === 'sales' ? onlyShipped : null}
           </Box>
         </Box>
         <Box display={'flex'} gap={'20px'}>

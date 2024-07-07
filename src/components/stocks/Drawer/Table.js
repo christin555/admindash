@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import formatLogs from '../formatLogs';
 import formatLogsName from '../formatLogsName';
 import formaSaleBlock from '../aboutSale';
+import formatArrivalSales from '../formatArrivalSales';
 
 const StyledDataGrid = withStyles({
   root: {
@@ -92,7 +93,7 @@ class PriceView extends React.Component {
         {
           field: 'id',
           headerName: 'Номер',
-          minWidth: 100,
+          minWidth: 50,
           maxWidth: 80,
           flex: 1,
           renderCell: (cellValues) => <span className={s.id}> #{cellValues.row.id}</span>
@@ -101,7 +102,8 @@ class PriceView extends React.Component {
           field: 'accountNumber',
           flex: 1,
           headerName: 'Номер счета',
-          minWidth: 150,
+          minWidth: 90,
+          maxWidth: 120,
           renderCell: (cellValues) => <span>#{cellValues.row.accountNumber}</span>
         },
         {
@@ -120,24 +122,32 @@ class PriceView extends React.Component {
           field: 'dateArrival',
           headerName: 'Дата прихода',
           minWidth: 100,
-          maxWidth: 200,
+          maxWidth: 120,
           flex: 1,
           renderCell: (cellValues) => dayjs(cellValues.row.dateArrival).format('DD.MM.YYYY') || 'Не указано'
         },
         {
           field: 'isReceived',
           headerName: 'Получен',
-          minWidth: 100,
-          maxWidth: 200,
+          minWidth: 50,
+          maxWidth: 80,
           flex: 1,
           renderCell: (cellValues) => cellValues.row.isReceived ? 'да' : 'нет'
+        },
+        {
+          field: 'reserved',
+          headerName: 'Продажи с прихода',
+          minWidth: 100,
+          flex: 1,
+          renderCell: (cellValues) => formatArrivalSales(cellValues)
         },
         {
           field: 'notes',
           flex: 1,
           headerName: 'Примечание',
           minWidth: 150,
-          renderCell: (cellValues) => cellValues.row.notes
+          renderCell: (cellValues) => cellValues.row.notes ?
+            <div className={s.notes}> {cellValues.row.notes} </div> : null
         },
         {
           field: 'updated_at',

@@ -9,6 +9,7 @@ import DataPicker from '../../../shared/DataPicker';
 import AddIcon from '@mui/icons-material/Add';
 import dayjs from 'dayjs';
 import HelpIcon from '@mui/icons-material/Help';
+import metersCount from '../metersCount';
 
 @inject(({DrawerCardStore}) => {
   return {
@@ -31,13 +32,36 @@ class DrawerStore extends React.Component {
       setDate
     } = this.props;
 
-    const salePrice = card.prices?.salePrice ?
-      <div> {`Цена со скидкой: ${card.prices?.salePrice} руб`}  </div> :
-      null;
+    const metersInPackage = (
+      <span>
+        <span className={s.title}>В уп: </span>
+        {card.metersInPackage ? `${card.metersInPackage} м²` : '-'}
+      </span>
+    );
 
-    const price = card.prices?.price ?
-      <div> {`Цена: ${card.prices?.price} руб`}  </div> :
-      null;
+    const salePrice = (
+      <span>
+        <span className={s.title}>Цена со скидкой: </span>
+        {card.salePrice ? ` ${card.salePrice} руб/м²` : 'без скидки'}
+      </span>
+    );
+
+    const price = (
+      <span>
+        <span className={s.title}> Цена: </span>
+        {card.price ? `${card.price} руб/м²` : '-'}
+      </span>
+    );
+
+    const code = (
+      <span>
+        <span className={s.title}> арт: </span>
+        {card.code}
+      </span>
+    );
+
+    const allAwaits = card.awaits?.reduce((acc, {amount}) => acc + amount, 0) || 0;
+    const allArrives = card.next?.reduce((acc, {amount}) => acc + amount, 0) || 0;
 
     const blocks = card.next ? card.next.map(({id, dateArrival, amount}) => (
       <div key={`${dateArrival}_${amount}`}>
@@ -67,7 +91,9 @@ class DrawerStore extends React.Component {
                 {card.name}
               </a>
             </div>
-            <div className={s.code}> aрт. {card.code}</div>
+            <div className={s.code}>
+              {code} | {metersInPackage} | {salePrice} | {price}
+            </div>
           </div>
 
           {/*<div className={s.buttons}>*/}
@@ -88,25 +114,34 @@ class DrawerStore extends React.Component {
           {/*</div>*/}
         </div>
 
-        <div className={s.prices}>
-          {salePrice}
-          {price}
-        </div>
-
         <Box display={'flex'} flexDirection={'row'} alignItems={'flex-start'} gap={'160px'}>
-          <Box alignItems={'center'} display={'flex'} className={s.fieldName} gap={'6px'}>
-            В наличии: {card.amount} уп
-            <Tooltip title='Без учета хранения и ожидаемых приходов'>
-              <HelpIcon fontSize={'10px'} />
-            </Tooltip>
+          <Box display={'flex'} flexDirection={'column'} alignItems={'flex-start'} gap={'20px'}>
+            <Box alignItems={'center'} display={'flex'} className={s.fieldName} gap={'6px'}>
+            На складе для продажи: {metersCount({
+                amount: card.amount - card.reservedAmount,
+                metersInPackage: card.metersInPackage
+              })}
+              <Tooltip title='Со склада учетом хранения'>
+                <HelpIcon fontSize={'10px'} />
+              </Tooltip>
+            </Box>
+            <Box alignItems={'center'} display={'flex'} className={s.fieldNameAll} gap={'6px'}>
+            На складе всего: {metersCount({
+                amount: card.amount,
+                metersInPackage: card.metersInPackage
+              })}
+              <Tooltip title='По факту'>
+                <HelpIcon fontSize={'10px'} />
+              </Tooltip>
+            </Box>
           </Box>
 
           <Box display={'flex'} flexDirection={'column'} gap={'10px'} fontWeight={400}>
-            <Box fontWeight={450}>Ожидается:</Box>
+            <Box fontWeight={450}>Ожидается: {allArrives} уп</Box>
             {blocks}
           </Box>
           <Box display={'flex'} flexDirection={'column'} gap={'10px'} fontWeight={400}>
-            <Box fontWeight={450}>На хранении:</Box>
+            <Box fontWeight={450}>На хранении: {allAwaits} уп</Box>
             {awaits}
           </Box>
         </Box>

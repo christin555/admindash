@@ -37,7 +37,7 @@ class Store extends ListItemsStore {
           actions: ['addStock', 'removeStock']
         });
       } else if (this.DrawerStore.tab === 'stockArrival') {
-        list = await api.post('getArrives', body);
+        list = await api.post('getArrives', {...body, withReservedData: true});
       } else if (this.DrawerStore.tab === 'sales') {
         list = await api.post('getSales', body);
       } else if (this.DrawerStore.tab === 'logs') {

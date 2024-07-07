@@ -10,7 +10,7 @@ import {withStyles} from '@mui/styles';
 import s from './style.module.scss';
 import {IconButton, Tooltip} from '@mui/material';
 import Box from '@mui/material/Box';
-import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import metersCount from './metersCount';
 import EditIcon from '@mui/icons-material/Edit';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import dayjs from 'dayjs';
@@ -21,6 +21,8 @@ import renderCard from './renderCard';
 import formatShipBlock from './awaitShipBlock';
 import formatStockBlock from './awaitStockBlock';
 import formaSaleBlock from './aboutSale';
+import formatArrivalSales from './formatArrivalSales';
+
 import HelpIcon from '@mui/icons-material/Help';
 
 const StyledDataGrid = withStyles({
@@ -98,14 +100,14 @@ class PriceView extends React.Component {
         {
           field: 'id',
           headerName: 'Номер',
-          maxWidth: 80,
+          maxWidth: 70,
           flex: 1,
           renderCell: (cellValues) => <span className={s.id}>#{cellValues.row.id}</span>
         },
         {
           field: 'name',
           headerName: 'Товар',
-          minWidth: 300,
+          minWidth: 280,
           flex: 1,
           renderCell: ({row}) => renderCard({row, setDrawerCardShow: this.props.setDrawerCardShow})
         },
@@ -113,7 +115,7 @@ class PriceView extends React.Component {
           field: 'accountNumber',
           flex: 1,
           headerName: 'Номер счета',
-          minWidth: 150,
+          minWidth: 100,
           renderCell: (cellValues) => <span>#{cellValues.row.accountNumber}</span>
         },
         {
@@ -126,8 +128,8 @@ class PriceView extends React.Component {
         {
           field: 'amount',
           flex: 1,
-          headerName: 'Колво упаковок',
-          minWidth: 150,
+          headerName: 'Кол-во уп',
+          minWidth: 50,
           renderCell: (cellValues) => {
             const count = cellValues.row.amount || '0';
 
@@ -137,16 +139,24 @@ class PriceView extends React.Component {
         {
           field: 'isReceived',
           headerName: 'Получен',
-          minWidth: 100,
+          minWidth: 50,
           flex: 1,
           renderCell: (cellValues) => cellValues.row.isReceived ? 'да' : 'нет'
+        },
+        {
+          field: 'reserved',
+          headerName: 'Продажи с прихода',
+          minWidth: 100,
+          flex: 1,
+          renderCell: (cellValues) => formatArrivalSales(cellValues)
         },
         {
           field: 'notes',
           flex: 1,
           headerName: 'Примечание',
           minWidth: 150,
-          renderCell: (cellValues) => cellValues.row.notes
+          renderCell: (cellValues) => cellValues.row.notes ?
+            <div className={s.notes}> {cellValues.row.notes} </div> : null
         },
         {
           field: 'updated_at',
@@ -188,14 +198,14 @@ class PriceView extends React.Component {
         {
           field: 'name',
           headerName: 'Товар',
-          minWidth: 300,
+          minWidth: 200,
           flex: 1,
           renderCell: ({row}) => renderCard({row, setDrawerCardShow: this.props.setDrawerCardShow})
         },
         {
           field: 'saleDate',
           headerName: 'Дата продажи',
-          minWidth: 100,
+          minWidth: 80,
           flex: 1,
           renderCell: (cellValues) => dayjs(cellValues.row.saleDate).format('DD.MM.YYYY') || 'Не указано'
         },
@@ -203,14 +213,14 @@ class PriceView extends React.Component {
           field: 'about',
           flex: 1,
           headerName: 'О продаже',
-          minWidth: 150,
+          minWidth: 200,
           renderCell: (cellValues) => formaSaleBlock(cellValues)
         },
         {
           field: 'amount',
           flex: 1,
-          headerName: 'Продано упаковок',
-          minWidth: 150,
+          headerName: 'Продано уп',
+          minWidth: 50,
           renderCell: (cellValues) => {
             const count = cellValues.row.amount || '0';
 
@@ -220,7 +230,7 @@ class PriceView extends React.Component {
         {
           field: 'shippingDate',
           headerName: 'Дата отгрузки',
-          minWidth: 100,
+          minWidth: 80,
           flex: 1,
           renderCell: (cellValues) => cellValues.row.shippingDate ?
             dayjs(cellValues.row.shippingDate).format('DD.MM.YYYY') : 'Не указано'
@@ -230,7 +240,7 @@ class PriceView extends React.Component {
           headerName: 'Отгружен',
           minWidth: 100,
           flex: 1,
-          renderCell: (cellValues) => cellValues.row.isShipped ? 'да' : 'нет'
+          renderCell: (cellValues) => cellValues.row.isShipped ? 'да' : 'нет (на хранении)'
         },
         {
           field: 'updated_at',
@@ -272,13 +282,32 @@ class PriceView extends React.Component {
         {
           field: 'amount',
           flex: 1,
-          headerName: <Box display={'flex'} alignItems={'center'} gap={'4px'}>В наличии на складе <Tooltip title='Без учета хранения и ожидаемых приходов'><HelpIcon color={'info'} fontSize={'10px'} /></Tooltip> </Box>,
+          headerName: <Box display={'flex'} alignItems={'center'} gap={'4px'}>В наличии на складе <Tooltip title='По факту без приходов'><HelpIcon color={'info'} fontSize={'10px'} /></Tooltip> </Box>,
           minWidth: 200,
           maxWidth: 250,
           renderCell: (cellValues) => {
-            const count = cellValues.row.amount || '0';
+            const count = cellValues.row.amount || 0;
+            const reserved = cellValues.row.reservedAmount || 0;
+            const {metersInPackage} = cellValues.row;
+            const forSale = count - reserved;
 
-            return <span className={s.amount}> {count} уп.</span>;
+            return (
+              <div>
+                <div>
+                 Для продажи:
+                  <span className={s.amount}>
+                    {metersCount({amount: forSale, metersInPackage})}
+                  </span>
+                </div>
+                <div>
+                Всего:
+                  <span className={s.amount}>
+                    {metersCount({amount: count, metersInPackage})}
+                  </span>
+                </div>
+              </div>
+
+            );
           }
         },
         {
