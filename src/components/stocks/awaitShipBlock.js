@@ -2,9 +2,11 @@ import React from 'react';
 import {Box} from '@mui/material';
 import dayjs from 'dayjs';
 import s from './style.module.scss';
+import Divider from '@mui/material/Divider';
+import metersCount from './metersCount';
 
 const formatBlock = ({row}) => {
-  const {awaits} = row;
+  const {awaits, metersInPackage} = row;
 
   if (!awaits) {
     return;
@@ -21,11 +23,15 @@ const formatBlock = ({row}) => {
   ));
 
   return (
-    <Box display={'flex'} flexDirection={'column'} gap={'10px'} padding={'10px 0'}>
-      {blocks}
+    <Box display={'flex'} flexDirection={'column'} gap={'10px'} padding={'10px 0'} alignSelf={'flex-start'}>
       <div>
-        {`Всего: ${allAmount} уп`}
+        {`Всего:`}
+        <span className={s.amount}>
+          {metersCount({amount: allAmount, metersInPackage})}
+        </span>
       </div>
+      <Divider />
+      {blocks}
     </Box>
   );
 };

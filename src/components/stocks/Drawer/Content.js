@@ -42,14 +42,14 @@ class DrawerStore extends React.Component {
     const salePrice = (
       <span>
         <span className={s.title}>Цена со скидкой: </span>
-        {card.salePrice ? ` ${card.salePrice} руб/м²` : 'без скидки'}
+        {card.salePrice ? ` ${card.salePrice.toLocaleString('ru')} руб/м²` : 'без скидки'}
       </span>
     );
 
     const price = (
       <span>
         <span className={s.title}> Цена: </span>
-        {card.price ? `${card.price} руб/м²` : '-'}
+        {card.price ? `${card.price.toLocaleString('ru')} руб/м²` : '-'}
       </span>
     );
 

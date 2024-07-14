@@ -10,8 +10,6 @@ const formatBlock = ({row}) => {
     return;
   }
 
-  const allAmount = reserved?.reduce((acc, {amount}) => acc + amount, 0);
-
   const blocks = reserved.map(({id, amount}) => (
     <div key={`${id}`}>
       {`${amount} уп `}
@@ -22,9 +20,6 @@ const formatBlock = ({row}) => {
   return (
     <Box display={'flex'} flexDirection={'column'} gap={'10px'} padding={'10px 0'}>
       {blocks}
-      <div>
-        {`Всего: ${allAmount} уп`}
-      </div>
     </Box>
   );
 };
