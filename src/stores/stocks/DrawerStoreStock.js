@@ -117,13 +117,13 @@ class DrawerStorePost extends DrawerStoreBase {
       return false;
     }
 
-    if (this.card.productId?.amount && (this.card.amount > this.card.productId?.amount || this.card.productId?.amount < 0)) {
+    if (!arrival && this.card.productId?.amount && (this.card.amount > this.card.productId?.amount || this.card.productId?.amount < 0)) {
       alert({type: 'error', title: 'Количество упаковок больше, чем на складе'});
 
       return false;
     }
 
-    if (this.card.productId?.amount && this.card.amount >= this.card.productId?.amount - this.card.productId?.reservedAmount) {
+    if (arrival && this.card.productId?.amount && this.card.amount >= this.card.productId?.amount - this.card.productId?.reservedAmount) {
       alert({type: 'error', title: 'Внимание! Продажа с чужого резерва'});
     }
 
