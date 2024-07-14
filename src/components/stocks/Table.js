@@ -313,7 +313,7 @@ class PriceView extends React.Component {
         {
           field: 'next',
           flex: 1,
-          headerName: 'Ожидается',
+          headerName: 'Приходы',
           minWidth: 250,
           maxWidth: 350,
           renderCell: (cellValues) => formatStockBlock(cellValues)
