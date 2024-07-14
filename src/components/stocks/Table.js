@@ -332,7 +332,7 @@ class PriceView extends React.Component {
           maxWidth: 250,
           renderCell: (cellValues) => {
             const count = cellValues.row.amount || 0;
-            const reserved = cellValues.row.reservedArrivalAmount || 0;
+            const reserved = cellValues.row.reservedAmount || 0;
             const {metersInPackage} = cellValues.row;
             const forSale = count - reserved;
 
