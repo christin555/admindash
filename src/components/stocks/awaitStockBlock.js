@@ -6,14 +6,14 @@ import metersCount from './metersCount';
 import Divider from '@mui/material/Divider';
 
 const formatBlock = ({row}) => {
-  const {next, metersInPackage, reservedAmount} = row;
+  const {next, metersInPackage, reservedArrivalAmount} = row;
 
   if (!next) {
     return;
   }
 
   const allAmount = next.reduce((acc, {amount}) => acc + amount, 0);
-  const reserved = reservedAmount || 0;
+  const reserved = reservedArrivalAmount || 0;
   const forSale = allAmount - reserved;
 
   const blocks = next.map(({id, dateArrival, amount}) => (
