@@ -137,31 +137,37 @@ class Toolbar extends React.Component {
     return (
       <Box margin={'20px 0'} display={'flex'} gap={'20px'} justifyContent={'space-between'}>
         <Box display={'flex'} alignItems={'center'} gap={'10px'}>
-          <TextField
-            onChange={({target: {value}}) => setFastFilterInput(value)}
-            onBlur={setFastFilter}
-            value={fastFilterInput || ''}
-            size={'small'}
-            fullWidth={false}
-            placeholder={'Поиск по названию'}
-          />
-          <Box display={'flex'} alignItems={'center'} gap={'8px'} minWidth={'400px'}>
+          <div style={{width: '250px'}}>
+            <TextField
+              onChange={({target: {value}}) => setFastFilterInput(value)}
+              onBlur={setFastFilter}
+              value={fastFilterInput || ''}
+              size={'small'}
+              fullWidth={true}
+              placeholder={'Поиск по названию или арт'}
+            />
+          </div>
+          <Box display={'flex'} alignItems={'center'} gap={'8px'} minWidth={'200px'}>
             <div>
-              Период
+                    Период
             </div>
 
-            <DataPicker
-              slotProps={{textField: {size: 'small'}}}
-              val={date.min}
-              setValue={(val) => setDate('min', val)}
-            />
+            <div style={{width: '160px'}}>
+              <DataPicker
+                slotProps={{textField: {size: 'small'}}}
+                val={date.min}
+                setValue={(val) => setDate('min', val)}
+              />
+            </div>
 
-            <div> - </div>
-            <DataPicker
-              slotProps={{textField: {size: 'small'}}}
-              val={date.max}
-              setValue={(val) => setDate('max', val)}
-            />
+            <div> -</div>
+            <div style={{width: '160px'}}>
+              <DataPicker
+                slotProps={{textField: {size: 'small'}}}
+                val={date.max}
+                setValue={(val) => setDate('max', val)}
+              />
+            </div>
             {tab === 'stockArrival' ? onlyReceived : null}
             {tab === 'sales' ? onlyShipped : null}
           </Box>

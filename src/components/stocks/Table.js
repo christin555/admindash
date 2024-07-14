@@ -16,7 +16,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import dayjs from 'dayjs';
 import formatLogs from './formatLogs';
 import formatLogsName from './formatLogsName';
-
 import renderCard from './renderCard';
 import formatShipBlock from './awaitShipBlock';
 import formatStockBlock from './awaitStockBlock';
@@ -86,6 +85,7 @@ class PriceView extends React.Component {
           headerName: 'Детали',
           minWidth: 200,
           flex: 1,
+          display: 'flex',
           renderCell: (cellValues) => formatLogs(cellValues.row)
         },
         {
@@ -112,13 +112,6 @@ class PriceView extends React.Component {
           renderCell: ({row}) => renderCard({row, setDrawerCardShow: this.props.setDrawerCardShow})
         },
         {
-          field: 'accountNumber',
-          flex: 1,
-          headerName: 'Номер счета',
-          minWidth: 100,
-          renderCell: (cellValues) => <span>#{cellValues.row.accountNumber}</span>
-        },
-        {
           field: 'dateArrival',
           headerName: 'Дата прихода',
           minWidth: 100,
@@ -132,8 +125,40 @@ class PriceView extends React.Component {
           minWidth: 50,
           renderCell: (cellValues) => {
             const count = cellValues.row.amount || '0';
+            const {metersInPackage, reserved} = cellValues.row;
+            const allAmount = reserved?.reduce((acc, {amount}) => acc + amount, 0) || 0;
+            const free = allAmount ? count - allAmount : count;
 
-            return <span className={s.amount}> {count} уп.</span>;
+            return (
+              <Box display={'flex'} flexDirection={'column'} gap={'10px'} padding={'10px 0'}>
+                <div className={s.details}>
+                  <div className={s.detailsTitle}>
+                Доступно:
+                  </div>
+                  {
+                    metersCount({amount: free, metersInPackage})
+                  }
+                </div>
+                <div className={s.details}>
+                  <div className={s.detailsTitle}>
+                Резерв:
+                  </div>
+                  {
+                    metersCount({amount: allAmount, metersInPackage})
+                  }
+                </div>
+                <div className={s.details}>
+                  <div className={s.detailsTitle}>
+                Всего:
+                  </div>
+                  <span className={s.amount}>
+                    {
+                      metersCount({amount: count, metersInPackage})
+                    }
+                  </span>
+                </div>
+              </Box>
+            );
           }
         },
         {
@@ -151,12 +176,28 @@ class PriceView extends React.Component {
           renderCell: (cellValues) => formatArrivalSales(cellValues)
         },
         {
-          field: 'notes',
+          field: 'accountNumber',
           flex: 1,
           headerName: 'Примечание',
           minWidth: 150,
-          renderCell: (cellValues) => cellValues.row.notes ?
-            <div className={s.notes}> {cellValues.row.notes} </div> : null
+          renderCell: (cellValues) => {
+            const note = cellValues.row.notes ?
+              <div className={s.notes}> {cellValues.row.notes} </div> : null;
+
+            const accountNumber = cellValues.row.accountNumber ? (
+              <div className={s.details}>
+                <div className={s.detailsTitle}>Номер счета:</div>
+                <div>#{cellValues.row.accountNumber} </div>
+              </div>
+            ) : null;
+
+            return (
+              <Box display={'flex'} flexDirection={'column'} gap={'10px'} padding={'10px 0'} alignSelf={'flex-start'}>
+                {accountNumber}
+                {note}
+              </Box>
+            );
+          }
         },
         {
           field: 'updated_at',
@@ -222,9 +263,13 @@ class PriceView extends React.Component {
           headerName: 'Продано уп',
           minWidth: 50,
           renderCell: (cellValues) => {
-            const count = cellValues.row.amount || '0';
+            const {amount: count, metersInPackage} = cellValues.row || '0';
 
-            return <span className={s.amount}> {count} уп.</span>;
+            return (
+              <span className={s.amount}>
+                {metersCount({amount: count, metersInPackage})}
+              </span>
+            );
           }
         },
         {
@@ -287,26 +332,31 @@ class PriceView extends React.Component {
           maxWidth: 250,
           renderCell: (cellValues) => {
             const count = cellValues.row.amount || 0;
-            const reserved = cellValues.row.reservedAmount || 0;
+            const reserved = cellValues.row.reservedArrivalAmount || 0;
             const {metersInPackage} = cellValues.row;
             const forSale = count - reserved;
 
             return (
-              <div>
+              <Box display={'flex'} flexDirection={'column'} gap={'10px'} padding={'10px 0'} alignSelf={'flex-start'}>
                 <div>
-                 Для продажи:
+                    Доступно:
                   <span className={s.amount}>
                     {metersCount({amount: forSale, metersInPackage})}
                   </span>
                 </div>
                 <div>
-                Всего:
+                    Резерв:
+                  <span className={s.amount}>
+                    {metersCount({amount: reserved, metersInPackage})}
+                  </span>
+                </div>
+                <div>
+                    Всего:
                   <span className={s.amount}>
                     {metersCount({amount: count, metersInPackage})}
                   </span>
                 </div>
-              </div>
-
+              </Box>
             );
           }
         },
@@ -365,6 +415,7 @@ class PriceView extends React.Component {
         selectionModel={selected}
         onSelectionModelChange={setSelected}
         disableColumnMenu={true}
+        vertical={true}
         //   autoPageSize
       />
     );

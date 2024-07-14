@@ -1,11 +1,17 @@
 
-.saleDetails {
+.details {
   display: flex;
   flex-direction: column;
 
   &Title {
     font-weight: 350;
   }
+}
+
+.chip {
+  background: #dcf5ee;
+  padding: 4px;
+  border-radius: 4px;
 }
 
 .bar {
@@ -31,7 +37,7 @@
 }
 
 .dateArrival {
-  color: #07495f;
+  font-weight: 450;
 }
 
 .entityName {
