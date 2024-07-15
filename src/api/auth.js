@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
 export default axios.create({
-    baseURL: "http://localhost:8800/auth/",
-    responseType: "json"
+  baseURL: 'https://api.master-pola.com/auth/',
+  responseType: 'json'
 });
