@@ -109,7 +109,7 @@ class DrawerStoreBase {
         return;
       }
 
-      if (!this.checks?.()) {
+      if (this.checks && !this.checks()) {
         return;
       }
 
