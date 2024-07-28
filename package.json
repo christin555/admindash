@@ -97,6 +97,7 @@
   },
   "scripts": {
     "prodstart": "pm2 start server.js --name admindash",
+    "release": "git pull && pm2 restart server",
     "lint": "eslint src --ext .js",
     "lint:fix": "npm run lint --fix",
     "dev": "node scripts/start.js",
