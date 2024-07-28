@@ -4,6 +4,7 @@ import api from '../api';
 import {alert} from './Notifications';
 import {posts} from '../enums';
 import DrawerStoreBase from './DrawerStoreBase';
+import translitRuEn from '../utils/transliter';
 
 class DrawerStorePost extends DrawerStoreBase {
     @observable mediaUpdated = false;
@@ -191,7 +192,7 @@ class DrawerStorePost extends DrawerStoreBase {
       }
     }
 
-    loadFiled = async(files, isMulti) => {
+    loadFiled = (files, isMulti) => {
       if (isMulti) {
         return Promise.all(files.map(this.upload));
       }
@@ -213,7 +214,7 @@ class DrawerStorePost extends DrawerStoreBase {
       const data = new FormData();
 
       data.append('file', file);
-      data.append('alias', this.card.alias);
+      data.append('alias', translitRuEn(this.card.title) || 'article');
       data.append('dir', 'posts');
 
       try {
