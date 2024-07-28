@@ -333,41 +333,37 @@ class PriceView extends React.Component {
           minWidth: 200,
           maxWidth: 250,
           renderCell: (cellValues) => {
-            const count = cellValues.row.amount || 0;
-            const reserved = cellValues.row.reservedAmount || 0;
-            const {metersInPackage} = cellValues.row;
-            const price = cellValues.row.price || 0;
-            const forSale = count - reserved;
+            const {forSale, reserved, all} = cellValues.row.data;
 
             return (
               <Box display={'flex'} flexDirection={'column'} gap={'10px'} padding={'10px 0'} alignSelf={'flex-start'}>
                 <div>
                   Доступно:
                   <span className={s.amount}>
-                    {metersCount({amount: forSale, metersInPackage})}
+                    {metersCount(forSale)}
                   </span>
                   <div className={s.detailsTitle}>
-                    {priceFormat(price * countMeters({amount: forSale, metersInPackage}))}
+                    {priceFormat(forSale.price)}
                   </div>
                 </div>
 
                 <div>
                   Резерв:
                   <span className={s.amount}>
-                    {metersCount({amount: reserved, metersInPackage})}
+                    {metersCount(reserved)}
                   </span>
                   <div className={s.detailsTitle}>
-                    {priceFormat(price * countMeters({amount: reserved, metersInPackage}))}
+                    {priceFormat(reserved.price)}
                   </div>
                 </div>
 
                 <div>
                   Всего:
                   <span className={s.amount}>
-                    {metersCount({amount: count, metersInPackage})}
+                    {metersCount(all)}
                   </span>
                   <div className={s.detailsTitle}>
-                    {priceFormat(price * countMeters({amount: count, metersInPackage}))}
+                    {priceFormat(all.price)}
                   </div>
                 </div>
               </Box>

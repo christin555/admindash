@@ -11,7 +11,6 @@ class FilterViewHOC extends React.Component {
     const {RouterStore} = this.props;
 
     this.StocksStore = new StocksStore(RouterStore);
-
   }
 
   componentWillUnmount() {

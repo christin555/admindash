@@ -1,6 +1,5 @@
 import React from 'react';
 import {inject} from 'mobx-react';
-import {toJS} from 'mobx';
 import Tabs, {tabsClasses} from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -17,6 +16,7 @@ class Header extends React.Component {
       tab,
       setTab
     } = this.props;
+
     return (
       <Box sx={{borderBottom: 1, borderColor: 'divider'}}>
         <Tabs

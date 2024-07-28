@@ -1,12 +1,12 @@
 import countMeters from './countMeters';
 
-const renderMeters = ({amount, metersInPackage}) => {
+const renderMeters = ({amount, meters, metersInPackage}) => {
   const count = ` ${amount} уп`;
-  const metersCount = countMeters({amount, metersInPackage});
+  const metersCount = meters ?? countMeters({amount, metersInPackage});
 
-  const meters = metersCount ? ` (${metersCount} м²)` : '';
+  const metersAll = metersCount ? ` (${Number(metersCount).toFixed(3)} м²)` : '';
 
-  return count + meters;
+  return count + metersAll;
 };
 
 export default renderMeters;

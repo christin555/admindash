@@ -6,12 +6,10 @@ import {Box, Tab, Button, Tooltip} from '@mui/material';
 import Tabs, {tabsClasses} from '@mui/material/Tabs';
 import Table from './Table';
 import DataPicker from '../../../shared/DataPicker';
-import AddIcon from '@mui/icons-material/Add';
 import dayjs from 'dayjs';
 import HelpIcon from '@mui/icons-material/Help';
 import metersCount from '../metersCount';
 import priceFormat from '../priceFormat';
-import countMeters from '../countMeters';
 
 @inject(({DrawerCardStore}) => {
   return {
@@ -33,6 +31,12 @@ class DrawerStore extends React.Component {
       date,
       setDate
     } = this.props;
+
+    if (!card.data) {
+      return null;
+    }
+
+    const {forSale, all} = card.data;
 
     const metersInPackage = (
       <span>
@@ -119,20 +123,13 @@ class DrawerStore extends React.Component {
         <Box display={'flex'} flexDirection={'row'} alignItems={'flex-start'} gap={'160px'}>
           <Box display={'flex'} flexDirection={'column'} alignItems={'flex-start'} gap={'20px'}>
             <Box alignItems={'center'} display={'flex'} className={s.fieldName} gap={'6px'}>
-            На складе для продажи: {metersCount({
-                amount: card.amount - card.reservedAmount,
-                metersInPackage: card.metersInPackage
-              })} -    {priceFormat(card.price * countMeters({
-                amount: card.amount - card.reservedAmount,
-                metersInPackage: card.metersInPackage
-              }))}
+            На складе для продажи: {metersCount(forSale)} -    {priceFormat(forSale.price)}
               <Tooltip title='Со склада учетом хранения'>
                 <HelpIcon fontSize={'10px'} />
               </Tooltip>
             </Box>
             <Box alignItems={'center'} display={'flex'} className={s.fieldNameAll} gap={'6px'}>
-            На складе всего: {metersCount(card)} -
-              {priceFormat(card.price * countMeters(card))}
+            На складе всего: {metersCount(all)} -{priceFormat(all.price)}
               <Tooltip title='По факту'>
                 <HelpIcon fontSize={'10px'} />
               </Tooltip>

@@ -7,13 +7,16 @@ import Drawer from '../listComponetns/Drawer';
 import DrawerStore from '../../stores/stocks/DrawerStoreStock';
 import DrawerCardStoreStock from '../../stores/stocks/DrawerCardStoreStock';
 import DrawerCard from './Drawer';
+import Summary from './Summary';
 
 const View = () => (
   <React.Fragment>
     <Header />
     <Toolbar />
     <Table />
+    <Summary />
     <Footer withMassEdit={false} />
+
     <Drawer DrawerStore={DrawerStore} />
     <DrawerCard DrawerCardStore={DrawerCardStoreStock} />
   </React.Fragment>

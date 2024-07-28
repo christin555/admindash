@@ -1,3 +1,3 @@
-const countMeters = ({amount, metersInPackage}) => metersInPackage && amount ? (metersInPackage * amount).toFixed(3) : 0;
+const countMeters = ({amount, metersInPackage}) => metersInPackage && amount ? metersInPackage * amount : 0;
 
 export default countMeters;
