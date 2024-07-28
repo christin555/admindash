@@ -1,6 +1,8 @@
+import countMeters from './countMeters';
+
 const renderMeters = ({amount, metersInPackage}) => {
   const count = ` ${amount} уп`;
-  const metersCount = metersInPackage && amount ? (metersInPackage * amount).toFixed(3) : 0;
+  const metersCount = countMeters({amount, metersInPackage});
 
   const meters = metersCount ? ` (${metersCount} м²)` : '';
 

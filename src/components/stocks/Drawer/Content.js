@@ -10,6 +10,8 @@ import AddIcon from '@mui/icons-material/Add';
 import dayjs from 'dayjs';
 import HelpIcon from '@mui/icons-material/Help';
 import metersCount from '../metersCount';
+import priceFormat from '../priceFormat';
+import countMeters from '../countMeters';
 
 @inject(({DrawerCardStore}) => {
   return {
@@ -120,16 +122,17 @@ class DrawerStore extends React.Component {
             На складе для продажи: {metersCount({
                 amount: card.amount - card.reservedAmount,
                 metersInPackage: card.metersInPackage
-              })}
+              })} -    {priceFormat(card.price * countMeters({
+                amount: card.amount - card.reservedAmount,
+                metersInPackage: card.metersInPackage
+              }))}
               <Tooltip title='Со склада учетом хранения'>
                 <HelpIcon fontSize={'10px'} />
               </Tooltip>
             </Box>
             <Box alignItems={'center'} display={'flex'} className={s.fieldNameAll} gap={'6px'}>
-            На складе всего: {metersCount({
-                amount: card.amount,
-                metersInPackage: card.metersInPackage
-              })}
+            На складе всего: {metersCount(card)} -
+              {priceFormat(card.price * countMeters(card))}
               <Tooltip title='По факту'>
                 <HelpIcon fontSize={'10px'} />
               </Tooltip>

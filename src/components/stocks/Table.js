@@ -23,6 +23,8 @@ import formaSaleBlock from './aboutSale';
 import formatArrivalSales from './formatArrivalSales';
 
 import HelpIcon from '@mui/icons-material/Help';
+import priceFormat from './priceFormat';
+import countMeters from './countMeters';
 
 const StyledDataGrid = withStyles({
   root: {
@@ -334,27 +336,39 @@ class PriceView extends React.Component {
             const count = cellValues.row.amount || 0;
             const reserved = cellValues.row.reservedAmount || 0;
             const {metersInPackage} = cellValues.row;
+            const price = cellValues.row.price || 0;
             const forSale = count - reserved;
 
             return (
               <Box display={'flex'} flexDirection={'column'} gap={'10px'} padding={'10px 0'} alignSelf={'flex-start'}>
                 <div>
-                    Доступно:
+                  Доступно:
                   <span className={s.amount}>
                     {metersCount({amount: forSale, metersInPackage})}
                   </span>
+                  <div className={s.detailsTitle}>
+                    {priceFormat(price * countMeters({amount: forSale, metersInPackage}))}
+                  </div>
                 </div>
+
                 <div>
-                    Резерв:
+                  Резерв:
                   <span className={s.amount}>
                     {metersCount({amount: reserved, metersInPackage})}
                   </span>
+                  <div className={s.detailsTitle}>
+                    {priceFormat(price * countMeters({amount: reserved, metersInPackage}))}
+                  </div>
                 </div>
+
                 <div>
-                    Всего:
+                  Всего:
                   <span className={s.amount}>
                     {metersCount({amount: count, metersInPackage})}
                   </span>
+                  <div className={s.detailsTitle}>
+                    {priceFormat(price * countMeters({amount: count, metersInPackage}))}
+                  </div>
                 </div>
               </Box>
             );
