@@ -33,7 +33,7 @@ class Summary extends React.Component {
 
     list.forEach(({data}) => {
 
-      if(!data){
+      if (!data) {
         return;
       }
 
