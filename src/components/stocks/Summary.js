@@ -32,6 +32,11 @@ class Summary extends React.Component {
     };
 
     list.forEach(({data}) => {
+
+      if(!data){
+        return;
+      }
+
       const {forSale, all, reserved} = data;
 
       summary.forSale.amount += forSale.amount;
