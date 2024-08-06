@@ -333,6 +333,11 @@ class PriceView extends React.Component {
           minWidth: 200,
           maxWidth: 250,
           renderCell: (cellValues) => {
+
+            if (!cellValues.row?.data) {
+              return null;
+            }
+
             const {forSale, reserved, all} = cellValues.row.data;
 
             return (
