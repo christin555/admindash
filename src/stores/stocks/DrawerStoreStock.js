@@ -109,6 +109,10 @@ class DrawerStorePost extends DrawerStoreBase {
   }
 
   checks = () => {
+    if (this.ListStore.tab !== 'sales') {
+      return true;
+    }
+
     const arrival = this.arrivals.find(({value}) => value === this.card.arrivalId);
 
     if (arrival && (this.card.amount > arrival.available || arrival.available < 0)) {
