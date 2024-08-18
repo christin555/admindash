@@ -3,6 +3,7 @@ import ProductStore from './ProductStore';
 import api from '../api';
 import {alert} from './Notifications';
 import {entity} from '../enums';
+import translitRuEn from '../utils/transliter';
 
 class DrawerStore extends ProductStore {
     @observable mode;
@@ -178,8 +179,7 @@ class DrawerStore extends ProductStore {
 
         data.append('file', file);
         data.append('dir', `${String(entity.PRODUCT)}/${this.card.categoryId}`);
-
-        this.card.alias && data.append('alias', this.card.alias);
+        data.append('alias', this.card.alias || translitRuEn(this.card.name));
 
         try {
           const _file = await api.post('upload', data);
