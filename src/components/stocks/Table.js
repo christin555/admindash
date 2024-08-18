@@ -128,7 +128,9 @@ class PriceView extends React.Component {
           renderCell: (cellValues) => {
             const count = cellValues.row.amount || '0';
             const {metersInPackage, reserved} = cellValues.row;
-            const allAmount = reserved?.reduce((acc, {amount}) => acc + amount, 0) || 0;
+            const reservAmount = reserved?.reduce((acc, {amount, isShipped}) => isShipped ? acc : acc + amount, 0) || 0;
+            const saledAmount = reserved?.reduce((acc, {amount, isShipped}) => !isShipped ? acc : acc + amount, 0) || 0;
+            const allAmount = saledAmount + reservAmount;
             const free = allAmount ? count - allAmount : count;
 
             return (
@@ -141,14 +143,31 @@ class PriceView extends React.Component {
                     metersCount({amount: free, metersInPackage})
                   }
                 </div>
-                <div className={s.details}>
-                  <div className={s.detailsTitle}>
+                {
+                  reservAmount ? (
+                    <div className={s.details}>
+                      <div className={s.detailsTitle}>
                 Резерв:
-                  </div>
-                  {
-                    metersCount({amount: allAmount, metersInPackage})
-                  }
-                </div>
+                      </div>
+                      {
+                        metersCount({amount: reservAmount, metersInPackage})
+                      }
+                    </div>
+                  ) :
+                    null
+                }
+                {
+                  saledAmount ? (
+                    <div className={s.details}>
+                      <div className={s.detailsTitle}>
+                        Продано:
+                      </div>
+                      {
+                        metersCount({amount: saledAmount, metersInPackage})
+                      }
+                    </div>
+                  ) : null
+                }
                 <div className={s.details}>
                   <div className={s.detailsTitle}>
                 Всего:
