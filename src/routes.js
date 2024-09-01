@@ -71,6 +71,11 @@ export default () => (
             render={wrap('services')}
           />
           <Route
+            exact={true}
+            path='/catalogs/:tab?'
+            render={wrap('catalogs')}
+          />
+          <Route
             render={wrap('notFound')}
           />
         </Switch>

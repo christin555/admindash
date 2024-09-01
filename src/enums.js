@@ -20,8 +20,15 @@ const posts = {
   OTHER: 3
 };
 
+const finishing = {
+  MATERIAL: 1,
+  WINDOW: 2,
+  PHOTO: 3
+};
+
 module.exports = {
   entity,
   status,
-  posts
+  posts,
+  finishing
 };

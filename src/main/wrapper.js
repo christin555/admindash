@@ -40,6 +40,9 @@ const Page = loadable(
       case 'stocks' : {
         return import('../components/stocks');
       }
+      case 'catalogs': {
+        return import('../components/catalogs');
+      }
       default:
         return import('../shared/InformBlocks/PageNotFound');
     }
