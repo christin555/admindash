@@ -24,8 +24,12 @@ class DrawerStore extends DrawerStoreBase {
       return {
         'main': [
           {name: 'name', type: 'character varying', title: 'Название', isRequired: true},
-          {name: 'img', type: 'mediaDrop', title: 'Фотография', isRequired: true},
-
+          {name: 'img', type: 'mediaDrop', title: 'Фотография'},
+          {
+            name: 'url',
+            type: 'text',
+            title: 'Ссылки на фото'
+          },
           {
             name: 'type', type: 'select', title: 'Категория',
             values: [
@@ -67,7 +71,7 @@ class DrawerStore extends DrawerStoreBase {
     this.brands = brands;
   };
 
-  checks = () => true
+  checks = () => this.card.img || this.card.url;
 
   create = async() => {
     const {preparedNewObject: card} = this;
