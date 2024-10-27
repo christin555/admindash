@@ -17,7 +17,8 @@ const status = {
 const posts = {
   WORKS: 1,
   PRODUCT: 2,
-  OTHER: 3
+  OTHER: 3,
+  REVIEWS: 4
 };
 
 const finishing = {

@@ -27,7 +27,8 @@ class DrawerStorePost extends DrawerStoreBase {
         name: 'type', type: 'select', title: 'Категория',
         values: [
           {value: posts.WORKS, label: 'Работы'},
-          {value: posts.PRODUCT, label: 'Каталог - товар'},
+          {value: posts.PRODUCT, label: 'Салон (Каталог - товар)'},
+          {value: posts.REVIEWS, label: 'Отзывы'},
           {value: posts.OTHER, label: 'Другое'}
         ],
         isRequired: true
