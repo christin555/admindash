@@ -32,7 +32,19 @@ const Field = ({
 }) => {
   const setValueHandler = (option) => setValue(name, option?.value || null);
   const changeValueHandler = ({target: {value}}) => setValue(name, value);
+  const changeValueIntArrayHandler = ({target: {value}}) => {
+    if (!new RegExp(/^[.;0-9 ]*$/).test(value)) {
+      return;
+    }
 
+    setValue(
+      name,
+      value.trim('')
+        .split(';')
+        .map((val) => val.trim())
+        .filter(Boolean)
+    );
+  };
   const changeBoolValueHandler = ({target: {value}}) => setValue(name, value === 'true');
 
   const setValueMultiHandler = (arrayValues) => {
@@ -152,12 +164,21 @@ const Field = ({
         </FormControl>
       );
       break;
+    case 'floatArray':
+      block = (
+        <TextField
+          variant='standard'
+          value={(product[name] || []).join('; ')}
+          onChange={changeValueIntArrayHandler}
+          helperText={`Ввод нескольких значений - через ";". Пример: 2.5; 2; ${adminDesc || ''}`}
+        />
+      );
   }
 
   const additonals = additionals ? (
     <Box display={'flex'} flexDirection={'column'} marginTop={'10px'}>
       {Object.entries(additionals).flatMap(([key, label]) => {
-        if (product[name]?.[key] == null) {
+        if (product[name]?.[key] === null) {
           return [];
         }
 

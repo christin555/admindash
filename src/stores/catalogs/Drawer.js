@@ -3,7 +3,6 @@ import {observable, action, computed, set, reaction, toJS, makeObservable, autor
 import api from '../../api';
 import {alert} from '../Notifications';
 import DrawerStoreBase from '../DrawerStoreBase';
-import dayjs from 'dayjs';
 import {finishing} from '../../enums';
 import translitRuEn from '../../utils/transliter';
 
@@ -72,22 +71,6 @@ class DrawerStore extends DrawerStoreBase {
   };
 
   checks = () => this.card.img || this.card.url;
-
-  create = async() => {
-    const {preparedNewObject: card} = this;
-
-    try {
-      if (this.ListStore.tab === 'sales') {
-        await api.post('addSale', card);
-      } else {
-        await api.post('addArrival', card);
-      }
-
-      this.ListStore.afterRequestSuccess();
-    } catch(err) {
-      alert(`Ошибка создания: ${err}`);
-    }
-  };
 
   getBrands = async() => {
     try {
