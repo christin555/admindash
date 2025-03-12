@@ -25,13 +25,12 @@ class PriceView extends React.Component {
         field: 'createdAt',
         headerName: 'Дата',
         width: 150,
-        flex: 1,
         renderCell: (cellValues) => dayjs(cellValues.row.createdAt).format('DD.MM.YYYY HH:mm') || 'Не указано'
       },
       {
         field: 'action',
         headerName: 'Название',
-        width: 350
+        width: 280
       },
       {
         field: 'status',
@@ -42,6 +41,7 @@ class PriceView extends React.Component {
       {
         field: 'data',
         headerName: 'Информация',
+        minWidth: 300,
         flex: 1,
         align: 'start',
         renderCell: (cellValues) => {

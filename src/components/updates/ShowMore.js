@@ -14,7 +14,7 @@ class ShowMore extends Component {
     const isActive = text.length > 220;
 
     if (!isActive) {
-      return <div>{text} </div>;
+      return <div className={s.container}> {text} </div>;
     }
 
     return (
