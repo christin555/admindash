@@ -1,10 +1,10 @@
 import React from 'react';
 import {inject} from 'mobx-react';
 import {toJS} from 'mobx';
-import TableView from "../../shared/Table";
-import {status as statusEnum} from "../../enums";
-import ShowMore from "./ShowMore";
-import dayjs from "dayjs";
+import TableView from '../../shared/Table';
+import {status as statusEnum} from '../../enums';
+import ShowMore from './ShowMore';
+import dayjs from 'dayjs';
 
 @inject(({ListStore}) => {
   return {
@@ -25,13 +25,13 @@ class PriceView extends React.Component {
         field: 'createdAt',
         headerName: 'Дата',
         width: 150,
+        flex: 1,
         renderCell: (cellValues) => dayjs(cellValues.row.createdAt).format('DD.MM.YYYY HH:mm') || 'Не указано'
-
       },
       {
         field: 'action',
         headerName: 'Название',
-        width: 350,
+        width: 350
       },
       {
         field: 'status',
@@ -43,11 +43,12 @@ class PriceView extends React.Component {
         field: 'data',
         headerName: 'Информация',
         flex: 1,
+        align: 'start',
         renderCell: (cellValues) => {
           const text = cellValues.row.data;
-          const array = JSON.parse(text);
+          const array = JSON.parse(text).join('\n');
 
-          return <ShowMore size={text.length}> {array.map(n => <p> {n} </p>)}</ShowMore>
+          return <ShowMore text={array}/>;
         }
       },
       {
@@ -63,7 +64,7 @@ class PriceView extends React.Component {
         renderCell: (cellValues) => {
           const text = cellValues.row.undefinedItems || '';
 
-          return <ShowMore size={text.length}> {text}</ShowMore>
+          return <ShowMore text={text}/>;
         }
       }
     ];

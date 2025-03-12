@@ -9,25 +9,18 @@ class ShowMore extends Component {
 
   render() {
     const {collapsed} = this.state;
-    const {children, size} = this.props;
+    const {text} = this.props;
 
-    console.log('size', size);
-
-    const isActive = size > 300;
+    const isActive = text.length > 220;
 
     if (!isActive) {
-      return <div>{children} </div>;
+      return <div>{text} </div>;
     }
 
     return (
-      <div className={s.container} style={{height: collapsed ? '170px' : 'unset'}}>
-        {children}
-        <div
-          className={s.moreContainer}
-          style={{
-            position: collapsed ? 'absolute' : 'unset',
-            background: collapsed ? 'linear-gradient(rgba(255,255,255,0) 0%, rgba(255,255,255,0) 62%, rgba(255,255,255,1) 85%, rgba(255,255,255,1) 100%)' : 'unset'}}
-        >
+      <div className={s.container}>
+        {collapsed ? text.slice(0, 220) : text}{collapsed ? <span> ... </span> : null}
+        <div>
           <Button onClick={() => {
             this.setState({collapsed: !collapsed});
           }}

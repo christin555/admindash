@@ -15,7 +15,9 @@ const StyledDataGrid = withStyles({
     '& .MuiDataGrid-cell': {
       lineHeight: 'unset !important',
       maxHeight: 'none !important',
-      whiteSpace: 'normal !important'
+      whiteSpace: 'normal !important',
+      alignItems: 'flex-start',
+      padding: '10px'
     },
     '& .MuiDataGrid-row': {
       maxHeight: 'none !important'
