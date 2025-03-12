@@ -24,7 +24,9 @@ class ShowMore extends Component {
         {children}
         <div
           className={s.moreContainer}
-          style={{background: collapsed ? 'linear-gradient(rgba(255,255,255,0) 0%, rgba(255,255,255,0) 62%, rgba(255,255,255,1) 85%, rgba(255,255,255,1) 100%)' : 'unset'}}
+          style={{
+            position: collapsed ? 'absolute' : 'unset',
+            background: collapsed ? 'linear-gradient(rgba(255,255,255,0) 0%, rgba(255,255,255,0) 62%, rgba(255,255,255,1) 85%, rgba(255,255,255,1) 100%)' : 'unset'}}
         >
           <Button onClick={() => {
             this.setState({collapsed: !collapsed});

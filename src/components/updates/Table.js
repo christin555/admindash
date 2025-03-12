@@ -24,32 +24,46 @@ class PriceView extends React.Component {
       {
         field: 'createdAt',
         headerName: 'Дата',
-        width: 190,
+        width: 150,
         renderCell: (cellValues) => dayjs(cellValues.row.createdAt).format('DD.MM.YYYY HH:mm') || 'Не указано'
 
       },
       {
         field: 'action',
         headerName: 'Название',
-        width: 400,
+        width: 350,
       },
       {
         field: 'status',
         headerName: 'Статус',
-        width: 160,
+        width: 150,
         renderCell: (cellValues) => cellValues.row.status === statusEnum.SUCCESS ? 'Выполнено' : 'Ошибка'
       },
       {
         field: 'data',
         headerName: 'Информация',
-        minWidth: 350,
-        padding: 0,
         flex: 1,
         renderCell: (cellValues) => {
           const text = cellValues.row.data;
           const array = JSON.parse(text);
 
           return <ShowMore size={text.length}> {array.map(n => <p> {n} </p>)}</ShowMore>
+        }
+      },
+      {
+        field: 'created',
+        headerName: 'Добавленные',
+        flex: 1
+      },
+      {
+        field: 'undefinedItems',
+        headerName: 'Ненайденные',
+        minWidth: 350,
+        flex: 1,
+        renderCell: (cellValues) => {
+          const text = cellValues.row.undefinedItems || '';
+
+          return <ShowMore size={text.length}> {text}</ShowMore>
         }
       }
     ];

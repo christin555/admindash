@@ -1,12 +1,10 @@
 .container {
   position: relative;
-  padding-bottom: 20px;
 
   .moreContainer {
     top: 0;
     height: 100%;
     width: 100%;
-    position: absolute;
     display: flex;
     align-items: flex-end;
   }
