@@ -6,16 +6,16 @@ import Drawer from "../listComponetns/Drawer";
 import DrawerStore from "../../stores/DrawerStoreCollection";
 
 class PriceView extends React.Component {
-    render() {
-        return (
-            <React.Fragment>
-                <Toolbar/>
-                <Footer/>
-                <Table />
-                <Drawer DrawerStore={DrawerStore}/>
-            </React.Fragment>
-        );
-    }
+  render() {
+    return (
+      <React.Fragment>
+        <Toolbar />
+        <Footer />
+        <Table />
+        <Drawer DrawerStore={DrawerStore} />
+      </React.Fragment>
+    );
+  }
 }
 
 export default PriceView;

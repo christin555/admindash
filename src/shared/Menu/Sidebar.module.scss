@@ -4,7 +4,6 @@
   top: 0;
   height: 100%;
   padding: 6px 10px;
-  width: 78px;
 
   .logo {
     margin: 20px auto;
@@ -16,9 +15,13 @@
     }
   }
 
+  .activeItem {
+    background: rgba(255, 255, 255, 0.2) !important;
+  }
+
   a > {
     * {
-      padding: 8px 4px !important;
+      padding: 8px !important;
       color: white !important;
       font-size: 13px !important;
     }

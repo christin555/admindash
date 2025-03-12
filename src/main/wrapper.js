@@ -43,6 +43,9 @@ const Page = loadable(
       case 'catalogs': {
         return import('../components/catalogs');
       }
+      case 'updates': {
+        return import('../components/updates');
+      }
       default:
         return import('../shared/InformBlocks/PageNotFound');
     }
@@ -53,7 +56,7 @@ const Page = loadable(
 );
 
 const Wrapper = ({name}) => (
-  <Body>
+  <Body pathname={name}>
     <Page name={name} />
   </Body>
 );

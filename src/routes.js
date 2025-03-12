@@ -76,6 +76,11 @@ export default () => (
             render={wrap('catalogs')}
           />
           <Route
+            exact={true}
+            path='/updates'
+            render={wrap('updates')}
+          />
+          <Route
             render={wrap('notFound')}
           />
         </Switch>

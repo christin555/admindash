@@ -1,0 +1,13 @@
+@media only screen and (max-width: 930px) {
+  .toolbar {
+    padding: 0 !important;
+    margin: 4px 6px !important;
+    gap: 6px !important;
+
+    & > * {
+      font-size: 12px !important;
+      text-transform: unset !important;
+      padding: 0 !important;
+    }
+  }
+}

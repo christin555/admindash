@@ -10,13 +10,13 @@ class Body extends Component {
   }
 
   render() {
-    const {children} = this.props;
+    const {children, pathname} = this.props;
 
     return (
       <React.Fragment>
         <div className={s.background} />
         <div className={s.wrapper}>
-          <Menu />
+          <Menu pathname={pathname}/>
           <main className={cn(s.content)}>
             {children}
           </main>

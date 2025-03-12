@@ -11,7 +11,6 @@ class Collections extends React.Component {
     const {RouterStore} = this.props;
 
     this.CollectionsStore = new CollectionsStore(RouterStore);
-
   }
 
   componentWillUnmount() {
