@@ -17,7 +17,8 @@ const StyledDataGrid = withStyles({
       maxHeight: 'none !important',
       whiteSpace: 'normal !important',
       alignItems: 'flex-start',
-      padding: '10px'
+      padding: '10px',
+      wordBreak: 'break-word'
     },
     '& .MuiDataGrid-row': {
       maxHeight: 'none !important'
