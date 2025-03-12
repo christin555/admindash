@@ -48,11 +48,11 @@ class PriceView extends React.Component {
           const text = cellValues.row.data;
           const array = JSON.parse(text).join('\n');
 
-          return <ShowMore text={array}/>;
+          return <ShowMore text={array} />;
         }
       },
       {
-        field: 'created',
+        field: 'createdItems',
         headerName: 'Добавленные',
         flex: 1
       },
@@ -64,7 +64,7 @@ class PriceView extends React.Component {
         renderCell: (cellValues) => {
           const text = cellValues.row.undefinedItems || '';
 
-          return <ShowMore text={text}/>;
+          return <ShowMore text={text} />;
         }
       }
     ];
