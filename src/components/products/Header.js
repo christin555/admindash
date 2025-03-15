@@ -42,11 +42,11 @@ class Header extends React.Component {
                 {'Заполненность фильтра'}
               </Typography>
               {
-                stats.percents?.map(({title, percent}) => (
+                stats.percents.length ? stats.percents.map(({title, percent}) => (
                   <Typography key={title} component={'div'} variant={'body1'}>
                     {`${percent}%`} - {title}
                   </Typography>
-                ))
+                )) : null
               }
             </div>
           )}
