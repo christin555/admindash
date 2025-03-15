@@ -38,10 +38,9 @@ class Header extends React.Component {
 
           <Tooltip title={(
             <div>
-              <Typography
-                variant="subtitle2"
-
-              > Заполненность фильтра</Typography>
+              <Typography variant="subtitle2">
+                {'Заполненность фильтра'}
+              </Typography>
               {
                 stats.percents?.map(({title, percent}) => (
                   <Typography key={title} component={'div'} variant={'body1'}>
