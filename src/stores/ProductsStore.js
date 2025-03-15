@@ -7,8 +7,13 @@ import {ListItemsStore} from './ListItemsStore';
 class ProductsStore extends ListItemsStore {
     RouterStore;
 
-    @observable categories;
+    @observable categories = [];
     @observable columns = [];
+
+    @observable stats = {
+      percents: [],
+      commonPercent: 0
+    };
 
     ///@observable category = 1;
     @observable checkedPrice;
@@ -28,16 +33,20 @@ class ProductsStore extends ListItemsStore {
       super(RouterStore);
 
       makeObservable(this);
+      this.setInitialColumns();
+
       this.getCategories();
       this.getColumns();
       this.getCatalogDisposer = autorun(this.getList);
-
-      this.setInitialColumns();
     }
 
     @computed get category() {
       return Number(this.RouterStore.getKey('category')) || 1;
     }
+
+  @computed get activeCategory() {
+    return this.categories.find(({id}) => id === this.category) || {}
+  }
 
     @computed get updatedPrice() {
       const {initList, list} = this;
@@ -70,6 +79,10 @@ class ProductsStore extends ListItemsStore {
     @action setFilter = (key, val) => {
       this.filter = {...this.filter, [key]: val};
     }
+
+  @action setStats = (stats) => {
+    this.stats = stats;
+  }
 
     @action setCategory = (_, category) => {
       //this.category = category;
@@ -191,10 +204,22 @@ class ProductsStore extends ListItemsStore {
         this.setList(products);
         this.setInitList(products);
         this.setStatus(statusEnum.SUCCESS);
+
+        this.getStats(body);
       } catch(err) {
         this.setStatus(statusEnum.ERROR);
       }
     };
+
+    getStats = async(body) => {
+      try {
+        const stats = await api.post('getFullnessInfo', body);
+
+        this.setStats(stats);
+      } catch(e) {
+        alert({type: 'error', title: 'Ошибка при получении статистики'});
+      }
+    }
 
     closeStore() {
       this.getCatalogDisposer();

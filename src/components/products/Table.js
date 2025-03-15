@@ -24,8 +24,6 @@ function CustomToolbar() {
     <GridToolbarContainer style={{margin: '10px', gap: '10px'}} className={s.toolbar}>
       <GridToolbarColumnsButton />
       <GridToolbarFilterButton />
-      <GridToolbarDensitySelector />
-      <GridToolbarExport csvOptions={{fileName: 'Экспорт', utf8WithBom: true}} />
     </GridToolbarContainer>
   );
 }

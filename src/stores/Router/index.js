@@ -1,16 +1,22 @@
 import {observable, get, action, makeObservable, computed} from 'mobx';
 import jwt_decode from 'jwt-decode';
+import api from '../../api';
 
 class RouterStore {
     @observable location = {};
     @observable match = {};
     @observable history = {};
+
+    @observable categoriesMenu = [];
+
     isAuthenticated = false;
 
     constructor() {
       makeObservable(this);
 
       this.isAuthenticated = this.checkIsAuthenticated();
+
+      this.getCategoryHierarchy();
     }
 
     @computed get pathname() {
@@ -37,6 +43,10 @@ class RouterStore {
       return urlAddress.get(param);
     };
 
+    @action setCategoriesMenu = (categoriesMenu) => {
+      this.categoriesMenu = categoriesMenu;
+    };
+
     checkIsAuthenticated = () => {
       const token = localStorage.getItem('token');
 
@@ -48,6 +58,16 @@ class RouterStore {
         return false;
       }
     }
+
+  getCategoryHierarchy = async() => {
+    try {
+      const categoriesMenu = await api.get('getCategoryHierarchy');
+      this.setCategoriesMenu(categoriesMenu);
+    } catch(err) {
+      console.log(err);
+    }
+
+  }
 }
 
 // Global store
