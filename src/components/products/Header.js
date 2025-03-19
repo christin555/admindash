@@ -30,7 +30,6 @@ class Header extends React.Component {
       <Box sx={{borderBottom: 1, borderColor: 'divider'}}
            display={'flex'} gap={'20px'} justifyContent={'space-between'}>
         <Box
-
           display={'flex'}
           alignItems={'center'}
           gap={'20px'}

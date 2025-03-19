@@ -2,22 +2,20 @@ import React from 'react';
 import Footer from './Footer';
 import Table from './Table';
 import Header from './Header';
-import Drawer from '../listComponetns/Drawer';
+import CreateDrawer from '../listComponetns/Drawer';
 import Toolbar from './Toolbar';
 import DrawerStore from '../../stores/DrawerStore';
+import FilterDrawer from './Filter';
 
-class PriceView extends React.Component {
-  render() {
-    return (
-      <React.Fragment>
-        <Header />
-        <Toolbar />
-        <Table />
-        <Footer />
-        <Drawer DrawerStore={DrawerStore} />
-      </React.Fragment>
-    );
-  }
-}
+const PriceView = () => (
+  <React.Fragment>
+    <Header />
+    <Toolbar />
+    <Table />
+    <Footer />
+    <CreateDrawer DrawerStore={DrawerStore} />
+    <FilterDrawer />
+  </React.Fragment>
+);
 
 export default PriceView;

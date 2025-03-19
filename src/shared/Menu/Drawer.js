@@ -3,10 +3,9 @@ import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
 import {Link} from 'react-router-dom';
 import {inject} from 'mobx-react';
-import {Grid, Typography} from '@mui/material';
+import {Typography} from '@mui/material';
 
 const levelRender = ({id, name, levels, level}) => {
   const Item = (
@@ -14,7 +13,7 @@ const levelRender = ({id, name, levels, level}) => {
       <Typography
         key={'text'}
         component={'li'}
-        variant={level === 1 ? 'subtitle1' : null }
+        variant={level === 1 ? 'subtitle1' : null}
         sx={{fontWeight: level === 1 ? 400 : levels.length ? 350 : 200}}
         margin={'8px 0'}
       >
