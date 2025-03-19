@@ -1,5 +1,5 @@
 import api from 'api';
-import {action, autorun, computed, makeObservable, observable} from 'mobx';
+import {action, autorun, computed, makeObservable, observable, reaction} from 'mobx';
 import {alert} from './Notifications';
 
 export class FilterStore {
@@ -20,6 +20,10 @@ export class FilterStore {
     makeObservable(this);
 
     this.disposers.push(autorun(this.getFields));
+    this.disposers.push(reaction(
+      () => this.category,
+      () => this.clear()
+    ));
   }
 
   @computed get category() {
@@ -62,17 +66,22 @@ export class FilterStore {
      this.setOpen(false);
    }
 
-   reset = () => {
-     this.values = {};
-     this.setOldValues = {};
-     this.ProductsStore.getList({});
+  @action reset = () => {
+    this.values = {};
+    this.setOldValues = {};
+    this.ProductsStore.getList({});
 
-     this.setOpen(false);
-   }
+    this.setOpen(false);
+  }
 
-   closeStore() {
-     this.disposers.map((func) => func());
-   }
+  @action clear = () => {
+    this.values = {};
+    this.setOldValues = {};
+  }
+
+  closeStore() {
+    this.disposers.map((func) => func());
+  }
 }
 
 export default FilterStore;
