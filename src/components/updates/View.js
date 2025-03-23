@@ -1,6 +1,6 @@
 import React from 'react';
 import Table from './Table';
-import Toolbar from '../listComponetns/Toolbar';
+import Toolbar from './Toolbar';
 
 class PriceView extends React.Component {
   render() {

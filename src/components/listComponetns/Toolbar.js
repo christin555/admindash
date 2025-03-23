@@ -1,11 +1,16 @@
 import React from 'react';
 import {inject} from 'mobx-react';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import {TextField} from '@mui/material';
 import s from './style.module.scss';
 
 @inject(({ListStore}) => {
   return {
+    toggleEdit: ListStore.toggleEdit,
+    isEdit: ListStore.isEdit,
+    reset: ListStore.reset,
+    save: ListStore.save,
     fastFilterInput: ListStore.fastFilterInput,
     setFastFilter: ListStore.setFastFilter,
     setFastFilterInput: ListStore.setFastFilterInput,
@@ -15,6 +20,10 @@ import s from './style.module.scss';
 class Toolbar extends React.Component {
   render() {
     const {
+      reset,
+      isEdit,
+      toggleEdit,
+      save,
       fastFilterInput,
       setFastFilterInput,
       setFastFilter
@@ -33,7 +42,25 @@ class Toolbar extends React.Component {
           />
         </Box>
         <Box display={'flex'} gap={'20px'}>
-
+          {
+            !isEdit && (
+              <React.Fragment>
+                <Button variant={'contained'} onClick={toggleEdit}> Редактировать </Button>
+                <Button
+                  variant={'contained'}
+                  color={'secondary'}
+                  onClick={() => this.props.openDrawerWithMode('add')}
+                > Добавить
+                </Button>
+              </React.Fragment>
+            ) ||
+            (
+              <React.Fragment>
+                <Button variant={'contained'} onClick={save}> Сохранить </Button>
+                <Button variant={'contained'} onClick={reset} color={'secondary'}> Отмена </Button>
+              </React.Fragment>
+            )
+          }
         </Box>
       </Box>
     );

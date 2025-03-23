@@ -13,6 +13,18 @@ class UpdatesStore extends ListItemsStore {
     this.disposer = autorun(this.getList);
   }
 
+  runAction = async(action) => {
+    try {
+      const body = {action};
+
+      await api.post('runAction', body);
+
+    } catch(err) {
+      console.log(err);
+      alert('error');
+    }
+  }
+
   getList = async() => {
     this.setStatus(statusEnum.LOADING);
     const {fastfilter} = this;
