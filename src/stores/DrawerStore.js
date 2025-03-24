@@ -48,6 +48,7 @@ class DrawerStore extends ProductStore {
         this.card = toJS(this.ProductsStore.actionsData.values);
         delete this.card.id;
         delete this.card.name;
+        delete this.card.code;
         delete this.card.alias;
         delete this.card.imgs;
         delete this.card.video;
