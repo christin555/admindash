@@ -19,6 +19,8 @@ class UpdatesStore extends ListItemsStore {
 
       await api.post('runAction', body);
 
+      this.getList();
+
     } catch(err) {
       console.log(err);
       alert('error');

@@ -36,7 +36,8 @@ class PriceView extends React.Component {
         field: 'status',
         headerName: 'Статус',
         width: 150,
-        renderCell: (cellValues) => cellValues.row.status === statusEnum.SUCCESS ? 'Выполнено' : 'Ошибка'
+        renderCell: (cellValues) => cellValues.row.status === statusEnum.SUCCESS ? 'Выполнено' :
+          cellValues.row.status === statusEnum.ERROR ? 'Ошибка' : 'В процессе'
       },
       {
         field: 'data',
@@ -46,6 +47,10 @@ class PriceView extends React.Component {
         align: 'start',
         renderCell: (cellValues) => {
           const text = cellValues.row.data;
+
+          if (!text) {
+            return null;
+          }
           const array = JSON.parse(text).join('\n');
 
           return <ShowMore text={array} />;
