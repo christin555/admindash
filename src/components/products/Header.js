@@ -2,7 +2,7 @@ import React from 'react';
 import {inject} from 'mobx-react';
 import Box from '@mui/material/Box';
 import {CircularProgress, Tooltip, Typography} from '@mui/material';
-import Button from "@mui/material/Button";
+import Button from '@mui/material/Button';
 
 @inject(({ProductsStore}) => {
   return {
@@ -12,6 +12,7 @@ import Button from "@mui/material/Button";
     isEdit: ProductsStore.isEdit,
     reset: ProductsStore.reset,
     save: ProductsStore.save,
+    openDrawerWithMode: ProductsStore.openDrawerWithMode
   };
 })
 
@@ -24,20 +25,26 @@ class Header extends React.Component {
       isEdit,
       toggleEdit,
       save,
+      openDrawerWithMode
     } = this.props;
 
     return (
-      <Box sx={{borderBottom: 1, borderColor: 'divider'}}
-           display={'flex'} gap={'20px'} justifyContent={'space-between'}>
+      <Box
+        sx={{borderBottom: 1, borderColor: 'divider'}}
+        display={'flex'}
+        gap={'20px'}
+        justifyContent={'space-between'}
+      >
         <Box
           display={'flex'}
           alignItems={'center'}
           gap={'20px'}
-          height={'60px'}>
+          height={'60px'}
+        >
 
           <Tooltip title={(
             <div>
-              <Typography variant="subtitle2">
+              <Typography variant='subtitle2'>
                 {'Заполненность фильтра'}
               </Typography>
               {
@@ -78,7 +85,6 @@ class Header extends React.Component {
             </Box>
           </Tooltip>
 
-
           <Typography
             variant={'h6'}
             sx={{textTransform: 'uppercase'}}
@@ -87,34 +93,32 @@ class Header extends React.Component {
           </Typography>
         </Box>
 
+        <Box display={'flex'} gap={'20px'} alignItems={'center'}>
 
-          <Box display={'flex'} gap={'20px'} alignItems={'center'}>
-
-
-            {
-              !isEdit && (
-                <React.Fragment>
-                  <Button variant={'contained'} onClick={toggleEdit}> Редактировать </Button>
-                  <Button
-                    variant={'contained'}
-                    color={'secondary'}
-                    onClick={() => this.props.openDrawerWithMode('add')}
-                  > Добавить
-                  </Button>
-                </React.Fragment>
-              ) ||
+          {
+            !isEdit && (
+              <React.Fragment>
+                <Button variant={'contained'} onClick={toggleEdit}> Редактировать </Button>
+                <Button
+                  variant={'contained'}
+                  color={'secondary'}
+                  onClick={() => openDrawerWithMode('add')}
+                > Добавить
+                </Button>
+              </React.Fragment>
+            ) ||
               (
                 <React.Fragment>
                   <Button variant={'contained'} onClick={save}> Сохранить </Button>
                   <Button variant={'contained'} onClick={reset} color={'secondary'}> Отмена </Button>
                 </React.Fragment>
               )
-            }
-          </Box>
+          }
+        </Box>
 
       </Box>
-  );
+    );
   }
-  }
+}
 
-  export default Header;
+export default Header;
