@@ -33,15 +33,17 @@ class DrawerStore extends React.Component {
     }
 
     get blocks() {
-        const {value: _value, isMulti} = this.props;
+        const {value: mediaValue, isMulti} = this.props;
 
-        if (!_value) {
+        if (!mediaValue) {
             return null
         }
 
         if (isMulti) {
-            return _value?.map((src) => {
-                    const _src = 'https://master-pola.com' + src;
+            return mediaValue?.map((media) => {
+                const src = media?.src ?? media;
+                const _src = 'https://master-pola.com' + src;
+
                     return <div
                         key={src}
                         style={{position: 'relative'}}>
@@ -60,21 +62,21 @@ class DrawerStore extends React.Component {
             );
         }
 
-        const src = _value.includes('https') ? _value : 'https://master-pola.com' + _value;
+        const src = mediaValue?.src ?? mediaValue;
+
+        const readySrc = src.includes('https') ? src : 'https://master-pola.com' + src;
         const isVideo = src.includes('MOV');
 
         return <div
             key={src}
             style={{position: 'relative'}}>
             <div className={s.imgBlock}>
-                {isVideo && <video src={src}/> || <img src={src}/>}
+                {isVideo && <video src={readySrc}/> || <img src={readySrc}/>}
             </div>
         </div>
     }
 
     render() {
-        const {loadFiled} = this.props;
-
         return (
             <Box
                 display={'flex'}

@@ -13,6 +13,7 @@ import {DatePicker} from '@mui/x-date-pickers/DatePicker';
 import 'dayjs/locale/ru';
 import dayjs from 'dayjs';
 import HelpIcon from '@mui/icons-material/Help';
+import VideoDropWithType from './VideoDropWithType';
 
 const Field = ({
   placeholder,
@@ -108,6 +109,15 @@ const Field = ({
     case 'mediaDrop':
       block = (
         <MediaBlock
+          value={product[name]}
+          onChange={setValueHandler}
+          isMulti={isMulti}
+        />
+      );
+      break;
+    case 'videoDropWithType':
+      block = (
+        <VideoDropWithType
           value={product[name]}
           onChange={setValueHandler}
           isMulti={isMulti}

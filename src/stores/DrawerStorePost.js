@@ -65,8 +65,7 @@ class DrawerStorePost extends DrawerStoreBase {
         case 'short':
         case 'video':
           mediaFields = [
-            {name: 'vkSrc', type: 'character varying', title: 'VK id'},
-            {name: 'media', type: 'mediaDrop', title: 'Видео'}
+            {name: 'media', type: 'videoDropWithType', title: 'Видео'}
           ];
           break;
       }
@@ -89,7 +88,6 @@ class DrawerStorePost extends DrawerStoreBase {
       const mainFields = [
         'title',
         'media',
-        'vkSrc',
         'relations',
         'content',
         'type',
