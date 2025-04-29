@@ -65,7 +65,7 @@ class DrawerStorePost extends DrawerStoreBase {
         case 'short':
         case 'video':
           mediaFields = [
-            {name: 'media', type: 'videoDropWithType', title: 'Видео'}
+            {name: 'media', type: 'videoDropWithType', title: 'Видео', isRequired: true}
           ];
           break;
       }
