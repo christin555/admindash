@@ -73,7 +73,7 @@ class DrawerStorePost extends DrawerStoreBase {
 
       return {
         'main': this.baseFields,
-        'media': [mediaField],
+        'media': mediaField,
         'relations': [
           {
             search: this.searchRelation,
