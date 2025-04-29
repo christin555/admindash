@@ -57,14 +57,17 @@ class DrawerStorePost extends DrawerStoreBase {
 
       switch (articleType) {
         case 'img':
-          mediaField = {name: 'media', type: 'mediaDrop', title: 'Фотография', isRequired: true};
+          mediaField = [{name: 'media', type: 'mediaDrop', title: 'Фотография', isRequired: true}];
           break;
         case 'carousel':
-          mediaField = {name: 'media', type: 'mediaDrop', title: 'Фотографии', isRequired: true, isMulti: true};
+          mediaField = [{name: 'media', type: 'mediaDrop', title: 'Фотографии', isRequired: true, isMulti: true}];
           break;
         case 'short':
         case 'video':
-          mediaField = {name: 'media', type: 'mediaDrop', title: 'Видео', isRequired: true};
+          mediaField = [
+            {name: 'vkSrc', type: 'character varying', title: 'VK id'},
+            {name: 'media', type: 'mediaDrop', title: 'Видео'}
+          ];
           break;
       }
 
@@ -86,6 +89,7 @@ class DrawerStorePost extends DrawerStoreBase {
       const mainFields = [
         'title',
         'media',
+        'vkSrc',
         'relations',
         'content',
         'type',
