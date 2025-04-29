@@ -103,7 +103,7 @@ class DrawerStorePost extends DrawerStoreBase {
       return Object.entries(this.card).reduce((res, [key, val]) => {
         const value = val?.value || val;
 
-        if (value && mainFields.includes(key) && this.oldCard[key] !== value) {
+        if (mainFields.includes(key) && this.oldCard[key] !== value) {
           if (key === 'media') {
             if (this.mediaUpdated) {
               res[key] = val;
