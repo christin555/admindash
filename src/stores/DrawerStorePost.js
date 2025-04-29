@@ -52,19 +52,19 @@ class DrawerStorePost extends DrawerStoreBase {
     }
 
     @computed get fields() {
-      let mediaField = {};
+      let mediaFields = [];
       const {articleType} = this.card;
 
       switch (articleType) {
         case 'img':
-          mediaField = [{name: 'media', type: 'mediaDrop', title: 'Фотография', isRequired: true}];
+          mediaFields = [{name: 'media', type: 'mediaDrop', title: 'Фотография', isRequired: true}];
           break;
         case 'carousel':
-          mediaField = [{name: 'media', type: 'mediaDrop', title: 'Фотографии', isRequired: true, isMulti: true}];
+          mediaFields = [{name: 'media', type: 'mediaDrop', title: 'Фотографии', isRequired: true, isMulti: true}];
           break;
         case 'short':
         case 'video':
-          mediaField = [
+          mediaFields = [
             {name: 'vkSrc', type: 'character varying', title: 'VK id'},
             {name: 'media', type: 'mediaDrop', title: 'Видео'}
           ];
@@ -73,7 +73,7 @@ class DrawerStorePost extends DrawerStoreBase {
 
       return {
         'main': this.baseFields,
-        'media': mediaField,
+        'media': mediaFields,
         'relations': [
           {
             search: this.searchRelation,
