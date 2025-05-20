@@ -62,6 +62,11 @@ class Toolbar extends React.Component {
           <Button onClick={() => runAction('decorDizaynPrices')}>
             Обновить только цены Decor Dizayn
           </Button>
+
+          <Button onClick={() => runAction('lordCatalog')}>
+            Обновить каталог Lord
+          </Button>
+
         </Box>
       </Box>
     );
