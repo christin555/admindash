@@ -140,11 +140,12 @@ class DrawerStore extends ProductStore {
     getEditedFields = (product) => {
       const updated = {};
 
-      Object.keys(this.oldCard).forEach((key) => {
-        if (JSON.stringify(product[key]) !== JSON.stringify(this.oldCard[key])) {
-          updated[key] = product[key];
-        }
-      });
+      Object.values(this.fields).flat()
+        .forEach(({name: key}) => {
+          if (JSON.stringify(product[key]) !== JSON.stringify(this.oldCard[key])) {
+            updated[key] = product[key];
+          }
+        });
 
       return updated;
     }
