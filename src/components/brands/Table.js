@@ -11,6 +11,10 @@ import {toJS} from 'mobx';
 import {status as statusEnum} from '../../enums';
 import {withStyles} from '@mui/styles';
 import s from './style.module.scss';
+import Box from '@mui/material/Box';
+import {IconButton} from '@mui/material';
+import EditIcon from '@mui/icons-material/Edit';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 function CustomToolbar() {
   return (
@@ -80,6 +84,28 @@ class PriceView extends React.Component {
         minWidth: 350,
         flex: 1,
         renderCell: (cellValues) => cellValues.row.category
+      },
+      {
+        field: 'actions',
+        flex: 1,
+        headerName: '',
+        minWidth: 150,
+        renderCell: (cellValues) => (
+          <Box display={'flex'} gap={'5px'}>
+            <IconButton
+              onClick={() => this.props.openDrawerWithMode('edit', cellValues.row)}
+              children={<EditIcon />}
+              variant='standard'
+              size={'small'}
+            />
+            <IconButton
+              onClick={() => this.props.openDrawerWithMode('show', cellValues.row)}
+              children={<VisibilityIcon />}
+              variant='standard'
+              size={'small'}
+            />
+          </Box>
+        )
       }
     ];
   }

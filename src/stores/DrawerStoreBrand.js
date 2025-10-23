@@ -59,7 +59,7 @@ class DrawerStorePost extends DrawerStoreBase {
 
     edit = async(data) => {
       try {
-        await api.post('editPosts', data);
+        await api.post('editBrands', data);
         this.ListStore.afterRequestSuccess();
       } catch(err) {
         alert({type: 'error', title: 'Ошибка'});

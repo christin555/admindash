@@ -15,6 +15,7 @@ class CollectionsStore extends ListItemsStore {
 
     deleteQuery = async() => {
       try {
+        await api.post('deleteCollections', {ids: this.deleted});
         this.afterRequestSuccess();
       } catch(err) {
         alert({type: 'error', title: 'Ошибка'});
